@@ -250,12 +250,9 @@ namespace Testv3.Controllers
             appUser = UserManager.FindByEmail(UserName);
             ExpandedUserDTO u = new ExpandedUserDTO();
 
-
-
             u.UserName = appUser.Email;
             u.Email = appUser.Email;
 
-            
             return View(u);
         }
 
@@ -274,10 +271,8 @@ namespace Testv3.Controllers
             var u = manager.FindByEmail(model.Email);
 
 
-
             u.UserName = model.Email;
             u.Email = model.Email;
-
 
             await manager.UpdateAsync(u);
             var ctx = store.Context;
@@ -328,6 +323,7 @@ namespace Testv3.Controllers
                 }
                 else
                 {
+
                     DeleteUser(objExpandedUserDTO);
                 }
 
@@ -616,21 +612,6 @@ namespace Testv3.Controllers
         #endregion
 
 
-        // Utility
-
-        //#region public ApplicationUserManager UserManager
-        //public ApplicationUserManager UserManager
-        //{
-        //    get
-        //    {
-        //        return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-        //    }
-        //    private set
-        //    {
-        //        _userManager = value;
-        //    }
-        //}
-        //#endregion
 
         #region public ApplicationRoleManager RoleManager
         public ApplicationRoleManager RoleManager
