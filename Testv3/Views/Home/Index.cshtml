@@ -1,0 +1,63 @@
+﻿@*@model IEnumerable<Testv3.Models.Announcement>*@
+@model PagedList.IPagedList<Testv3.Models.Announcement>
+@using PagedList.Mvc;
+
+
+@{
+    ViewBag.Title = "Home Page";
+}
+<br />
+<p class="title3">@ViewBag.Message</p>
+
+<div class="jumbotron">
+    <h2>Announcements</h2>
+    <table class="table">
+        <tr>
+            <th>
+                Date Posted
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                Body
+            </th>
+
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AnnouncementDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AnnouncementTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AnnouncementBody)
+                </td>
+            </tr>
+        }
+
+    </table>
+    Showing page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index", new {page}))
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Individual Inventory Record</h2>
+        <p>
+             All information from the filled out forms are considered confidential and will be used by the Guidance Counselors in communicating with parents or guardians regarding concerns about students.
+        </p>
+        <p><a class="btn btn-default" href="">Edit and update your individual record &raquo;</a></p>
+    </div>
+    <div class="col-md-6">
+        <h2>Set an appointment with your counselor</h2>
+        <p>Counseling services at Makati Medical Center College are in place to help students identify and clarify personal, career and educational goals.  
+           The intent is to help students choose options that will improve the quality of their lives.
+        </p>
+        <p><a class="btn btn-default" href="">Click here to schedule an appointment &raquo;</a></p>
+    </div>
+</div>

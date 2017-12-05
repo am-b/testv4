@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Testv3.Models.Announcement>
+
+@{
+    ViewBag.Title = "Announcements";
+}
+
+<br />
+<p>
+    @Html.ActionLink("Create New Announcement", "Create", null, new { @class = "btn btn-default" })
+
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Date Posted
+        </th>
+        <th>
+            Title
+        </th>
+        <th>
+            Body
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.AnnouncementDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AnnouncementTitle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AnnouncementBody)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.AnnouncementID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.AnnouncementID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.AnnouncementID })
+        </td>
+    </tr>
+}
+
+</table>

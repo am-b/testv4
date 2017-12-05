@@ -1,0 +1,35 @@
+﻿@model Testv3.Models.Announcement
+
+@{
+    ViewBag.Title = "Announcement Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Announcement Date</dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AnnouncementDate)
+        </dd>
+
+        <dt>Announcement Title</dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AnnouncementTitle)
+        </dd>
+
+        <dt>Announcement Body</dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AnnouncementBody)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.AnnouncementID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
