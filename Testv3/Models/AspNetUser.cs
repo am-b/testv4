@@ -21,6 +21,7 @@ namespace Testv3.Models
             this.AspNetUserLogins = new HashSet<AspNetUserLogin>();
             this.Students = new HashSet<Student>();
             this.AspNetRoles = new HashSet<AspNetRole>();
+            this.Counsellors = new HashSet<Counsellor>();
         }
     
         public string Id { get; set; }
@@ -44,5 +45,7 @@ namespace Testv3.Models
         public virtual ICollection<Student> Students { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetRole> AspNetRoles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Counsellor> Counsellors { get; set; }
     }
 }

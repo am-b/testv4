@@ -22,6 +22,8 @@
         <AssociationConnector Association="Testv2Model.FK__Student__UserID__5629CD9C" ManuallyRouted="false" />
         <AssociationConnector Association="Testv2Model.FK__Student__CourseI__5535A963" ManuallyRouted="false" />
         <AssociationConnector Association="Testv2Model.AspNetUserRoles" ManuallyRouted="false" />
+        <AssociationConnector Association="Testv2Model.FK__Counsello__UserI__60A75C0F" />
+        <AssociationConnector Association="Testv2Model.FK__Counsello__UserI__619B8048" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

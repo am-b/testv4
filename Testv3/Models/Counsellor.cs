@@ -20,5 +20,7 @@ namespace Testv3.Models
         public string CounsellorMiddleName { get; set; }
         public string CounsellorEmail { get; set; }
         public string UserID { get; set; }
+    
+        public virtual AspNetUser AspNetUser { get; set; }
     }
 }
