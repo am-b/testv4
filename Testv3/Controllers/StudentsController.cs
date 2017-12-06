@@ -10,6 +10,7 @@ using Testv3.Models;
 
 namespace Testv3.Controllers
 {
+    [Authorize(Roles = "Student")]
     public class StudentsController : Controller
     {
         private Testv2Entities db = new Testv2Entities();
@@ -17,7 +18,7 @@ namespace Testv3.Controllers
         // GET: Students
         public ActionResult Index()
         {
-            var students = db.Students.Include(s => s.Course);
+            var students = db.Students.Include(s => s.AspNetUser).Include(s => s.Course);
             return View(students.ToList());
         }
 
@@ -39,6 +40,7 @@ namespace Testv3.Controllers
         // GET: Students/Create
         public ActionResult Create()
         {
+            ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email");
             ViewBag.CourseID = new SelectList(db.Courses, "CourseID", "CourseName");
             return View();
         }
@@ -48,7 +50,7 @@ namespace Testv3.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "StudentID,StudentLastName,StudentFirstName,StudentMiddleName,StudentEmail,CourseID")] Student student)
+        public ActionResult Create([Bind(Include = "StudentID,StudentLastName,StudentFirstName,StudentMiddleName,StudentEmail,CourseID,Address,Sex,Civil_Status__CivilStatus,Religion,Nationality,Birthdate,PhoneNumber,Birthplace,Dialect,Hobbies,BirthRank,UserID")] Student student)
         {
             if (ModelState.IsValid)
             {
@@ -57,6 +59,7 @@ namespace Testv3.Controllers
                 return RedirectToAction("Index");
             }
 
+            ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email", student.UserID);
             ViewBag.CourseID = new SelectList(db.Courses, "CourseID", "CourseName", student.CourseID);
             return View(student);
         }
@@ -73,6 +76,7 @@ namespace Testv3.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email", student.UserID);
             ViewBag.CourseID = new SelectList(db.Courses, "CourseID", "CourseName", student.CourseID);
             return View(student);
         }
@@ -82,7 +86,7 @@ namespace Testv3.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "StudentID,StudentLastName,StudentFirstName,StudentMiddleName,StudentEmail,CourseID")] Student student)
+        public ActionResult Edit([Bind(Include = "StudentID,StudentLastName,StudentFirstName,StudentMiddleName,StudentEmail,CourseID,Address,Sex,Civil_Status__CivilStatus,Religion,Nationality,Birthdate,PhoneNumber,Birthplace,Dialect,Hobbies,BirthRank,UserID")] Student student)
         {
             if (ModelState.IsValid)
             {
@@ -90,6 +94,7 @@ namespace Testv3.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email", student.UserID);
             ViewBag.CourseID = new SelectList(db.Courses, "CourseID", "CourseName", student.CourseID);
             return View(student);
         }
