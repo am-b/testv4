@@ -15,114 +15,77 @@ namespace Testv3.Controllers
     {
         private Testv2Entities db = new Testv2Entities();
 
-        // GET: Students
-        public ActionResult Index()
+        // GET: Students/CreateEdit
+        public ActionResult CreateEdit()
         {
-            var students = db.Students.Include(s => s.AspNetUser).Include(s => s.Course);
-            return View(students.ToList());
+            //ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email");
+            //ViewBag.CourseID = new SelectList(db.Courses, "CourseID", "CourseName");
+            StudentDropdown objStudent = new StudentDropdown();
+
+            var civilStatus = GetAllCivilStatus();
+            objStudent.Civil_Status__CivilStatuss = GetSelectListItems(civilStatus);
+
+            var gender = GetAllGender();
+            objStudent.Sexx = GetSelectListItems(gender);
+            return View(objStudent);
         }
 
-        // GET: Students/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Student student = db.Students.Find(id);
-            if (student == null)
-            {
-                return HttpNotFound();
-            }
-            return View(student);
-        }
-
-        // GET: Students/Create
-        public ActionResult Create()
-        {
-            ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email");
-            ViewBag.CourseID = new SelectList(db.Courses, "CourseID", "CourseName");
-            return View();
-        }
-
-        // POST: Students/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Students/CreateEdit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "StudentID,StudentLastName,StudentFirstName,StudentMiddleName,StudentEmail,CourseID,Address,Sex,Civil_Status__CivilStatus,Religion,Nationality,Birthdate,PhoneNumber,Birthplace,Dialect,Hobbies,BirthRank,UserID")] Student student)
+        public ActionResult CreateEdit([Bind(Include = "StudentID,StudentLastName,StudentFirstName,StudentMiddleName,StudentEmail,CourseID,Address,Sex,Civil_Status__CivilStatus,Religion,Nationality,Birthdate,PhoneNumber,Birthplace,Dialect,Hobbies,BirthRank,UserID")] Student student, StudentDropdown studentDropdown)
         {
-            if (ModelState.IsValid)
-            {
-                db.Students.Add(student);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+            var civilStatus = GetAllCivilStatus();
+            studentDropdown.Civil_Status__CivilStatuss = GetSelectListItems(civilStatus);
+            var gender = GetAllGender();
+            studentDropdown.Sexx = GetSelectListItems(gender);
 
-            ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email", student.UserID);
-            ViewBag.CourseID = new SelectList(db.Courses, "CourseID", "CourseName", student.CourseID);
+            var CivilStatus = studentDropdown.Civil_Status__CivilStatus.Trim();
+            var Gender = studentDropdown.Sex.Trim();
+
+            //ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email", student.UserID);
+            //ViewBag.CourseID = new SelectList(db.Courses, "CourseID", "CourseName", student.CourseID);
             return View(student);
         }
 
-        // GET: Students/Edit/5
-        public ActionResult Edit(int? id)
+        //
+        private IEnumerable<string> GetAllCivilStatus()
         {
-            if (id == null)
+            return new List<string>
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Student student = db.Students.Find(id);
-            if (student == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email", student.UserID);
-            ViewBag.CourseID = new SelectList(db.Courses, "CourseID", "CourseName", student.CourseID);
-            return View(student);
+                "Single",
+                "Married",
+            };
         }
 
-        // POST: Students/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "StudentID,StudentLastName,StudentFirstName,StudentMiddleName,StudentEmail,CourseID,Address,Sex,Civil_Status__CivilStatus,Religion,Nationality,Birthdate,PhoneNumber,Birthplace,Dialect,Hobbies,BirthRank,UserID")] Student student)
+        private IEnumerable<string> GetAllGender()
         {
-            if (ModelState.IsValid)
+            return new List<string>
             {
-                db.Entry(student).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email", student.UserID);
-            ViewBag.CourseID = new SelectList(db.Courses, "CourseID", "CourseName", student.CourseID);
-            return View(student);
+                "Male",
+                "Female",
+            };
         }
 
-        // GET: Students/Delete/5
-        public ActionResult Delete(int? id)
+        private IEnumerable<SelectListItem> GetSelectListItems(IEnumerable<string> elements)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Student student = db.Students.Find(id);
-            if (student == null)
-            {
-                return HttpNotFound();
-            }
-            return View(student);
-        }
+            // Create an empty list to hold result of the operation
+            var selectList = new List<SelectListItem>();
 
-        // POST: Students/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Student student = db.Students.Find(id);
-            db.Students.Remove(student);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            // For each string in the 'elements' variable, create a new SelectListItem object
+            // that has both its Value and Text properties set to a particular value.
+            // This will result in MVC rendering each item as:
+            //     <option value="State Name">State Name</option>
+            foreach (var element in elements)
+            {
+                selectList.Add(new SelectListItem
+                {
+                    Value = element,
+                    Text = element
+                });
+            }
+
+            return selectList;
         }
 
         protected override void Dispose(bool disposing)

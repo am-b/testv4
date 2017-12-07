@@ -1,5 +1,4 @@
-﻿@*@model IEnumerable<Testv3.Models.Announcement>*@
-@model PagedList.IPagedList<Testv3.Models.Announcement>
+﻿@model PagedList.IPagedList<Testv3.Models.Announcement>
 @using PagedList.Mvc;
 
 
@@ -41,8 +40,9 @@
         }
 
     </table>
-    Showing page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-    @Html.PagedListPager(Model, page => Url.Action("Index", new {page}))
+ 
+        Showing page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
 </div>
 
 <div class="row">
@@ -51,8 +51,9 @@
         <p>
              All information from the filled out forms are considered confidential and will be used by the Guidance Counselors in communicating with parents or guardians regarding concerns about students.
         </p>
-        <p><a class="btn btn-default" href="/Students/Create">Edit and update your individual record &raquo;</a></p>
+        <p><a class="btn btn-default" href="/Students/CreateEdit">Edit and update your individual record &raquo;</a></p>
     </div>
+
     <div class="col-md-6">
         <h2>Set an appointment with your counselor</h2>
         <p>Counseling services at Makati Medical Center College are in place to help students identify and clarify personal, career and educational goals.  
@@ -60,4 +61,5 @@
         </p>
         <p><a class="btn btn-default" href="">Click here to schedule an appointment &raquo;</a></p>
     </div>
+
 </div>

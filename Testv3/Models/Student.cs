@@ -38,6 +38,8 @@ namespace Testv3.Models
         public string Hobbies { get; set; }
         public string BirthRank { get; set; }
         public string UserID { get; set; }
+        public string DistanceFromSchool { get; set; }
+        public string Scholarship { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Appointment> Appointments { get; set; }

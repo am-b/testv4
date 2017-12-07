@@ -129,6 +129,8 @@
           <Property Name="Hobbies" Type="nvarchar(max)" />
           <Property Name="BirthRank" Type="nchar" MaxLength="10" />
           <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="DistanceFromSchool" Type="nvarchar" MaxLength="50" />
+          <Property Name="Scholarship" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -444,6 +446,8 @@
           <NavigationProperty Name="Appointments" Relationship="Self.FK__Appointme__Stude__571DF1D5" FromRole="Student" ToRole="Appointment" />
           <NavigationProperty Name="AspNetUser" Relationship="Self.FK__Student__UserID__5629CD9C" FromRole="Student" ToRole="AspNetUsers" />
           <NavigationProperty Name="Course" Relationship="Self.FK__Student__CourseI__5535A963" FromRole="Student" ToRole="Course" />
+          <Property Name="DistanceFromSchool" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Scholarship" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -703,6 +707,8 @@
           <EntitySetMapping Name="Students">
             <EntityTypeMapping TypeName="Testv2Model.Student">
               <MappingFragment StoreEntitySet="Student">
+                <ScalarProperty Name="Scholarship" ColumnName="Scholarship" />
+                <ScalarProperty Name="DistanceFromSchool" ColumnName="DistanceFromSchool" />
                 <ScalarProperty Name="StudentID" ColumnName="StudentID" />
                 <ScalarProperty Name="StudentLastName" ColumnName="StudentLastName" />
                 <ScalarProperty Name="StudentFirstName" ColumnName="StudentFirstName" />
