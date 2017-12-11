@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -16,35 +17,94 @@ namespace Testv3.Controllers
         private Testv2Entities db = new Testv2Entities();
 
         // GET: Students/CreateEdit
-        public ActionResult CreateEdit()
+        public ActionResult InventoryRecord()
         {
-            //ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email");
-            //ViewBag.CourseID = new SelectList(db.Courses, "CourseID", "CourseName");
-            StudentDropdown objStudent = new StudentDropdown();
+            var currentUserId = User.Identity.GetUserId();
+            var newid = db.Students.FirstOrDefault(d => d.UserID == currentUserId);
 
-            var civilStatus = GetAllCivilStatus();
-            objStudent.Civil_Status__CivilStatuss = GetSelectListItems(civilStatus);
+            if (newid == null)
+            {
+                newid = db.Students.Create();
+                newid.UserID = currentUserId;
+                db.Students.Add(newid);
+            }
 
-            var gender = GetAllGender();
-            objStudent.Sexx = GetSelectListItems(gender);
-            return View(objStudent);
+            Student student = db.Students.Find(newid.UserID);
+            if (student == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(student);
         }
 
         // POST: Students/CreateEdit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateEdit([Bind(Include = "StudentID,StudentLastName,StudentFirstName,StudentMiddleName,StudentEmail,CourseID,Address,Sex,Civil_Status__CivilStatus,Religion,Nationality,Birthdate,PhoneNumber,Birthplace,Dialect,Hobbies,BirthRank,UserID")] Student student, StudentDropdown studentDropdown)
+        public ActionResult InventoryRecord(Student student)
         {
-            var civilStatus = GetAllCivilStatus();
-            studentDropdown.Civil_Status__CivilStatuss = GetSelectListItems(civilStatus);
-            var gender = GetAllGender();
-            studentDropdown.Sexx = GetSelectListItems(gender);
 
-            var CivilStatus = studentDropdown.Civil_Status__CivilStatus.Trim();
-            var Gender = studentDropdown.Sex.Trim();
+            var currentUserId = User.Identity.GetUserId();
+            var userName = User.Identity.GetUserName();
+            var u = db.Students.FirstOrDefault(d => d.UserID == currentUserId);
 
-            //ViewBag.UserID = new SelectList(db.AspNetUsers, "Id", "Email", student.UserID);
-            //ViewBag.CourseID = new SelectList(db.Courses, "CourseID", "CourseName", student.CourseID);
+            if (u == null)
+            {
+                u = db.Students.Create();
+                u.UserID = currentUserId;
+                db.Students.Add(u);
+            }
+
+            if (ModelState.IsValid)
+            {
+                u.PhoneNumber = student.PhoneNumber;
+                u.Address = student.Address;
+                u.DistanceFromSchool = student.DistanceFromSchool;
+                u.Religion = student.Religion;
+                u.Nationality = student.Nationality;
+                u.Birthdate = student.Birthdate;
+                u.Birthplace = student.Birthplace;
+                u.BirthRank = student.BirthRank;
+                u.Dialect = student.Dialect;
+                u.Hobbies = student.Hobbies;
+                u.Scholarship = student.Scholarship;
+
+               // DateOfMarriage,PlaceOfMarriage,SpouseName,
+                u.DateOfMarriage = student.DateOfMarriage;
+                u.PlaceOfMarriage = student.PlaceOfMarriage;
+                u.SpouseName = student.SpouseName;
+                u.SpouseEducationalAttainment = student.SpouseEducationalAttainment;
+                u.SpouseAge = student.SpouseAge;
+                u.Occupation = student.Occupation;
+                u.EmployerAddress = student.EmployerAddress;
+                u.NumberOfChildren = student.NumberOfChildren;
+
+                db.SaveChanges();
+
+                TempData["Message"] = "User: " + userName + ", details successfully updated!";
+            }
+
+            //if (ModelState.IsValid)
+            //{
+            //    var civilStatus = GetAllCivilStatus();
+            //    studentDropdown.Civil_Status__CivilStatuss = GetSelectListItems(civilStatus);
+            //    var gender = GetAllGender();
+            //    studentDropdown.Sexx = GetSelectListItems(gender);
+
+            //    var CivilStatus = studentDropdown.Civil_Status__CivilStatus.Trim();
+            //    var Gender = studentDropdown.Sex.Trim();
+
+            //    if (CivilStatus == "")
+            //    {
+            //        throw new Exception("No Civil Status");
+            //    }
+
+            //    if (Gender == "")
+            //    {
+            //        throw new Exception("No Gender");
+            //    }
+            //}
+
             return View(student);
         }
 
