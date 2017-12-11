@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Testv2Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Testv3Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -23,19 +23,6 @@
           <Property Name="AnnouncementDate" Type="datetime" />
           <Property Name="AnnouncementTitle" Type="nvarchar" MaxLength="256" />
           <Property Name="AnnouncementBody" Type="text" />
-        </EntityType>
-        <EntityType Name="Appointment">
-          <Key>
-            <PropertyRef Name="AppointmentID" />
-          </Key>
-          <Property Name="AppointmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AppointmentDate" Type="datetime" />
-          <Property Name="AppointmentStartTime" Type="time" Precision="7" />
-          <Property Name="AppointmentEndTime" Type="time" Precision="7" />
-          <Property Name="Remarks" Type="nvarchar" MaxLength="256" />
-          <Property Name="ReasonForVisit" Type="nvarchar" MaxLength="256" />
-          <Property Name="CounsellorID" Type="int" />
-          <Property Name="StudentID" Type="int" />
         </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
@@ -109,9 +96,10 @@
         </EntityType>
         <EntityType Name="Student">
           <Key>
-            <PropertyRef Name="StudentID" />
+            <PropertyRef Name="UserID" />
           </Key>
-          <Property Name="StudentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="StudentID" Type="nvarchar" MaxLength="50" />
           <Property Name="StudentLastName" Type="nvarchar" MaxLength="50" />
           <Property Name="StudentFirstName" Type="nvarchar" MaxLength="50" />
           <Property Name="StudentMiddleName" Type="nvarchar" MaxLength="50" />
@@ -123,14 +111,21 @@
           <Property Name="Religion" Type="nchar" MaxLength="10" />
           <Property Name="Nationality" Type="nvarchar" MaxLength="50" />
           <Property Name="Birthdate" Type="date" />
-          <Property Name="PhoneNumber" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="10" />
           <Property Name="Birthplace" Type="nvarchar" MaxLength="256" />
           <Property Name="Dialect" Type="nvarchar" MaxLength="256" />
           <Property Name="Hobbies" Type="nvarchar(max)" />
           <Property Name="BirthRank" Type="nchar" MaxLength="10" />
-          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="DistanceFromSchool" Type="nvarchar" MaxLength="50" />
           <Property Name="Scholarship" Type="nvarchar" MaxLength="250" />
+          <Property Name="DateOfMarriage" Type="date" />
+          <Property Name="PlaceOfMarriage" Type="nvarchar" MaxLength="250" />
+          <Property Name="SpouseName" Type="nvarchar(max)" />
+          <Property Name="SpouseAge" Type="nvarchar" MaxLength="2" />
+          <Property Name="SpouseEducationalAttainment" Type="nvarchar" MaxLength="50" />
+          <Property Name="Occupation" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmployerAddress" Type="nvarchar" MaxLength="250" />
+          <Property Name="NumberOfChildren" Type="nvarchar" MaxLength="3" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -142,18 +137,6 @@
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
-        <Association Name="FK__Appointme__Stude__571DF1D5">
-          <End Role="Student" Type="Self.Student" Multiplicity="0..1" />
-          <End Role="Appointment" Type="Self.Appointment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Student">
-              <PropertyRef Name="StudentID" />
-            </Principal>
-            <Dependent Role="Appointment">
-              <PropertyRef Name="StudentID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Counsello__UserI__60A75C0F">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="Counsellor" Type="Self.Counsellor" Multiplicity="*" />
@@ -180,7 +163,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Student__CourseI__5535A963">
+        <Association Name="FK__Student__CourseI__76969D2E">
           <End Role="Course" Type="Self.Course" Multiplicity="0..1" />
           <End Role="Student" Type="Self.Student" Multiplicity="*" />
           <ReferentialConstraint>
@@ -192,11 +175,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Student__UserID__5AEE82B9">
+        <Association Name="FK__Student__UserID__778AC167">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <End Role="Student" Type="Self.Student" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
@@ -262,10 +245,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Testv2ModelStoreContainer">
+        <EntityContainer Name="Testv3ModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Announcement" EntityType="Self.Announcement" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Appointment" EntityType="Self.Appointment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
@@ -275,10 +257,6 @@
           <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Appointme__Stude__571DF1D5" Association="Self.FK__Appointme__Stude__571DF1D5">
-            <End Role="Student" EntitySet="Student" />
-            <End Role="Appointment" EntitySet="Appointment" />
-          </AssociationSet>
           <AssociationSet Name="FK__Counsello__UserI__60A75C0F" Association="Self.FK__Counsello__UserI__60A75C0F">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Counsellor" EntitySet="Counsellor" />
@@ -287,11 +265,11 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Counsellor" EntitySet="Counsellor" />
           </AssociationSet>
-          <AssociationSet Name="FK__Student__CourseI__5535A963" Association="Self.FK__Student__CourseI__5535A963">
+          <AssociationSet Name="FK__Student__CourseI__76969D2E" Association="Self.FK__Student__CourseI__76969D2E">
             <End Role="Course" EntitySet="Course" />
             <End Role="Student" EntitySet="Student" />
           </AssociationSet>
-          <AssociationSet Name="FK__Student__UserID__5AEE82B9" Association="Self.FK__Student__UserID__5AEE82B9">
+          <AssociationSet Name="FK__Student__UserID__778AC167" Association="Self.FK__Student__UserID__778AC167">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Student" EntitySet="Student" />
           </AssociationSet>
@@ -315,7 +293,7 @@
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="Testv2Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="Testv3Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="C__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -334,20 +312,6 @@
           <Property Name="AnnouncementDate" Type="DateTime" Precision="3" />
           <Property Name="AnnouncementTitle" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="AnnouncementBody" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="Appointment">
-          <Key>
-            <PropertyRef Name="AppointmentID" />
-          </Key>
-          <Property Name="AppointmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AppointmentDate" Type="DateTime" Precision="3" />
-          <Property Name="AppointmentStartTime" Type="Time" Precision="7" />
-          <Property Name="AppointmentEndTime" Type="Time" Precision="7" />
-          <Property Name="Remarks" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="ReasonForVisit" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="CounsellorID" Type="Int32" />
-          <Property Name="StudentID" Type="Int32" />
-          <NavigationProperty Name="Student" Relationship="Self.FK__Appointme__Stude__571DF1D5" FromRole="Appointment" ToRole="Student" />
         </EntityType>
         <EntityType Name="AspNetRole">
           <Key>
@@ -396,9 +360,10 @@
           <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
-          <NavigationProperty Name="Students" Relationship="Self.FK__Student__UserID__5629CD9C" FromRole="AspNetUsers" ToRole="Student" />
+          <NavigationProperty Name="Counsellors" Relationship="Self.FK__Counsello__UserI__60A75C0F" FromRole="AspNetUsers" ToRole="Counsellor" />
+          <NavigationProperty Name="Counsellors1" Relationship="Self.FK__Counsello__UserI__619B8048" FromRole="AspNetUsers" ToRole="Counsellor" />
+          <NavigationProperty Name="Student" Relationship="Self.FK__Student__UserID__778AC167" FromRole="AspNetUsers" ToRole="Student" />
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
-          <NavigationProperty Name="Counsellors" Relationship="Testv2Model.FK__Counsello__UserI__60A75C0F" FromRole="AspNetUser" ToRole="Counsellor" />
         </EntityType>
         <EntityType Name="Counsellor">
           <Key>
@@ -410,7 +375,8 @@
           <Property Name="CounsellorMiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CounsellorEmail" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUser" Relationship="Testv2Model.FK__Counsello__UserI__60A75C0F" FromRole="Counsellor" ToRole="AspNetUser" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK__Counsello__UserI__60A75C0F" FromRole="Counsellor" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUser1" Relationship="Self.FK__Counsello__UserI__619B8048" FromRole="Counsellor" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="Course">
           <Key>
@@ -419,13 +385,14 @@
           <Property Name="CourseID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CourseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Year" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Students" Relationship="Self.FK__Student__CourseI__5535A963" FromRole="Course" ToRole="Student" />
+          <NavigationProperty Name="Students" Relationship="Self.FK__Student__CourseI__76969D2E" FromRole="Course" ToRole="Student" />
         </EntityType>
         <EntityType Name="Student">
           <Key>
-            <PropertyRef Name="StudentID" />
+            <PropertyRef Name="UserID" />
           </Key>
-          <Property Name="StudentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StudentID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="StudentLastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="StudentFirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="StudentMiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -437,17 +404,23 @@
           <Property Name="Religion" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="Nationality" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Birthdate" Type="DateTime" Precision="0" />
-          <Property Name="PhoneNumber" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="Birthplace" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="Dialect" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="Hobbies" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="BirthRank" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Appointments" Relationship="Self.FK__Appointme__Stude__571DF1D5" FromRole="Student" ToRole="Appointment" />
-          <NavigationProperty Name="AspNetUser" Relationship="Self.FK__Student__UserID__5629CD9C" FromRole="Student" ToRole="AspNetUsers" />
-          <NavigationProperty Name="Course" Relationship="Self.FK__Student__CourseI__5535A963" FromRole="Student" ToRole="Course" />
           <Property Name="DistanceFromSchool" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Scholarship" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK__Student__UserID__778AC167" FromRole="Student" ToRole="AspNetUsers" />
+          <NavigationProperty Name="Course" Relationship="Self.FK__Student__CourseI__76969D2E" FromRole="Student" ToRole="Course" />
+          <Property Name="DateOfMarriage" Type="DateTime" Precision="0" />
+          <Property Name="PlaceOfMarriage" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="SpouseName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SpouseAge" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="SpouseEducationalAttainment" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Occupation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmployerAddress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="NumberOfChildren" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -459,18 +432,6 @@
           <Property Name="version" Type="Int32" />
           <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
-        <Association Name="FK__Appointme__Stude__571DF1D5">
-          <End Role="Student" Type="Self.Student" Multiplicity="0..1" />
-          <End Role="Appointment" Type="Self.Appointment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Student">
-              <PropertyRef Name="StudentID" />
-            </Principal>
-            <Dependent Role="Appointment">
-              <PropertyRef Name="StudentID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -499,9 +460,37 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Student__UserID__5629CD9C">
+        <Association Name="FK__Counsello__UserI__60A75C0F">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
-          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <End Role="Counsellor" Type="Self.Counsellor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Counsellor">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Counsello__UserI__619B8048">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Counsellor" Type="Self.Counsellor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Counsellor">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Student__UserID__778AC167">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Student" Type="Self.Student" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
@@ -511,7 +500,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Student__CourseI__5535A963">
+        <Association Name="FK__Student__CourseI__76969D2E">
           <End Role="Course" Type="Self.Course" Multiplicity="0..1" />
           <End Role="Student" Type="Self.Student" Multiplicity="*" />
           <ReferentialConstraint>
@@ -530,7 +519,6 @@
         <EntityContainer Name="Testv2Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
           <EntitySet Name="Announcements" EntityType="Self.Announcement" />
-          <EntitySet Name="Appointments" EntityType="Self.Appointment" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogin" />
@@ -539,10 +527,6 @@
           <EntitySet Name="Courses" EntityType="Self.Course" />
           <EntitySet Name="Students" EntityType="Self.Student" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
-          <AssociationSet Name="FK__Appointme__Stude__571DF1D5" Association="Self.FK__Appointme__Stude__571DF1D5">
-            <End Role="Student" EntitySet="Students" />
-            <End Role="Appointment" EntitySet="Appointments" />
-          </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -551,11 +535,19 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
           </AssociationSet>
-          <AssociationSet Name="FK__Student__UserID__5629CD9C" Association="Self.FK__Student__UserID__5629CD9C">
+          <AssociationSet Name="FK__Counsello__UserI__60A75C0F" Association="Self.FK__Counsello__UserI__60A75C0F">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Counsellor" EntitySet="Counsellors" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Counsello__UserI__619B8048" Association="Self.FK__Counsello__UserI__619B8048">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Counsellor" EntitySet="Counsellors" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Student__UserID__778AC167" Association="Self.FK__Student__UserID__778AC167">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Student" EntitySet="Students" />
           </AssociationSet>
-          <AssociationSet Name="FK__Student__CourseI__5535A963" Association="Self.FK__Student__CourseI__5535A963">
+          <AssociationSet Name="FK__Student__CourseI__76969D2E" Association="Self.FK__Student__CourseI__76969D2E">
             <End Role="Course" EntitySet="Courses" />
             <End Role="Student" EntitySet="Students" />
           </AssociationSet>
@@ -563,49 +555,15 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
-          <AssociationSet Name="FK__Counsello__UserI__60A75C0F" Association="Testv2Model.FK__Counsello__UserI__60A75C0F">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Counsellor" EntitySet="Counsellors" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Counsello__UserI__619B8048" Association="Testv2Model.FK__Counsello__UserI__619B8048">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Counsellor" EntitySet="Counsellors" />
-          </AssociationSet>
         </EntityContainer>
-        <Association Name="FK__Counsello__UserI__60A75C0F">
-          <End Type="Testv2Model.AspNetUser" Role="AspNetUser" Multiplicity="1" />
-          <End Type="Testv2Model.Counsellor" Role="Counsellor" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Counsellor">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Counsello__UserI__619B8048">
-          <End Type="Testv2Model.AspNetUser" Role="AspNetUser" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="Testv2Model.Counsellor" Role="Counsellor" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Counsellor">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Testv2ModelStoreContainer" CdmEntityContainer="Testv2Entities">
+        <EntityContainerMapping StorageEntityContainer="Testv3ModelStoreContainer" CdmEntityContainer="Testv2Entities">
           <EntitySetMapping Name="C__MigrationHistory">
-            <EntityTypeMapping TypeName="Testv2Model.C__MigrationHistory">
+            <EntityTypeMapping TypeName="Testv3Model.C__MigrationHistory">
               <MappingFragment StoreEntitySet="__MigrationHistory">
                 <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
                 <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
@@ -615,7 +573,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Announcements">
-            <EntityTypeMapping TypeName="Testv2Model.Announcement">
+            <EntityTypeMapping TypeName="Testv3Model.Announcement">
               <MappingFragment StoreEntitySet="Announcement">
                 <ScalarProperty Name="AnnouncementID" ColumnName="AnnouncementID" />
                 <ScalarProperty Name="AnnouncementDate" ColumnName="AnnouncementDate" />
@@ -624,22 +582,8 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Appointments">
-            <EntityTypeMapping TypeName="Testv2Model.Appointment">
-              <MappingFragment StoreEntitySet="Appointment">
-                <ScalarProperty Name="AppointmentID" ColumnName="AppointmentID" />
-                <ScalarProperty Name="AppointmentDate" ColumnName="AppointmentDate" />
-                <ScalarProperty Name="AppointmentStartTime" ColumnName="AppointmentStartTime" />
-                <ScalarProperty Name="AppointmentEndTime" ColumnName="AppointmentEndTime" />
-                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-                <ScalarProperty Name="ReasonForVisit" ColumnName="ReasonForVisit" />
-                <ScalarProperty Name="CounsellorID" ColumnName="CounsellorID" />
-                <ScalarProperty Name="StudentID" ColumnName="StudentID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="AspNetRoles">
-            <EntityTypeMapping TypeName="Testv2Model.AspNetRole">
+            <EntityTypeMapping TypeName="Testv3Model.AspNetRole">
               <MappingFragment StoreEntitySet="AspNetRoles">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -647,7 +591,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserClaims">
-            <EntityTypeMapping TypeName="Testv2Model.AspNetUserClaim">
+            <EntityTypeMapping TypeName="Testv3Model.AspNetUserClaim">
               <MappingFragment StoreEntitySet="AspNetUserClaims">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -657,7 +601,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUserLogins">
-            <EntityTypeMapping TypeName="Testv2Model.AspNetUserLogin">
+            <EntityTypeMapping TypeName="Testv3Model.AspNetUserLogin">
               <MappingFragment StoreEntitySet="AspNetUserLogins">
                 <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
                 <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
@@ -666,7 +610,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AspNetUsers">
-            <EntityTypeMapping TypeName="Testv2Model.AspNetUser">
+            <EntityTypeMapping TypeName="Testv3Model.AspNetUser">
               <MappingFragment StoreEntitySet="AspNetUsers">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
@@ -684,7 +628,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Counsellors">
-            <EntityTypeMapping TypeName="Testv2Model.Counsellor">
+            <EntityTypeMapping TypeName="Testv3Model.Counsellor">
               <MappingFragment StoreEntitySet="Counsellor">
                 <ScalarProperty Name="CounsellorID" ColumnName="CounsellorID" />
                 <ScalarProperty Name="CounsellorLastName" ColumnName="CounsellorLastName" />
@@ -696,7 +640,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Courses">
-            <EntityTypeMapping TypeName="Testv2Model.Course">
+            <EntityTypeMapping TypeName="Testv3Model.Course">
               <MappingFragment StoreEntitySet="Course">
                 <ScalarProperty Name="CourseID" ColumnName="CourseID" />
                 <ScalarProperty Name="CourseName" ColumnName="CourseName" />
@@ -705,10 +649,17 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Students">
-            <EntityTypeMapping TypeName="Testv2Model.Student">
+            <EntityTypeMapping TypeName="Testv3Model.Student">
               <MappingFragment StoreEntitySet="Student">
-                <ScalarProperty Name="Scholarship" ColumnName="Scholarship" />
-                <ScalarProperty Name="DistanceFromSchool" ColumnName="DistanceFromSchool" />
+                <ScalarProperty Name="NumberOfChildren" ColumnName="NumberOfChildren" />
+                <ScalarProperty Name="EmployerAddress" ColumnName="EmployerAddress" />
+                <ScalarProperty Name="Occupation" ColumnName="Occupation" />
+                <ScalarProperty Name="SpouseEducationalAttainment" ColumnName="SpouseEducationalAttainment" />
+                <ScalarProperty Name="SpouseAge" ColumnName="SpouseAge" />
+                <ScalarProperty Name="SpouseName" ColumnName="SpouseName" />
+                <ScalarProperty Name="PlaceOfMarriage" ColumnName="PlaceOfMarriage" />
+                <ScalarProperty Name="DateOfMarriage" ColumnName="DateOfMarriage" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="StudentID" ColumnName="StudentID" />
                 <ScalarProperty Name="StudentLastName" ColumnName="StudentLastName" />
                 <ScalarProperty Name="StudentFirstName" ColumnName="StudentFirstName" />
@@ -726,12 +677,13 @@
                 <ScalarProperty Name="Dialect" ColumnName="Dialect" />
                 <ScalarProperty Name="Hobbies" ColumnName="Hobbies" />
                 <ScalarProperty Name="BirthRank" ColumnName="BirthRank" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="DistanceFromSchool" ColumnName="DistanceFromSchool" />
+                <ScalarProperty Name="Scholarship" ColumnName="Scholarship" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="Testv2Model.sysdiagram">
+            <EntityTypeMapping TypeName="Testv3Model.sysdiagram">
               <MappingFragment StoreEntitySet="sysdiagrams">
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="principal_id" ColumnName="principal_id" />
@@ -741,7 +693,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="AspNetUserRoles" TypeName="Testv2Model.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="Testv3Model.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
             <EndProperty Name="AspNetRoles">
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>

@@ -14,13 +14,8 @@ namespace Testv3.Models
     
     public partial class Student
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Student()
-        {
-            this.Appointments = new HashSet<Appointment>();
-        }
-    
-        public int StudentID { get; set; }
+        public string UserID { get; set; }
+        public string StudentID { get; set; }
         public string StudentLastName { get; set; }
         public string StudentFirstName { get; set; }
         public string StudentMiddleName { get; set; }
@@ -32,17 +27,22 @@ namespace Testv3.Models
         public string Religion { get; set; }
         public string Nationality { get; set; }
         public Nullable<System.DateTime> Birthdate { get; set; }
-        public Nullable<decimal> PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
         public string Birthplace { get; set; }
         public string Dialect { get; set; }
         public string Hobbies { get; set; }
         public string BirthRank { get; set; }
-        public string UserID { get; set; }
         public string DistanceFromSchool { get; set; }
         public string Scholarship { get; set; }
+        public Nullable<System.DateTime> DateOfMarriage { get; set; }
+        public string PlaceOfMarriage { get; set; }
+        public string SpouseName { get; set; }
+        public string SpouseAge { get; set; }
+        public string SpouseEducationalAttainment { get; set; }
+        public string Occupation { get; set; }
+        public string EmployerAddress { get; set; }
+        public string NumberOfChildren { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Appointment> Appointments { get; set; }
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual Course Course { get; set; }
     }

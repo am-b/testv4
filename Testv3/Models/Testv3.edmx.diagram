@@ -4,26 +4,24 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="38cc9eb3d2284736a46638a029c14078" Name="Diagram1">
-        <EntityTypeShape EntityType="Testv2Model.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Testv2Model.Announcement" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Testv2Model.Appointment" Width="1.5" PointX="10.5" PointY="5.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="Testv2Model.AspNetRole" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Testv2Model.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="4.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="Testv2Model.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="7" IsExpanded="true" />
-        <EntityTypeShape EntityType="Testv2Model.AspNetUser" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="Testv2Model.Counsellor" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Testv2Model.Course" Width="1.5" PointX="6" PointY="1.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="Testv2Model.Student" Width="1.5" PointX="8.25" PointY="4" IsExpanded="true" />
-        <EntityTypeShape EntityType="Testv2Model.sysdiagram" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
-        <AssociationConnector Association="Testv2Model.FK__Appointme__Stude__571DF1D5" ManuallyRouted="false" />
-        <AssociationConnector Association="Testv2Model.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
-        <AssociationConnector Association="Testv2Model.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
-        <AssociationConnector Association="Testv2Model.FK__Student__UserID__5629CD9C" ManuallyRouted="false" />
-        <AssociationConnector Association="Testv2Model.FK__Student__CourseI__5535A963" ManuallyRouted="false" />
-        <AssociationConnector Association="Testv2Model.AspNetUserRoles" ManuallyRouted="false" />
-        <AssociationConnector Association="Testv2Model.FK__Counsello__UserI__60A75C0F" />
-        <AssociationConnector Association="Testv2Model.FK__Counsello__UserI__619B8048" />
+      <Diagram DiagramId="e0cbfa4f386b4fd79f1883d619280345" Name="Diagram1">
+        <EntityTypeShape EntityType="Testv3Model.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Testv3Model.Announcement" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Testv3Model.AspNetRole" Width="1.5" PointX="0.75" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Testv3Model.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Testv3Model.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Testv3Model.AspNetUser" Width="1.5" PointX="3" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Testv3Model.Counsellor" Width="1.5" PointX="5.25" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Testv3Model.Course" Width="1.5" PointX="6" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Testv3Model.Student" Width="1.5" PointX="8.25" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Testv3Model.sysdiagram" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="Testv3Model.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="Testv3Model.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="Testv3Model.FK__Counsello__UserI__60A75C0F" ManuallyRouted="false" />
+        <AssociationConnector Association="Testv3Model.FK__Counsello__UserI__619B8048" ManuallyRouted="false" />
+        <AssociationConnector Association="Testv3Model.FK__Student__UserID__778AC167" ManuallyRouted="false" />
+        <AssociationConnector Association="Testv3Model.FK__Student__CourseI__76969D2E" ManuallyRouted="false" />
+        <AssociationConnector Association="Testv3Model.AspNetUserRoles" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

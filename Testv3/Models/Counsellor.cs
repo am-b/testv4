@@ -22,5 +22,6 @@ namespace Testv3.Models
         public string UserID { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
+        public virtual AspNetUser AspNetUser1 { get; set; }
     }
 }
