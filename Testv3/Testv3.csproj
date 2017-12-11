@@ -201,15 +201,13 @@
     <Compile Include="Controllers\AnnouncementsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\StudentDropdownsController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Announcement.cs">
-      <DependentUpon>Testv3.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Appointment.cs">
       <DependentUpon>Testv3.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AspNetRole.cs">
@@ -287,6 +285,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Images\Thumbs.db" />
     <EntityDeploy Include="Models\Testv3.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Testv3.Designer.cs</LastGenOutput>
@@ -294,7 +293,6 @@
     <Content Include="Models\Testv3.edmx.diagram">
       <DependentUpon>Testv3.edmx</DependentUpon>
     </Content>
-    <Content Include="Content\Images\Thumbs.db" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -306,7 +304,9 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -344,7 +344,8 @@
     <Content Include="Views\Announcements\Edit.cshtml" />
     <Content Include="Views\Announcements\Index.cshtml" />
     <Content Include="Views\Students\Index.cshtml" />
-    <Content Include="Views\Students\CreateEdit.cshtml" />
+    <Content Include="Views\Students\InventoryRecord.cshtml" />
+    <Content Include="Views\StudentDropdowns\InventoryRecord.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
