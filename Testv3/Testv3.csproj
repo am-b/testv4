@@ -2312,6 +2312,8 @@
     <Content Include="Views\Announcements\Index.cshtml" />
     <Content Include="Views\StudentDropdowns\InventoryRecord.cshtml" />
     <Content Include="Views\Students\InventoryRecord.cshtml" />
+    <Content Include="Views\Shared\_StudentLayout.cshtml" />
+    <Content Include="Views\Shared\_DefaultLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,3 +1,24 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@{
+    if (User.IsInRole("Administrator"))
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    else if (User.IsInRole("Guidance"))
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    else if (User.IsInRole("Student"))
+    {
+        Layout = "~/Views/Shared/_StudentLayout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_DefaultLayout.cshtml";
+    }
+
+    HtmlHelper.ClientValidationEnabled = true;
+    HtmlHelper.UnobtrusiveJavaScriptEnabled = true;
+}
