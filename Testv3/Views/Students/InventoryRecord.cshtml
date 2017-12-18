@@ -21,6 +21,27 @@
                 <h4>Individual Inventory Record</h4>
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Students/InventoryRecord">PERSONAL INFORMATION</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/IndividualInventoryRecords/FamilyBackground">FAMILY BACKGROUND</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">EDUCATIONAL INFORMATION</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="#">WORK EXPERIENCE</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">RECORD OF PSYCHOLOGICAL TEST</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">HEALTH PROFILE</a>
+                    </li>
+                </ul>
+
                 <div class="panel panel-default">
                     <div class="panel-heading"><b>Personal Information</b></div>
                     <div class="panel-body">
@@ -107,8 +128,13 @@
                             <div class="controls form-inline">
                                 <div class="col-sm-3">
                                     @Html.Label("Birthdate")<br />
-                                    @Html.EditorFor(model => model.Birthdate, new { htmlAttributes = new { @class = "form-control", @placeholder = "MM/DD/YY", style = "min-width:100%;text-align:center" } })
-                                    @Html.ValidationMessageFor(model => model.Birthdate, "", new { @class = "text-danger" })
+                                    <div class="input-group" >
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        @Html.EditorFor(model => model.Birthdate, new { htmlAttributes = new { @class = "form-control", @placeholder = "MM/DD/YY", style = "min-width:100%;text-align:center" } })
+                                        @Html.ValidationMessageFor(model => model.Birthdate, "", new { @class = "text-danger" })
+                                    </div>
                                 </div>
                                 <div class="col-sm-3">
                                     @Html.Label("Birth place")<br />
@@ -201,15 +227,36 @@
                                             </div>
                                         </div>
                                     </div>
-
-
-
-                                        <br />
                                         <div class="controls form-inline">
                                             @Html.Label("Number of children: ")
                                             @Html.EditorFor(model => model.NumberOfChildren, new { htmlAttributes = new { @class = "form-control", @style = "width:45px;text-align:center" } })
                                             @Html.ValidationMessageFor(model => model.NumberOfChildren, "", new { @class = "text-danger" })
                                         </div>
+                                    <div class="form-group">
+                                        <div class="controls form-inline">
+                                            <div class="col-sm-8">
+                                                @Html.Label("Name of children/s")<br />
+                                                <input type="text" class="form-control" style="min-width:100%;text-align:center;background-color:#C0C0C0;" disabled><br /><br />
+                                                <input type="text" class="form-control" style="min-width:100%;text-align:center;background-color:#C0C0C0;" disabled><br /><br />
+                                                <input type="text" class="form-control" style="min-width:100%;text-align:center;background-color:#C0C0C0;" disabled>
+                                            </div>
+                                            <div class="col-sm-1">
+                                                @Html.Label("Age")<br />
+                                                <input type="text" class="form-control" style="text-align:center;background-color:#C0C0C0;width:80%;" disabled><br /><br />
+                                                <input type="text" class="form-control" style="text-align:center;background-color:#C0C0C0;width:80%;" disabled><br /><br />
+                                                <input type="text" class="form-control" style="text-align:center;background-color:#C0C0C0;width:80%;" disabled>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                @Html.Label("Educational Attainment")<br />
+                                                <input type="text" class="form-control" style="text-align:center;background-color:#C0C0C0;width:100%;" disabled><br /><br />
+                                                <input type="text" class="form-control" style="min-width:100%;text-align:center;background-color:#C0C0C0;" disabled><br /><br />
+                                                <input type="text" class="form-control" style="min-width:100%;text-align:center;background-color:#C0C0C0;" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
                                     </div>
                             </div>
 
