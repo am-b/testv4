@@ -14,6 +14,12 @@ namespace Testv3.Models
     
     public partial class Student
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Student()
+        {
+            this.IndividualInventoryRecords = new HashSet<IndividualInventoryRecord>();
+        }
+    
         public string UserID { get; set; }
         public string StudentID { get; set; }
         public string StudentLastName { get; set; }
@@ -45,5 +51,7 @@ namespace Testv3.Models
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual Course Course { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<IndividualInventoryRecord> IndividualInventoryRecords { get; set; }
     }
 }

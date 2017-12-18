@@ -35,5 +35,6 @@ namespace Testv3.Models
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<IndividualInventoryRecord> IndividualInventoryRecords { get; set; }
     }
 }

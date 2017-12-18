@@ -22,6 +22,8 @@
         <AssociationConnector Association="Testv3Model.FK__Student__UserID__778AC167" ManuallyRouted="false" />
         <AssociationConnector Association="Testv3Model.FK__Student__CourseI__76969D2E" ManuallyRouted="false" />
         <AssociationConnector Association="Testv3Model.AspNetUserRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="Testv3Model.IndividualInventoryRecord" Width="1.5" PointX="10.5" PointY="3.5" />
+        <AssociationConnector Association="Testv3Model.FK__Individua__UserI__07C12930" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
