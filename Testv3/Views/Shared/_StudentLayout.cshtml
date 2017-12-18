@@ -24,19 +24,20 @@
         <header class="main-header">
             <a class="logo" href='@Url.Action("Index", "Home")'><img src="~/Content/Images/logo.png" class="img-left" height="80" width="80" /></a>
             <nav class="navbar navbar-static-top" role="navigation">
+                <br />
                 <div class="navbar-custom-menu">
                     @Html.Partial("_LoginPartial")
                 </div>
             </nav>
         </header>
     <div class="body-content">
-        @RenderBody()
-        <hr />
-        <div class="pull-right hidden-xs">
-            Makati Medical Center College Guidance Office Student 
+            @RenderBody()
+            <hr />
+            <div class="pull-right hidden-xs">
+                Makati Medical Center College Guidance Office Student
+            </div>
+            <p>&copy; @DateTime.Now.Year TEAM BBL</p>
         </div>
-        <p>&copy; @DateTime.Now.Year TEAM BBL</p>
-    </div>
     
         
        

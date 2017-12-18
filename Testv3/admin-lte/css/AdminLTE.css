@@ -197,7 +197,7 @@ a:focus {
   margin-bottom: 0;
   margin-left: 230px;
   border: none;
-  min-height: 50px;
+  min-height: 0px;
   border-radius: 0;
 }
 .layout-top-nav .main-header .navbar {
@@ -224,7 +224,8 @@ a:focus {
 }
 .main-header .navbar-custom-menu,
 .main-header .navbar-right {
-  float: right;
+    float: right;
+    font-size:18px;
 }
 @media (max-width: 991px) {
   .main-header .navbar-custom-menu a,
@@ -285,7 +286,7 @@ a:focus {
   transition: width 0.3s ease-in-out;
   display: block;
   float: left;
-  height: 50px;
+  height: 80px;
   font-size: 20px;
   line-height: 50px;
   text-align: center;
@@ -1140,8 +1141,8 @@ a:focus {
 }
 .navbar-nav > .user-menu .user-image {
   float: left;
-  width: 25px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   margin-right: 10px;
   margin-top: -2px;
