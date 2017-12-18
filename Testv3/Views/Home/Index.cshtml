@@ -9,6 +9,7 @@
 <p class="title3">@ViewBag.Message</p>
 
 <div class="jumbotron">
+    <div class="body-content">
     <h2>Announcements</h2>
     <table class="table">
         <tr>
@@ -43,6 +44,7 @@
  
         Showing page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
         @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+        </div>
 </div>
 
 <div class="row">

@@ -7,7 +7,8 @@
     <br /><br /><br /><br />
         <div class="row">
             <div class="col-lg-offset-4 col-lg-4">
-                <h3>Log in to MMCC Guidance IS</h3>
+                @*<p align="center"><img src="~/Content/Images/logo.png" class="img-center" height="80" width="80" /></p>*@
+                <h3><img src="~/Content/Images/logo.png" class="img-center" height="70" width="70" /> Log in to MMCC Guidance IS</h3>
                 <section id="loginForm">
                     @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                     {
