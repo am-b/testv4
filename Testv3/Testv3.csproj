@@ -204,6 +204,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\StudentDropdownsController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
+    <Compile Include="Controllers\ViewModelController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -229,18 +230,15 @@
     <Compile Include="Models\Course.cs">
       <DependentUpon>Testv3.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\C__MigrationHistory.cs">
+    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\IndividualInventoryRecord.cs">
       <DependentUpon>Testv3.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Student.cs">
       <DependentUpon>Testv3.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\StudentDropdown.cs" />
-    <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>Testv3.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Testv3.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -256,6 +254,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Testv3.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\TestViewModel.cs" />
     <Compile Include="Models\UserRolesDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -2063,13 +2062,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Images\Thumbs.db" />
-    <EntityDeploy Include="Models\Testv3.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Testv3.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\Testv3.edmx.diagram">
-      <DependentUpon>Testv3.edmx</DependentUpon>
-    </Content>
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\fontawesome-webfont.woff" />
@@ -2253,6 +2245,13 @@
     <Content Include="admin-lte\bower_components\jquery\external\sizzle\dist\sizzle.min.map" />
     <Content Include="admin-lte\bower_components\jquery\README.md" />
     <Content Include="admin-lte\bower_components\jquery\src\.eslintrc.json" />
+    <EntityDeploy Include="Models\Testv3.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Testv3.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Testv3.edmx.diagram">
+      <DependentUpon>Testv3.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
@@ -2314,6 +2313,9 @@
     <Content Include="Views\Students\InventoryRecord.cshtml" />
     <Content Include="Views\Shared\_StudentLayout.cshtml" />
     <Content Include="Views\Shared\_DefaultLayout.cshtml" />
+    <Content Include="Views\Students\FamilyBackground.cshtml" />
+    <Content Include="Views\ViewModel\IndividualRecord.cshtml" />
+    <Content Include="Views\ViewModel\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
