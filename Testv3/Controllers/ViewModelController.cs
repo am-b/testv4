@@ -13,13 +13,17 @@ using Testv3.Models;
 namespace Testv3.Controllers
 {
     [Authorize(Roles = "Student")]
-    public class ViewModelController : Controller
+    public class ViewModelController : HomeController
     {
         private Testv3Entities db = new Testv3Entities();
+        
+
         // GET: ViewModel
         public ActionResult Index()
         {
             Testv3Entities ctx = new Testv3Entities();
+            
+            GetCurrentUserInViewBag();
 
             List<TestViewModel> StudentInventorylist = new List<TestViewModel>();
 
@@ -45,6 +49,7 @@ namespace Testv3.Controllers
         //GET: IndividualRecord
         public ActionResult IndividualRecord()
         {
+            GetCurrentUserInViewBag();
             var currentUserId = User.Identity.GetUserId();
             var newid = db.Students.FirstOrDefault(d => d.UserID == currentUserId);
 
@@ -116,7 +121,22 @@ namespace Testv3.Controllers
                 FathersAge = inventory.FathersAge,
                 FathersEducationalAttainment = inventory.FathersEducationalAttainment,
                 FathersOccupation = inventory.FathersOccupation,
-                FathersEmployerAddress = inventory.FathersEmployerAddress
+                FathersEmployerAddress = inventory.FathersEmployerAddress,
+                MothersName = inventory.MothersName,
+                MothersAddress = inventory.MothersAddress,
+                MothersAge = inventory.MothersAge,
+                MothersEducationalAttainment = inventory.MothersEducationalAttainment,
+                MothersOccupation = inventory.MothersOccupation,
+                MothersEmployerAddress = inventory.MothersEmployerAddress,
+                FamilyDwelling = inventory.FamilyDwelling,
+                EmergencyContactName = inventory.EmergencyContactName,
+                EmergencyContactNumber = inventory.EmergencyContactNumber,
+                ParentsStatus = inventory.ParentsStatus,
+                EconomicStatus = inventory.EconomicStatus,
+                NoOfBrothers = inventory.NoOfBrothers,
+                NoOfSisters = inventory.NoOfSisters,
+                PresentlyLivingWith = inventory.PresentlyLivingWith,
+                PresentlyStayingAt = inventory.PresentlyStayingAt,
 
             };
 
@@ -129,6 +149,7 @@ namespace Testv3.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult IndividualRecord(TestViewModel vm)
         {
+            GetCurrentUserInViewBag();
             var currentUserId = User.Identity.GetUserId();
             var userName = User.Identity.GetUserName();
             var u = db.Students.FirstOrDefault(d => d.UserID == currentUserId);

@@ -12,13 +12,14 @@ using Testv3.Models;
 namespace Testv3.Controllers
 {
     [Authorize(Roles = "Student")]
-    public class StudentsController : Controller
+    public class StudentsController : HomeController
     {
         private Testv3Entities db = new Testv3Entities();
 
         // GET: Students/CreateEdit
         public ActionResult InventoryRecord()
         {
+            GetCurrentUserInViewBag();
             var currentUserId = User.Identity.GetUserId();
             var newid = db.Students.FirstOrDefault(d => d.UserID == currentUserId);
 
@@ -44,7 +45,7 @@ namespace Testv3.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult InventoryRecord(Student student)
         {
-
+            GetCurrentUserInViewBag();
             var currentUserId = User.Identity.GetUserId();
             var userName = User.Identity.GetUserName();
             var u = db.Students.FirstOrDefault(d => d.UserID == currentUserId);

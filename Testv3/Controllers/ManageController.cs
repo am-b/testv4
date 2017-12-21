@@ -11,7 +11,7 @@ using Testv3.Models;
 namespace Testv3.Controllers
 {
     [Authorize]
-    public class ManageController : Controller
+    public class ManageController : HomeController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -217,6 +217,7 @@ namespace Testv3.Controllers
         // GET: /Manage/ChangePassword
         public ActionResult ChangePassword()
         {
+            GetCurrentUserInViewBag();
             return View();
         }
 
@@ -226,6 +227,7 @@ namespace Testv3.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
+            GetCurrentUserInViewBag();
             if (!ModelState.IsValid)
             {
                 return View(model);

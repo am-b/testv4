@@ -11,19 +11,21 @@ using Testv3.Models;
 namespace Testv3.Controllers
 {
     [Authorize(Roles = "Administrator")]
-    public class AnnouncementsController : Controller
+    public class AnnouncementsController : HomeController
     {
         private Testv3Entities db = new Testv3Entities();
 
         // GET: Announcements
         public ActionResult Index()
         {
+            GetCurrentUserInViewBag();
             return View(db.Announcements.ToList());
         }
 
         // GET: Announcements/Details/5
         public ActionResult Details(int? id)
         {
+            GetCurrentUserInViewBag();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -39,6 +41,7 @@ namespace Testv3.Controllers
         // GET: Announcements/Create
         public ActionResult Create()
         {
+            GetCurrentUserInViewBag();
             return View();
         }
 
@@ -47,6 +50,7 @@ namespace Testv3.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "AnnouncementID,AnnouncementDate,AnnouncementTitle,AnnouncementBody")] Announcement announcement)
         {
+            GetCurrentUserInViewBag();
             if (ModelState.IsValid)
             {
                 //var datePosted = db.Announcements.Create();
@@ -65,6 +69,7 @@ namespace Testv3.Controllers
         // GET: Announcements/Edit/5
         public ActionResult Edit(int? id)
         {
+            GetCurrentUserInViewBag();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -82,6 +87,7 @@ namespace Testv3.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "AnnouncementID,AnnouncementDate,AnnouncementTitle,AnnouncementBody")] Announcement announcement)
         {
+            GetCurrentUserInViewBag();
             if (ModelState.IsValid)
             {
                 db.Entry(announcement).State = EntityState.Modified;
@@ -94,6 +100,7 @@ namespace Testv3.Controllers
         // GET: Announcements/Delete/5
         public ActionResult Delete(int? id)
         {
+            GetCurrentUserInViewBag();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -111,6 +118,7 @@ namespace Testv3.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            GetCurrentUserInViewBag();
             Announcement announcement = db.Announcements.Find(id);
             db.Announcements.Remove(announcement);
             db.SaveChanges();

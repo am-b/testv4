@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 namespace Testv3.Controllers
 {
     [Authorize(Roles = "Administrator")]
-    public class AdminController : Controller
+    public class AdminController : HomeController
     {
         private Testv3Entities db = new Testv3Entities();
         private ApplicationUserManager _userManager;
@@ -58,6 +58,7 @@ namespace Testv3.Controllers
         #region public ActionResult Index(string searchStringUserNameOrEmail)
         public ActionResult Index(string searchStringUserNameOrEmail, string currentFilter, int? page)
         {
+            GetCurrentUserInViewBag();
             try
             {
                 int intPage = 1;
@@ -134,6 +135,7 @@ namespace Testv3.Controllers
         #region public ActionResult Create()
         public ActionResult Create()
         {
+            GetCurrentUserInViewBag();
             ExpandedUserDTO objExpandedUserDTO = new ExpandedUserDTO();
             ViewBag.Roles = GetAllRolesAsSelectList();
 
@@ -149,6 +151,7 @@ namespace Testv3.Controllers
         public ActionResult Create(ExpandedUserDTO paramExpandedUserDTO)
         //public ActionResult Create(ExpandedUserDTO paramExpandedUserDTO, Contact paramContact)
         {
+            GetCurrentUserInViewBag();
             try
             {
                 if (paramExpandedUserDTO == null)
@@ -245,6 +248,7 @@ namespace Testv3.Controllers
         [Authorize(Roles = "Administrator")]
         public ActionResult EditUser(string UserName)
         {
+            GetCurrentUserInViewBag();
             ExpandedUserDTO objExpandedUserDTO = GetUser(UserName);
             ApplicationUser appUser = new ApplicationUser();
             appUser = UserManager.FindByEmail(UserName);
@@ -262,6 +266,7 @@ namespace Testv3.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> EditUser(ExpandedUserDTO model)
         {
+            GetCurrentUserInViewBag();
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -300,6 +305,7 @@ namespace Testv3.Controllers
         #region public ActionResult DeleteUser(string UserName)
         public ActionResult DeleteUser(string UserName)
         {
+            GetCurrentUserInViewBag();
             try
             {
                 if (UserName == null)
@@ -342,6 +348,7 @@ namespace Testv3.Controllers
         #region ActionResult EditRoles(string UserName)
         public ActionResult EditRoles(string UserName)
         {
+            GetCurrentUserInViewBag();
             if (UserName == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -371,6 +378,7 @@ namespace Testv3.Controllers
         #region public ActionResult EditRoles(UserAndRolesDTO paramUserAndRolesDTO)
         public ActionResult EditRoles(UserAndRolesDTO paramUserAndRolesDTO)
         {
+            GetCurrentUserInViewBag();
             try
             {
                 if (paramUserAndRolesDTO == null)
@@ -410,6 +418,7 @@ namespace Testv3.Controllers
         #region public ActionResult DeleteRole(string UserName, string RoleName)
         public ActionResult DeleteRole(string UserName, string RoleName)
         {
+            GetCurrentUserInViewBag();
             try
             {
                 if ((UserName == null) || (RoleName == null))
@@ -465,6 +474,7 @@ namespace Testv3.Controllers
         #region public ActionResult ViewAllRoles()
         public ActionResult ViewAllRoles()
         {
+            GetCurrentUserInViewBag();
             var roleManager =
                 new RoleManager<IdentityRole>
                 (
@@ -487,6 +497,7 @@ namespace Testv3.Controllers
         #region public ActionResult AddRole()
         public ActionResult AddRole()
         {
+            GetCurrentUserInViewBag();
             RoleDTO objRoleDTO = new RoleDTO();
 
             return View(objRoleDTO);
@@ -500,6 +511,7 @@ namespace Testv3.Controllers
         #region public ActionResult AddRole(RoleDTO paramRoleDTO)
         public ActionResult AddRole(RoleDTO paramRoleDTO)
         {
+            GetCurrentUserInViewBag();
             try
             {
                 if (paramRoleDTO == null)
@@ -540,6 +552,7 @@ namespace Testv3.Controllers
         #region public ActionResult DeleteUserRole(string RoleName)
         public ActionResult DeleteUserRole(string RoleName)
         {
+            GetCurrentUserInViewBag();
             try
             {
                 if (RoleName == null)

@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNet.Identity
+﻿
 
 @if (Request.IsAuthenticated)
 {
@@ -6,16 +6,6 @@
     {
     @Html.AntiForgeryToken()
 
-    @*<ul class="nav navbar-nav navbar-right">
-        <li>
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Settings<span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-                @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-                <li>@Html.ActionLink("Change password", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })</li>
-            </ul>
-        </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-    </ul>*@
         <ul class="nav navbar-nav">
             <li class="dropdown user user-menu">
                 <!-- Menu Toggle Button -->
@@ -23,15 +13,15 @@
                     <!-- The user image in the navbar-->
                     <img src="~/admin-lte/dist/img/avatar2.png" class="user-image" alt="User Image">
                     <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                    <span class="hidden-xs">Alyssa Bala</span>
+                    <span class="hidden-xs">@ViewBag.CurrentUser</span>
                 </a>
                 <ul class="dropdown-menu">
                     <!-- The user image in the menu -->
                     <li class="user-header">
                         <img src="~/admin-lte/dist/img/avatar2.png" class="img-circle" alt="User Image">
                         <p>
-                            Alyssa Bala
-                            <small>BSIT 2013111898</small>
+                            @ViewBag.CurrentUser
+                            <small>BSIT @ViewBag.CurrentUserStudentID</small>
                         </p>
                     </li>
                     <li class="user-footer">
