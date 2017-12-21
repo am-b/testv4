@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Testv3.Models.TestViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.StudentFirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StudentMiddleName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FathersName)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentFirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentMiddleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FathersName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.StudentLastName }) |
+                @Html.ActionLink("Details", "Details", new { id = item.StudentLastName }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.StudentLastName })
+            </td>
+        </tr>
+    }
+
+</table>
