@@ -24,79 +24,68 @@
         <header class="main-header">
             <a class="logo" href='@Url.Action("Index", "Home")'><img src="~/Content/Images/logo.png" class="img-left" height="80" width="80" /></a>
             <nav class="navbar navbar-static-top" role="navigation">
-                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button" data-target=".navbar-collapse">
-                    @*href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">*@
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
                     <span class="sr-only">Toggle navigation</span>
-                    @*<span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>*@
                 </a>
-                
-                <br />
-                
-                    <div class="navbar-custom-menu">
-                        @Html.Partial("_LoginPartial")
-                    </div>
-                
+                <div class="navbar-custom-menu">
+                    @Html.Partial("_LoginPartial")
+                </div>
             </nav>
         </header>
         @if (User.IsInRole("Administrator"))
         {
-            <div class="navbar-collapse collapse" id="#.navbar-collapse">
-                <aside class="main-sidebar">
-                    <section class="sidebar">
-                        <ul class="sidebar-menu" data-widget="tree">
-                            <li class="header">You are logged in as </li>
-                            <li>@Html.ActionLink("Create Announcements", "Index", "Announcements")</li>
-                            <li>
-                                <a data-toggle="collapse" data-target="#records" class="collapsed" href="#">Manage Records<span class="caret"></span></a>
-                                <ul class="treeview-menu collapse" id="records">
-                                    <li>@Html.ActionLink("Add records", "ManageRecords", "Home")</li>
-                                    <li>@Html.ActionLink("Counselling Feedback", "ManageRecords", "Home")</li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a data-toggle="collapse" data-target="#Appointments" class="collapsed" href="#">Appointments<span class="caret"></span></a>
-                                <ul class="treeview-menu collapse" id="Appointments">
-                                    <li>@Html.ActionLink("Manage Appointments", "Appointments", "Home")</li>
-                                    <li>@Html.ActionLink("Pending Appointments", "Appointments", "Home")</li>
-                                </ul>
-                            </li>
-                            <li>@Html.ActionLink("Reports", "Reports", "Home")</li>
-                            <li>@Html.ActionLink("Manage User Accounts", "Index", "Admin")</li>
+            <aside class="main-sidebar">
+                <section class="sidebar">
+                    <ul class="sidebar-menu" data-widget="tree">
+                        <li class="header">You are logged in as </li>
+                        <li>@Html.ActionLink("Create Announcements", "Index", "Announcements")</li>
+                        <li>
+                            <a data-toggle="collapse" data-target="#records" class="collapsed" href="#">Manage Records<span class="caret"></span></a>
+                            <ul class="treeview-menu collapse" id="records">
+                                <li>@Html.ActionLink("Add records", "ManageRecords", "Home")</li>
+                                <li>@Html.ActionLink("Counselling Feedback", "ManageRecords", "Home")</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a data-toggle="collapse" data-target="#Appointments" class="collapsed" href="#">Appointments<span class="caret"></span></a>
+                            <ul class="treeview-menu collapse" id="Appointments">
+                                <li>@Html.ActionLink("Manage Appointments", "Appointments", "Home")</li>
+                                <li>@Html.ActionLink("Pending Appointments", "Appointments", "Home")</li>
+                            </ul>
+                        </li>
+                        <li>@Html.ActionLink("Reports", "Reports", "Home")</li>
+                        <li>@Html.ActionLink("Manage User Accounts", "Index", "Admin")</li>
 
-                        </ul>
-
-                    </section>
-                </aside>
-            </div>
-                }
-                <div class="content-wrapper">
-                    <section class="content container-fluid">
-                        @RenderBody()
-                    </section>
-                </div>
-                <footer class="main-footer">
-                    <div class="pull-right hidden-xs">
-                        Makati Medical Center College Guidance Office
-                    </div>
-                    <p>&copy; @DateTime.Now.Year TEAM BBL</p>
-                </footer>
-                <aside class="control-sidebar control-sidebar-dark">
-                    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-                        <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-                        <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
                     </ul>
-                </aside>
-                <div class="control-sidebar-bg"></div>
+
+                </section>
+            </aside>
+        }
+        <div class="content-wrapper">
+            <section class="content container-fluid">
+                @RenderBody()
+            </section>
+        </div>
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                Makati Medical Center College Guidance Office
             </div>
+            <p>&copy; @DateTime.Now.Year TEAM BBL</p>
+        </footer>
+        <aside class="control-sidebar control-sidebar-dark">
+            <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+                <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+                <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+            </ul>
+        </aside>
+        <div class="control-sidebar-bg"></div>
+    </div>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="dist/js/adminlte.min.js"></script>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/admin-lte/js")
-    @Scripts.Render("~/admin-lte/bower_components/jquery-slimscroll/jquery.slimscroll.min.js")
     @RenderSection("scripts", required: false)
 </body>
 </html> 
