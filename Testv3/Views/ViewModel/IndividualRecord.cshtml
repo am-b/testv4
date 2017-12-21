@@ -47,14 +47,15 @@
                 </div>
                 <!-- End Nav tabs -->
 
-                <div class="tab-content card">
+                <div class="tab-content clearfix">
                     @*Start #panelPersonalInformation*@
-                    <div class="tab-pane fade in show active" id="PersonalInformation" role="tabpanel">
+                    <div class="tab-pane active" id="PersonalInformation">
                         <div class="panel panel-default">
                             @*<div class="panel-heading"><b>Personal Information</b></div>*@
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="controls form-inline">
+                                        <br />
                                         <div class="col-sm-4">
                                             <label for="Studentname">First Name</label><br />
                                             @Html.EditorFor(model => model.StudentFirstName, new { htmlAttributes = new { @placeholder = "First name", @style = "min-width:100%;text-align:center", @class = "form-control", @type = "text", @readonly = "readonly" } })
@@ -269,10 +270,11 @@
                     @*End #panelPersonalInformation*@
 
                     @*Start #panelFamilyBackground*@
-                    <div class="tab-pane fade in show active" id="FamilyBackground" role="tabpanel">
+                    <div class="tab-pane" id="FamilyBackground">
                         <div class="panel panel-default">
-                                @*<div class="panel-heading"><b>Family Background</b></div>*@
+                            @*<div class="panel-heading"><b>Family Background</b></div>*@
                             <div class="panel-body">
+                                <br />
                                 <!-- Father's -->
                                 <div class="form-group">
                                     <div class="controls form-inline">
@@ -309,7 +311,6 @@
                                     </div>
                                 </div>
                                 <!-- End Father's -->
-                                
                                 <!-- Mother's -->
                                 <div class="form-group">
                                     <div class="controls form-inline">

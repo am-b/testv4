@@ -2314,6 +2314,7 @@
     <Content Include="Views\Shared\_DefaultLayout.cshtml" />
     <Content Include="Views\ViewModel\IndividualRecord.cshtml" />
     <Content Include="Views\ViewModel\Index.cshtml" />
+    <Content Include="Views\ViewModel\View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
