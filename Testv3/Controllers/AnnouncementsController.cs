@@ -13,7 +13,7 @@ namespace Testv3.Controllers
     [Authorize(Roles = "Administrator")]
     public class AnnouncementsController : Controller
     {
-        private Testv2Entities db = new Testv2Entities();
+        private Testv3Entities db = new Testv3Entities();
 
         // GET: Announcements
         public ActionResult Index()

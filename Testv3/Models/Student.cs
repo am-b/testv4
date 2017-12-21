@@ -46,7 +46,7 @@ namespace Testv3.Models
         public string SpouseAge { get; set; }
         public string SpouseEducationalAttainment { get; set; }
         public string Occupation { get; set; }
-        public string EmployerAddress { get; set; }
+        public string StudentEmployerAddress { get; set; }
         public string NumberOfChildren { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }

@@ -13,7 +13,7 @@ namespace Testv3.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        private Testv2Entities db = new Testv2Entities();
+        private Testv3Entities db = new Testv3Entities();
 
         public ActionResult Index(int page = 1, int recordsPerPage = 5)
         {

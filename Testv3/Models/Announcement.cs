@@ -18,5 +18,6 @@ namespace Testv3.Models
         public Nullable<System.DateTime> AnnouncementDate { get; set; }
         public string AnnouncementTitle { get; set; }
         public string AnnouncementBody { get; set; }
+        public string PostedBy { get; set; }
     }
 }

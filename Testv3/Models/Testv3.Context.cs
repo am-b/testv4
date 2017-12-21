@@ -13,10 +13,10 @@ namespace Testv3.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class Testv2Entities : DbContext
+    public partial class Testv3Entities : DbContext
     {
-        public Testv2Entities()
-            : base("name=Testv2Entities")
+        public Testv3Entities()
+            : base("name=Testv3Entities")
         {
         }
     
@@ -25,7 +25,6 @@ namespace Testv3.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
         public virtual DbSet<Announcement> Announcements { get; set; }
         public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
@@ -33,8 +32,7 @@ namespace Testv3.Models
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<Counsellor> Counsellors { get; set; }
         public virtual DbSet<Course> Courses { get; set; }
-        public virtual DbSet<Student> Students { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<IndividualInventoryRecord> IndividualInventoryRecords { get; set; }
+        public virtual DbSet<Student> Students { get; set; }
     }
 }

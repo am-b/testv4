@@ -20,7 +20,7 @@ namespace Testv3.Controllers
     [Authorize(Roles = "Administrator")]
     public class AdminController : Controller
     {
-        private Testv2Entities db = new Testv2Entities();
+        private Testv3Entities db = new Testv3Entities();
         private ApplicationUserManager _userManager;
         private ApplicationRoleManager _roleManager;
 
@@ -200,13 +200,13 @@ namespace Testv3.Controllers
                                 newid.UserID = objNewAdminUser.Id;
                                 newid.StudentEmail = objNewAdminUser.Email;
                                 db.Students.Add(newid);
-                                
+
                                 db.SaveChanges();
                             }
                         }
 
                         //Put user in counselor table
-                        if (strNewRole == "Guidance")
+                        if (strNewRole == "Counselor")
                         {
 
                             var newid = db.Counsellors.FirstOrDefault(d => d.UserID == objNewAdminUser.Id);

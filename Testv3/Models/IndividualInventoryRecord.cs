@@ -14,9 +14,7 @@ namespace Testv3.Models
     
     public partial class IndividualInventoryRecord
     {
-        public string Prefix { get; set; }
-        public int ID { get; set; }
-        public string RecordID { get; set; }
+        public int RecordID { get; set; }
         public string UserID { get; set; }
         public string FathersName { get; set; }
         public string FathersAddress { get; set; }
