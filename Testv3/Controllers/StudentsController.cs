@@ -21,20 +21,12 @@ namespace Testv3.Controllers
         {
             var currentUserId = User.Identity.GetUserId();
             var newid = db.Students.FirstOrDefault(d => d.UserID == currentUserId);
-            //var newidInventory = db.IndividualInventoryRecords.FirstOrDefault(d => d.UserID == currentUserId);
 
             if (newid == null)
             {
                 newid = db.Students.Create();
                 newid.UserID = currentUserId;
                 db.Students.Add(newid);
-
-                //if (newidInventory == null)
-                //{
-                //    newidInventory = db.IndividualInventoryRecords.Create();
-                //    newidInventory.UserID = currentUserId;
-                //    db.IndividualInventoryRecords.Add(newidInventory);
-                //}
 
             }
 
@@ -56,7 +48,6 @@ namespace Testv3.Controllers
             var currentUserId = User.Identity.GetUserId();
             var userName = User.Identity.GetUserName();
             var u = db.Students.FirstOrDefault(d => d.UserID == currentUserId);
-            //var user = db.IndividualInventoryRecords.FirstOrDefault(d => d.UserID == currentUserId);
 
             if (u == null)
             {
@@ -64,12 +55,6 @@ namespace Testv3.Controllers
                 u.UserID = currentUserId;
                 db.Students.Add(u);
 
-                //if (user == null) // inventory table
-                //{
-                //    user = db.IndividualInventoryRecords.Create();
-                //    user.UserID = currentUserId;
-                //    db.IndividualInventoryRecords.Add(user);
-                //}
             }
 
             if (ModelState.IsValid)
@@ -124,63 +109,6 @@ namespace Testv3.Controllers
 
             return View(student);
         }
-
-        // GET: Students/FamilyBackground
-        public ActionResult FamilyBackground()
-        {
-            var currentUserId = User.Identity.GetUserId();
-            var newidInventory = db.IndividualInventoryRecords.FirstOrDefault(d => d.UserID == currentUserId);
-
-
-
-            if (newidInventory == null)
-            {
-                newidInventory = db.IndividualInventoryRecords.Create();
-                newidInventory.UserID = currentUserId;
-                db.IndividualInventoryRecords.Add(newidInventory);
-            }
-
-
-
-            IndividualInventoryRecord inventory = db.IndividualInventoryRecords.Find(newidInventory.UserID);
-            if (inventory == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View(inventory);
-        }
-
-        // POST: Students/FamilyBackground
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult FamilyBackground(IndividualInventoryRecord inventory)
-        {
-
-            var currentUserId = User.Identity.GetUserId();
-            var userName = User.Identity.GetUserName();
-            var user = db.IndividualInventoryRecords.FirstOrDefault(d => d.UserID == currentUserId);
-
-            if (user == null)
-            {
-                user = db.IndividualInventoryRecords.Create();
-                user.UserID = currentUserId;
-                db.IndividualInventoryRecords.Add(user);
-            }
-
-
-            if (ModelState.IsValid)
-            {
-                user.FathersName = inventory.FathersName;
-
-                db.SaveChanges();
-
-                TempData["Message"] = "User: " + userName + ", details successfully updated!";
-            }
-
-            return View(inventory);
-        }
-
 
         //
         private IEnumerable<string> GetAllCivilStatus()
