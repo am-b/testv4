@@ -3,55 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Testv3.Models
 {
     public class TestViewModel
 
     {
-        //public class Student
-        //{
-        //    public string UserID { get; set; }
-        //    public string StudentID { get; set; }
-        //    public string StudentLastName { get; set; }
-        //    public string StudentFirstName { get; set; }
-        //    public string StudentMiddleName { get; set; }
-        //    public string StudentEmail { get; set; }
-        //    public Nullable<int> CourseID { get; set; }
-        //    public string Address { get; set; }
-        //    public string Sex { get; set; }
-        //    public string Civil_Status__CivilStatus { get; set; }
-        //    public string Religion { get; set; }
-        //    public string Nationality { get; set; }
-        //    public Nullable<System.DateTime> Birthdate { get; set; }
-        //    public string PhoneNumber { get; set; }
-        //    public string Birthplace { get; set; }
-        //    public string Dialect { get; set; }
-        //    public string Hobbies { get; set; }
-        //    public string BirthRank { get; set; }
-        //    public string DistanceFromSchool { get; set; }
-        //    public string Scholarship { get; set; }
-        //    public Nullable<System.DateTime> DateOfMarriage { get; set; }
-        //    public string PlaceOfMarriage { get; set; }
-        //    public string SpouseName { get; set; }
-        //    public string SpouseAge { get; set; }
-        //    public string SpouseEducationalAttainment { get; set; }
-        //    public string Occupation { get; set; }
-        //    public string EmployerAddress { get; set; }
-        //    public string NumberOfChildren { get; set; }
-        //}
-
-        //public class IndividualInventoryRecord
-        //{
-        //    public string FathersName { get; set; }
-        //    public string FathersAddress { get; set; }
-        //    public string FathersAge { get; set; }
-        //    public string FathersEducationalAttainment { get; set; }
-        //    public string FathersOccupation { get; set; }
-        //    public string FathersEmployerAddress { get; set; }
-        //}
-
-        //[Key]
         public string UserID { get; set; }
         public string StudentLastName { get; set; }
         public string StudentFirstName { get; set; }
@@ -62,8 +20,13 @@ namespace Testv3.Models
         public string Address { get; set; }
         [Required]
         public string Sex { get; set; }
+        //[Required]
+        //public IEnumerable<SelectListItem> Sexx { get; set; }
         [Required]
         public string Civil_Status__CivilStatus { get; set; }
+        //[Required]
+        //public IEnumerable<SelectListItem> Civil_Status__CivilStatuss { get; set; }
+
         public string Religion { get; set; }
         public string Nationality { get; set; }
         public Nullable<System.DateTime> Birthdate { get; set; }
@@ -104,6 +67,7 @@ namespace Testv3.Models
         public string NoOfSiblings { get; set; }
         public string PresentlyLivingWith { get; set; }
         public string PresentlyStayingAt { get; set; }
+
         public string ElementarySchool { get; set; }
         public string ElementaryAddress { get; set; }
         public string YearsAttendedElem { get; set; }
@@ -123,11 +87,13 @@ namespace Testv3.Models
         public string CoursePersonalChoice { get; set; }
         public string WhyMMCC { get; set; }
         public string ReferredToMMCCBy { get; set; }
+
         public string Position { get; set; }
         public string Salary { get; set; }
         public string Employer { get; set; }
         public string EmployerAddress { get; set; }
         public string EmploymentStatus { get; set; }
+
         public string MentalAbilityTestDate { get; set; }
         public string MentalAbilityTestScore { get; set; }
         public string MentalAbilityTestPercentile { get; set; }
@@ -137,6 +103,7 @@ namespace Testv3.Models
         public string VocationalTestDate { get; set; }
         public string VocationalTestScore { get; set; }
         public string VocationalTestPercentile { get; set; }
+
         public string Disabilities { get; set; }
         public string ChronicIllness { get; set; }
         public string PreviousAccidents { get; set; }
@@ -152,6 +119,7 @@ namespace Testv3.Models
         public string HaveTalkedWithAPsychologist { get; set; }
         public string HaveTalkedWithAPsychologistWhen { get; set; }
         public string HaveTalkedWithAPsychologistWhy { get; set; }
+
         public string AboutYourself { get; set; }
     }
 }

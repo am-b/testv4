@@ -266,6 +266,11 @@ namespace Testv3.Controllers
 
                 TempData["Message"] = "User: " + userName + ", details successfully updated!";
             }
+            else
+            {
+                TempData["Error"] = "Error: Details not updated!";
+            }
+
 
 
             return View(vm);
