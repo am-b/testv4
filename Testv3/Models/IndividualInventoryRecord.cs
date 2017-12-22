@@ -33,8 +33,6 @@ namespace Testv3.Models
         public string EmergencyContactNumber { get; set; }
         public string ParentsStatus { get; set; }
         public string EconomicStatus { get; set; }
-        public string NoOfBrothers { get; set; }
-        public string NoOfSisters { get; set; }
         public string PresentlyLivingWith { get; set; }
         public string PresentlyStayingAt { get; set; }
         public string ElementarySchool { get; set; }
@@ -86,6 +84,7 @@ namespace Testv3.Models
         public string HaveTalkedWithAPsychologistWhen { get; set; }
         public string HaveTalkedWithAPsychologistWhy { get; set; }
         public string AboutYourself { get; set; }
+        public string NoOfSiblings { get; set; }
     
         public virtual Student Student { get; set; }
     }

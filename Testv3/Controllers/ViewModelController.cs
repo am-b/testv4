@@ -133,8 +133,7 @@ namespace Testv3.Controllers
                 EmergencyContactNumber = inventory.EmergencyContactNumber,
                 ParentsStatus = inventory.ParentsStatus,
                 EconomicStatus = inventory.EconomicStatus,
-                NoOfBrothers = inventory.NoOfBrothers,
-                NoOfSisters = inventory.NoOfSisters,
+                NoOfSiblings = inventory.NoOfSiblings,
                 PresentlyLivingWith = inventory.PresentlyLivingWith,
                 PresentlyStayingAt = inventory.PresentlyStayingAt,
 
@@ -210,8 +209,7 @@ namespace Testv3.Controllers
                 userInv.EmergencyContactNumber = vm.EmergencyContactNumber;
                 userInv.ParentsStatus = vm.ParentsStatus;
                 userInv.EconomicStatus = vm.EconomicStatus;
-                userInv.NoOfBrothers = vm.NoOfBrothers;
-                userInv.NoOfSisters = vm.NoOfSisters;
+                userInv.NoOfSiblings = vm.NoOfSiblings;
                 userInv.PresentlyLivingWith = vm.PresentlyLivingWith;
                 userInv.PresentlyStayingAt = vm.PresentlyStayingAt;
                 userInv.ElementarySchool = vm.ElementarySchool;

@@ -60,7 +60,9 @@ namespace Testv3.Models
         public string StudentEmail { get; set; }
         public Nullable<int> CourseID { get; set; }
         public string Address { get; set; }
+        [Required]
         public string Sex { get; set; }
+        [Required]
         public string Civil_Status__CivilStatus { get; set; }
         public string Religion { get; set; }
         public string Nationality { get; set; }
@@ -71,6 +73,7 @@ namespace Testv3.Models
         public string Hobbies { get; set; }
         public string BirthRank { get; set; }
         public string DistanceFromSchool { get; set; }
+        [Required]
         public string Scholarship { get; set; }
         public Nullable<System.DateTime> DateOfMarriage { get; set; }
         public string PlaceOfMarriage { get; set; }
@@ -98,8 +101,7 @@ namespace Testv3.Models
         public string EmergencyContactNumber { get; set; }
         public string ParentsStatus { get; set; }
         public string EconomicStatus { get; set; }
-        public string NoOfBrothers { get; set; }
-        public string NoOfSisters { get; set; }
+        public string NoOfSiblings { get; set; }
         public string PresentlyLivingWith { get; set; }
         public string PresentlyStayingAt { get; set; }
         public string ElementarySchool { get; set; }

@@ -108,8 +108,7 @@
           <Property Name="EmergencyContactNumber" Type="nvarchar" MaxLength="250" />
           <Property Name="ParentsStatus" Type="nvarchar" MaxLength="250" />
           <Property Name="EconomicStatus" Type="nvarchar" MaxLength="250" />
-          <Property Name="NoOfBrothers" Type="nvarchar" MaxLength="3" />
-          <Property Name="NoOfSisters" Type="nvarchar" MaxLength="3" />
+          <Property Name="NoOfSiblings" Type="nvarchar" MaxLength="3" />
           <Property Name="PresentlyLivingWith" Type="nvarchar" MaxLength="250" />
           <Property Name="PresentlyStayingAt" Type="nvarchar" MaxLength="250" />
           <Property Name="ElementarySchool" Type="nvarchar" MaxLength="250" />
@@ -221,7 +220,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Individua__UserI__4316F928">
+        <Association Name="FK__Individua__UserI__45F365D3">
           <End Role="Student" Type="Self.Student" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -336,7 +335,7 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Counsellor" EntitySet="Counsellor" />
           </AssociationSet>
-          <AssociationSet Name="FK__Individua__UserI__4316F928" Association="Self.FK__Individua__UserI__4316F928">
+          <AssociationSet Name="FK__Individua__UserI__45F365D3" Association="Self.FK__Individua__UserI__45F365D3">
             <End Role="Student" EntitySet="Student" />
             <End Role="IndividualInventoryRecord" EntitySet="IndividualInventoryRecord" />
           </AssociationSet>
@@ -518,8 +517,6 @@
           <Property Name="EmergencyContactNumber" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="ParentsStatus" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="EconomicStatus" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="NoOfBrothers" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-          <Property Name="NoOfSisters" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
           <Property Name="PresentlyLivingWith" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="PresentlyStayingAt" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="ElementarySchool" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
@@ -572,6 +569,7 @@
           <Property Name="HaveTalkedWithAPsychologistWhy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AboutYourself" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Student" Relationship="Testv3Model.FK__Individua__UserI__4316F928" FromRole="IndividualInventoryRecord" ToRole="Student" />
+          <Property Name="NoOfSiblings" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Student">
           <Key>
@@ -793,6 +791,7 @@
           <EntitySetMapping Name="IndividualInventoryRecords">
             <EntityTypeMapping TypeName="Testv3Model.IndividualInventoryRecord">
               <MappingFragment StoreEntitySet="IndividualInventoryRecord">
+                <ScalarProperty Name="NoOfSiblings" ColumnName="NoOfSiblings" />
                 <ScalarProperty Name="AboutYourself" ColumnName="AboutYourself" />
                 <ScalarProperty Name="HaveTalkedWithAPsychologistWhy" ColumnName="HaveTalkedWithAPsychologistWhy" />
                 <ScalarProperty Name="HaveTalkedWithAPsychologistWhen" ColumnName="HaveTalkedWithAPsychologistWhen" />
@@ -844,8 +843,6 @@
                 <ScalarProperty Name="ElementarySchool" ColumnName="ElementarySchool" />
                 <ScalarProperty Name="PresentlyStayingAt" ColumnName="PresentlyStayingAt" />
                 <ScalarProperty Name="PresentlyLivingWith" ColumnName="PresentlyLivingWith" />
-                <ScalarProperty Name="NoOfSisters" ColumnName="NoOfSisters" />
-                <ScalarProperty Name="NoOfBrothers" ColumnName="NoOfBrothers" />
                 <ScalarProperty Name="EconomicStatus" ColumnName="EconomicStatus" />
                 <ScalarProperty Name="ParentsStatus" ColumnName="ParentsStatus" />
                 <ScalarProperty Name="EmergencyContactNumber" ColumnName="EmergencyContactNumber" />
