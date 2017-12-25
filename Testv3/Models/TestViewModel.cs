@@ -18,14 +18,13 @@ namespace Testv3.Models
         public string StudentEmail { get; set; }
         public Nullable<int> CourseID { get; set; }
         public string Address { get; set; }
+
         [Required]
         public string Sex { get; set; }
-        //[Required]
-        //public IEnumerable<SelectListItem> Sexx { get; set; }
+        public IEnumerable<SelectListItem> Sexx { get; set; }
         [Required]
         public string Civil_Status__CivilStatus { get; set; }
-        //[Required]
-        //public IEnumerable<SelectListItem> Civil_Status__CivilStatuss { get; set; }
+        public IEnumerable<SelectListItem> Civil_Status__CivilStatuss { get; set; }
 
         public string Religion { get; set; }
         public string Nationality { get; set; }
@@ -36,13 +35,17 @@ namespace Testv3.Models
         public string Hobbies { get; set; }
         public string BirthRank { get; set; }
         public string DistanceFromSchool { get; set; }
-        [Required]
+        
         public string Scholarship { get; set; }
         public Nullable<System.DateTime> DateOfMarriage { get; set; }
         public string PlaceOfMarriage { get; set; }
         public string SpouseName { get; set; }
         public string SpouseAge { get; set; }
+
         public string SpouseEducationalAttainment { get; set; }
+        public IEnumerable<SelectListItem> SpouseEducationalAttainments { get; set; }
+
+
         public string Occupation { get; set; }
         public string StudentEmployerAddress { get; set; }
         public string NumberOfChildren { get; set; }
@@ -50,23 +53,42 @@ namespace Testv3.Models
         public string FathersName { get; set; }
         public string FathersAddress { get; set; }
         public string FathersAge { get; set; }
+
         public string FathersEducationalAttainment { get; set; }
+        public IEnumerable<SelectListItem> FathersEducationalAttainments { get; set; }
+
+
         public string FathersOccupation { get; set; }
         public string FathersEmployerAddress { get; set; }
         public string MothersName { get; set; }
         public string MothersAddress { get; set; }
         public string MothersAge { get; set; }
+
         public string MothersEducationalAttainment { get; set; }
+        public IEnumerable<SelectListItem> MothersEducationalAttainments { get; set; }
+
         public string MothersOccupation { get; set; }
         public string MothersEmployerAddress { get; set; }
+
         public string FamilyDwelling { get; set; }
+        public IEnumerable<SelectListItem> FamilyDwellings { get; set; }
+
         public string EmergencyContactName { get; set; }
         public string EmergencyContactNumber { get; set; }
+
         public string ParentsStatus { get; set; }
+        public IEnumerable<SelectListItem> ParentsStatuses { get; set; }
+
         public string EconomicStatus { get; set; }
+        public IEnumerable<SelectListItem> EconomicStatuses { get; set; }
+
         public string NoOfSiblings { get; set; }
+
         public string PresentlyLivingWith { get; set; }
+        public IEnumerable<SelectListItem> PresentlyLivingWiths { get; set; }
+
         public string PresentlyStayingAt { get; set; }
+        public IEnumerable<SelectListItem> PresentlyStayingAts { get; set; }
 
         public string ElementarySchool { get; set; }
         public string ElementaryAddress { get; set; }
@@ -93,6 +115,9 @@ namespace Testv3.Models
         public string Employer { get; set; }
         public string EmployerAddress { get; set; }
         public string EmploymentStatus { get; set; }
+        public IEnumerable<SelectListItem> EmploymentStatuses { get; set; }
+
+
 
         public string MentalAbilityTestDate { get; set; }
         public string MentalAbilityTestScore { get; set; }

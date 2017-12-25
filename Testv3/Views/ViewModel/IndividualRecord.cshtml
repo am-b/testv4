@@ -1,8 +1,26 @@
 ﻿@model Testv3.Models.TestViewModel
-
+@Scripts.Render("~/bundles/jquery")
 @{
     ViewBag.Title = "Edit My Individual Inventory Record";
 }
+
+@*@section Scripts{
+        <script type="text/javascript">
+           function Radio() {
+            var No = document.getElementById('<%= NoRadioButton.ClientID %>').checked;
+            var Yes = document.getElementById('<%= YesRadioButton.ClientID %>').checked;
+            if (No == true)
+                {
+                document.getElementById('<%= ScholarshipTextBox.ClientID %>').disabled = true;
+                }
+             if (Yes == true)
+                {
+                 document.getElementById('<%= ScholarshipTextBox.ClientID %>').disabled = false;
+                }
+            }
+
+</script>
+}*@
 
 @if (TempData["Message"] != null)
 {
@@ -28,8 +46,8 @@
     <div class="body-content">
         <div class="form-horizontal">
             <div class="form-group">
-                <h4>Individual Inventory Record</h4>
-                <hr />
+                @*<h4>Individual Inventory Record</h4>
+                <hr />*@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <!-- Nav tabs -->
                 <div class="tabs-wrapper">
@@ -114,24 +132,14 @@
 
                                         <div class="form-group">
                                             <div class="controls form-inline">
-                                                @*<div class="col-sm-3">
+                                                <div class="col-sm-3">
                                                     @Html.Label("Sex: ")<br />
                                                     @Html.DropDownListFor(m => m.Sex, Model.Sexx, "Gender", new { @class = "form-control", @style = "min-width:100%;text-align:center" })
                                                     @Html.ValidationMessageFor(model => model.Sex, "", new { @class = "text-danger" })
-                                                </div>
+                                                </div>                                              
                                                 <div class="col-sm-3">
                                                     @Html.Label("Civil Status: ")<br />
-                                                    @Html.DropDownListFor(m => m.Civil_Status__CivilStatus, Model.Civil_Status__CivilStatuss, "Civil Status", new { @class = "form-control", @style = "min-width:100%;text-align:center" })
-                                                    @Html.ValidationMessageFor(model => model.Civil_Status__CivilStatus, "", new { @class = "text-danger" })
-                                                </div>*@
-                                                <div class="col-sm-3">
-                                                    @Html.Label("Sex: ")<br />
-                                                    @Html.EditorFor(model => model.Sex, new { htmlAttributes = new { @class = "form-control", @placeholder = "Religion", style = "min-width:100%;text-align:center" } })
-                                                    @Html.ValidationMessageFor(model => model.Sex, "", new { @class = "text-danger" })
-                                                </div>
-                                                <div class="col-sm-3">
-                                                    @Html.Label("Civil Status: ")<br />
-                                                    @Html.EditorFor(model => model.Civil_Status__CivilStatus, new { htmlAttributes = new { @class = "form-control", @placeholder = "Religion", style = "min-width:100%;text-align:center" } })
+                                                    @Html.DropDownListFor(m => m.Civil_Status__CivilStatus, Model.Civil_Status__CivilStatuss, "Civil status", new { @class = "form-control", @style = "min-width:100%;text-align:center" })
                                                     @Html.ValidationMessageFor(model => model.Civil_Status__CivilStatus, "", new { @class = "text-danger" })
                                                 </div>
                                                 <div class="col-sm-3">
@@ -191,9 +199,9 @@
                                             <div class="controls form-inline">
                                                 <div class="col-sm-12">
                                                     @Html.Label("Recipient of scholarship/financial aid? ")<br />
-                                                    @Html.RadioButton("gender", "No", new { id = "IsNo" }) No &nbsp;
-                                                    @Html.RadioButton("gender", "Yes", true, new { id = "IsYes" }) Yes
-                                                    @Html.EditorFor(model => model.Scholarship, new { htmlAttributes = new { @class = "form-control", @placeholder = "e.g. Academic scholar etc", @style = "min-width:90%;text-align:center" } })
+                                                    @Html.RadioButton("No", new { id = "NoRadioButton" }) No &nbsp;
+                                                    @Html.RadioButton("Yes", true, new { id = "YesRadioButton" }) Yes
+                                                    @Html.TextBoxFor(model => model.Scholarship, new { htmlAttributes = new { @class = "form-control", @id="ScholarshipTextBox", @placeholder = "e.g. Academic scholar etc", @style = "min-width:100%;text-align:center" } })
                                                     @Html.ValidationMessageFor(model => model.Scholarship, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -233,7 +241,7 @@
                                                         </div>
                                                         <div class="col-sm-3">
                                                             @Html.Label("Educational Attainment")<br />
-                                                            @Html.EditorFor(model => model.SpouseEducationalAttainment, new { htmlAttributes = new { @class = "form-control", @style = "min-width:100%;text-align:center" } })
+                                                            @Html.DropDownListFor(m => m.SpouseEducationalAttainment, Model.SpouseEducationalAttainments, "Educational Attainment", new { @class = "form-control", @style = "min-width:100%;text-align:center" })
                                                             @Html.ValidationMessageFor(model => model.SpouseEducationalAttainment, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
@@ -314,7 +322,7 @@
                                                 </div>
                                                 <div class="col-sm-3">
                                                     @Html.Label("Educational Attainment")<br />
-                                                    @Html.EditorFor(model => model.FathersEducationalAttainment, new { htmlAttributes = new { @class = "form-control", @style = "min-width:100%;text-align:center" } })
+                                                    @Html.DropDownListFor(m => m.FathersEducationalAttainment, Model.FathersEducationalAttainments, "Educational Attainment", new { @class = "form-control", @style = "min-width:100%;text-align:center" })
                                                     @Html.ValidationMessageFor(model => model.FathersEducationalAttainment, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -350,7 +358,7 @@
                                                 </div>
                                                 <div class="col-sm-3">
                                                     @Html.Label("Educational Attainment")<br />
-                                                    @Html.EditorFor(model => model.MothersEducationalAttainment, new { htmlAttributes = new { @class = "form-control", @style = "min-width:100%;text-align:center" } })
+                                                    @Html.DropDownListFor(m => m.MothersEducationalAttainment, Model.MothersEducationalAttainments, "Educational Attainment", new { @class = "form-control", @style = "min-width:100%;text-align:center" })
                                                     @Html.ValidationMessageFor(model => model.MothersEducationalAttainment, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -397,17 +405,17 @@
                                             <div class="controls form-inline">
                                                 <div class="col-sm-4">
                                                     @Html.Label("Family Dwelling")<br />
-                                                    @Html.EditorFor(model => model.FamilyDwelling, new { htmlAttributes = new { @class = "form-control", style = "min-width:100%;text-align:center" } })
+                                                    @Html.DropDownListFor(m => m.FamilyDwelling, Model.FamilyDwellings, "Family Dwelling", new { @class = "form-control", @style = "min-width:100%;text-align:center" })
                                                     @Html.ValidationMessageFor(model => model.FamilyDwelling, "", new { @class = "text-danger" })
                                                 </div>
                                                 <div class="col-sm-4">
                                                     @Html.Label("With whom do you live at present?")<br />
-                                                    @Html.EditorFor(model => model.PresentlyLivingWith, new { htmlAttributes = new { @class = "form-control", style = "min-width:100%;text-align:center" } })
+                                                    @Html.DropDownListFor(m => m.PresentlyLivingWith, Model.PresentlyLivingWiths, "Select", new { @class = "form-control", @style = "min-width:100%;text-align:center" })
                                                     @Html.ValidationMessageFor(model => model.PresentlyLivingWith, "", new { @class = "text-danger" })
                                                 </div>
                                                 <div class="col-sm-4">
                                                     @Html.Label("Are you presently:")<br />
-                                                    @Html.EditorFor(model => model.PresentlyStayingAt, new { htmlAttributes = new { @class = "form-control", style = "min-width:100%;text-align:center" } })
+                                                    @Html.DropDownListFor(m => m.PresentlyStayingAt, Model.PresentlyStayingAts, "Select", new { @class = "form-control", @style = "min-width:100%;text-align:center" })
                                                     @Html.ValidationMessageFor(model => model.PresentlyStayingAt, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -419,12 +427,12 @@
                                             <div class="controls form-inline">
                                                 <div class="col-sm-4">
                                                     @Html.Label("Status of parents: ")<br />
-                                                    @Html.EditorFor(model => model.ParentsStatus, new { htmlAttributes = new { @class = "form-control", style = "min-width:100%;text-align:center" } })
+                                                    @Html.DropDownListFor(m => m.ParentsStatus, Model.ParentsStatuses, "Select", new { @class = "form-control", @style = "min-width:100%;text-align:center" })
                                                     @Html.ValidationMessageFor(model => model.ParentsStatus, "", new { @class = "text-danger" })
                                                 </div>
                                                 <div class="col-sm-4">
                                                     @Html.Label("Economic status (Parent's combined monthly income) : ")<br />
-                                                    @Html.EditorFor(model => model.EconomicStatus, new { htmlAttributes = new { @class = "form-control", style = "min-width:100%;text-align:center" } })
+                                                    @Html.DropDownListFor(m => m.EconomicStatus, Model.EconomicStatuses, "Economic status", new { @class = "form-control", @style = "min-width:100%;text-align:center" })
                                                     @Html.ValidationMessageFor(model => model.EconomicStatus, "", new { @class = "text-danger" })
                                                 </div>
                                                 <div class="col-sm-4">
@@ -673,7 +681,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             @Html.Label("Employment Status")<br />
-                                            @Html.EditorFor(model => model.EmploymentStatus, new { htmlAttributes = new { @class = "form-control", @style = "min-width:100%;text-align:center", @maxlength = "2" } })
+                                            @Html.DropDownListFor(m => m.EmploymentStatus, Model.EmploymentStatuses, "Employment Status", new { @class = "form-control", @style = "min-width:100%;text-align:center" })
                                             @Html.ValidationMessageFor(model => model.EmploymentStatus, "", new { @class = "text-danger" })
                                         </div>
                                         <div class="col-sm-3">
@@ -686,7 +694,7 @@
                                     <div class="controls form-inline">
                                         <div class="col-sm-6">
                                             @Html.Label("Employer Address")<br />
-                                            @Html.TextAreaFor(model => model.EmployerAddress, 3, 50, new { @class = "form-control", @style = "min-width: 100%;" })                                            @Html.ValidationMessageFor(model => model.EmployerAddress, "", new { @class = "text-danger" })
+                                            @Html.TextAreaFor(model => model.StudentEmployerAddress, 3, 50, new { @class = "form-control", @style = "min-width: 100%;" })                                            @Html.ValidationMessageFor(model => model.EmployerAddress, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                     </div>
