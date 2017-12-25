@@ -77,9 +77,6 @@ namespace Testv3.Controllers
                 db.SaveChanges();
             }
 
-            // IndividualInventoryRecord inventory = db.IndividualInventoryRecords.Find(userInv.UserID);
-            //var inventory = db.IndividualInventoryRecords.SqlQuery("SELECT * FROM dbo.IndividualInventoryRecord WHERE UserID = @currentUserId", new System.Data.SqlClient.SqlParameter("@currentUserId", currentUserId));
-
             IndividualInventoryRecord inventory = db.IndividualInventoryRecords.FirstOrDefault(user => user.UserID == currentUserId);
 
             if (inventory == null)
@@ -87,57 +84,181 @@ namespace Testv3.Controllers
                 return HttpNotFound();
             }
 
-            TestViewModel vm = new TestViewModel()
+            TestViewModel vm = new TestViewModel();
+
+            vm.UserID = student.UserID;
+            vm.StudentFirstName = student.StudentFirstName;
+            vm.StudentMiddleName = student.StudentMiddleName;
+            vm.StudentLastName = student.StudentLastName;
+            vm.StudentEmail = student.StudentEmail;
+            vm.Address = student.Address;
+
+            //
+            var gender = GetAllGender();
+            vm.Sexx = GetSelectListItems(gender);
+
+            var civilstatus = GetAllCivilStatus();
+            vm.Civil_Status__CivilStatuss = GetSelectListItems(civilstatus);
+
+            var spouseEducAttainment = GetAllEducationalAttainment();
+            vm.SpouseEducationalAttainments = GetSelectListItems(spouseEducAttainment);
+
+            var motherEducAttainment = GetAllEducationalAttainment();
+            vm.MothersEducationalAttainments = GetSelectListItems(motherEducAttainment);
+
+            var fatherEducAttainment = GetAllEducationalAttainment();
+            vm.FathersEducationalAttainments = GetSelectListItems(fatherEducAttainment);
+
+            var familyDwelling = GetAllFamilyDwelling();
+            vm.FamilyDwellings = GetSelectListItems(familyDwelling);
+
+            var parentsStatus = GetAllParentsStatus();
+            vm.ParentsStatuses = GetSelectListItems(parentsStatus);
+
+            var economicStatus = GetAllEconomicStatus();
+            vm.EconomicStatuses = GetSelectListItems(economicStatus);
+
+            var livingPresentlyWith = GetAllLivingPresentlyWith();
+            vm.PresentlyLivingWiths = GetSelectListItems(livingPresentlyWith);
+
+            var presentlyStayingAt = GetAllPresentlyStaying();
+            vm.PresentlyStayingAts = GetSelectListItems(presentlyStayingAt);
+
+            var employmentStatus = GetAllEmploymentStatus();
+            vm.EmploymentStatuses = GetSelectListItems(employmentStatus);
+
+            //
+            if (student.Sex != null)
             {
-                UserID = student.UserID,
-                StudentFirstName = student.StudentFirstName,
-                StudentMiddleName = student.StudentMiddleName,
-                StudentLastName = student.StudentLastName,
-                StudentEmail = student.StudentEmail,
-                Address = student.Address,
-                Sex = student.Sex,
-                Civil_Status__CivilStatus = student.Civil_Status__CivilStatus,
-                Religion = student.Religion,
-                Nationality = student.Nationality,
-                Birthdate = student.Birthdate,
-                PhoneNumber = student.PhoneNumber,
-                Birthplace = student.Birthplace,
-                Dialect = student.Dialect,
-                Hobbies = student.Hobbies,
-                BirthRank = student.BirthRank,
-                DistanceFromSchool = student.DistanceFromSchool,
-                Scholarship = student.Scholarship,
-                DateOfMarriage = student.DateOfMarriage,
-                PlaceOfMarriage = student.PlaceOfMarriage,
-                SpouseName = student.SpouseName,
-                SpouseAge = student.SpouseAge,
-                SpouseEducationalAttainment = student.SpouseEducationalAttainment,
-                Occupation = student.Occupation,
-                StudentEmployerAddress = student.StudentEmployerAddress,
-                NumberOfChildren = student.NumberOfChildren,
+                vm.Sex = student.Sex.Trim();
+            }
 
-                FathersName = inventory.FathersName,
-                FathersAddress = inventory.FathersAddress,
-                FathersAge = inventory.FathersAge,
-                FathersEducationalAttainment = inventory.FathersEducationalAttainment,
-                FathersOccupation = inventory.FathersOccupation,
-                FathersEmployerAddress = inventory.FathersEmployerAddress,
-                MothersName = inventory.MothersName,
-                MothersAddress = inventory.MothersAddress,
-                MothersAge = inventory.MothersAge,
-                MothersEducationalAttainment = inventory.MothersEducationalAttainment,
-                MothersOccupation = inventory.MothersOccupation,
-                MothersEmployerAddress = inventory.MothersEmployerAddress,
-                FamilyDwelling = inventory.FamilyDwelling,
-                EmergencyContactName = inventory.EmergencyContactName,
-                EmergencyContactNumber = inventory.EmergencyContactNumber,
-                ParentsStatus = inventory.ParentsStatus,
-                EconomicStatus = inventory.EconomicStatus,
-                NoOfSiblings = inventory.NoOfSiblings,
-                PresentlyLivingWith = inventory.PresentlyLivingWith,
-                PresentlyStayingAt = inventory.PresentlyStayingAt,
+            if (student.Civil_Status__CivilStatus != null)
+            {
+                vm.Civil_Status__CivilStatus = student.Civil_Status__CivilStatus.Trim();
+            }
+            
 
-            };
+            vm.Religion = student.Religion;
+            vm.Nationality = student.Nationality;
+            vm.Birthdate = student.Birthdate.Value.Date;
+            vm.PhoneNumber = student.PhoneNumber;
+            vm.Birthplace = student.Birthplace;
+            vm.Dialect = student.Dialect;
+            vm.Hobbies = student.Hobbies;
+            vm.BirthRank = student.BirthRank;
+            vm.DistanceFromSchool = student.DistanceFromSchool;
+            vm.Scholarship = student.Scholarship;
+            vm.DateOfMarriage = student.DateOfMarriage;
+            vm.PlaceOfMarriage = student.PlaceOfMarriage;
+            vm.SpouseName = student.SpouseName;
+            vm.SpouseAge = student.SpouseAge;
+            if (student.SpouseEducationalAttainment != null)
+            {
+                vm.SpouseEducationalAttainment = student.SpouseEducationalAttainment.Trim();
+            }
+            vm.Occupation = student.Occupation;
+            vm.StudentEmployerAddress = student.StudentEmployerAddress;
+            vm.NumberOfChildren = student.NumberOfChildren;
+
+            vm.FathersName = inventory.FathersName;
+            vm.FathersAddress = inventory.FathersAddress;
+            vm.FathersAge = inventory.FathersAge;
+            if (inventory.FathersEducationalAttainment != null)
+            {
+                vm.FathersEducationalAttainment = inventory.FathersEducationalAttainment.Trim();
+            }
+            vm.FathersOccupation = inventory.FathersOccupation;
+            vm.FathersEmployerAddress = inventory.FathersEmployerAddress;
+            vm.MothersName = inventory.MothersName;
+            vm.MothersAddress = inventory.MothersAddress;
+            vm.MothersAge = inventory.MothersAge;
+            if (inventory.MothersEducationalAttainment != null)
+            {
+                vm.MothersEducationalAttainment = inventory.MothersEducationalAttainment.Trim();
+            }
+            vm.MothersOccupation = inventory.MothersOccupation;
+            vm.MothersEmployerAddress = inventory.MothersEmployerAddress;
+            vm.FamilyDwelling = inventory.FamilyDwelling;
+            vm.EmergencyContactName = inventory.EmergencyContactName;
+            vm.EmergencyContactNumber = inventory.EmergencyContactNumber;
+            if (inventory.ParentsStatus != null)
+            {
+                vm.ParentsStatus = inventory.ParentsStatus.Trim();
+            }
+            if (inventory.EconomicStatus != null)
+            {
+                vm.EconomicStatus = inventory.EconomicStatus.Trim();
+            }
+            vm.NoOfSiblings = inventory.NoOfSiblings;
+            if (inventory.PresentlyLivingWith != null)
+            {
+                vm.PresentlyLivingWith = inventory.PresentlyLivingWith.Trim();
+            }
+            if (inventory.PresentlyStayingAt != null)
+            {
+                vm.PresentlyStayingAt = inventory.PresentlyStayingAt.Trim();
+            }
+            vm.ElementarySchool = inventory.ElementarySchool;
+            vm.ElementaryAddress = inventory.ElementaryAddress;
+            vm.YearsAttendedElem = inventory.YearsAttendedElem;
+            vm.HighSchool = inventory.HighSchool;
+            vm.HighSchoolAddress = inventory.HighSchoolAddress;
+            vm.YearsAttendedHS = inventory.YearsAttendedHS;
+            vm.CollegeSchool = inventory.CollegeSchool;
+            vm.CollegeAddress = inventory.CollegeAddress;
+            vm.YearsAttendedCollege = inventory.YearsAttendedCollege;
+            vm.Honors = inventory.Honors;
+            vm.FaveSubject = inventory.FaveSubject;
+            vm.LeastSubject = inventory.LeastSubject;
+            vm.HowStudieIssFinanced = inventory.HowStudieIssFinanced;
+            vm.IsCoursePersonalChoice = inventory.IsCoursePersonalChoice;
+            vm.CourseNotPersonalChoice = inventory.CourseNotPersonalChoice;
+            vm.CourseChoiceInfluence = inventory.CourseChoiceInfluence;
+            vm.CoursePersonalChoice = inventory.CoursePersonalChoice;
+            vm.WhyMMCC = inventory.WhyMMCC;
+            vm.ReferredToMMCCBy = inventory.ReferredToMMCCBy;
+            vm.Position = inventory.Position;
+            if (vm.EmploymentStatus != null)
+            {
+                vm.EmploymentStatus = inventory.EmploymentStatus.Trim();
+            }
+            vm.Salary = inventory.Salary;
+            vm.Employer = inventory.Employer;
+            vm.EmployerAddress = inventory.EmployerAddress;
+
+            if (vm.EmploymentStatus != null)
+            {
+                vm.EmploymentStatus = inventory.EmploymentStatus;
+
+            }
+
+            vm.MentalAbilityTestDate = inventory.MentalAbilityTestDate;
+            vm.MentalAbilityTestScore = inventory.MentalAbilityTestScore;
+            vm.MentalAbilityTestPercentile = inventory.MentalAbilityTestPercentile;
+            vm.PersonalityTestDate = inventory.PersonalityTestDate;
+            vm.PersonalityTestScore = inventory.PersonalityTestScore;
+            vm.PersonalityTestPercentile = inventory.PersonalityTestPercentile;
+            vm.VocationalTestDate = inventory.VocationalTestDate;
+            vm.VocationalTestScore = inventory.VocationalTestScore;
+            vm.VocationalTestPercentile = inventory.VocationalTestPercentile;
+            vm.Disabilities = inventory.Disabilities;
+            vm.ChronicIllness = inventory.ChronicIllness;
+            vm.PreviousAccidents = inventory.PreviousAccidents;
+            vm.PreviousSurgery = inventory.PreviousSurgery;
+            vm.MaintenanceMedicines = inventory.MaintenanceMedicines;
+            vm.Immunization = inventory.Immunization;
+            vm.HaveTalkedWithACounselor = inventory.HaveTalkedWithACounselor;
+            vm.HaveTalkedWithACounselorWhen = inventory.HaveTalkedWithACounselorWhen;
+            vm.HaveTalkedWithACounselorWhy = inventory.HaveTalkedWithACounselorWhy;
+            vm.HaveTalkedWithAPsychiatrist = inventory.HaveTalkedWithAPsychiatrist;
+            vm.HaveTalkedWithAPsychiatristWhen = inventory.HaveTalkedWithAPsychiatristWhen;
+            vm.HaveTalkedWithAPsychiatristWhy = inventory.HaveTalkedWithAPsychiatristWhy;
+            vm.HaveTalkedWithAPsychologist = inventory.HaveTalkedWithAPsychologist;
+            vm.HaveTalkedWithAPsychologistWhen = inventory.HaveTalkedWithAPsychologistWhen;
+            vm.HaveTalkedWithAPsychologistWhy = inventory.HaveTalkedWithAPsychologistWhy;
+            vm.AboutYourself = inventory.AboutYourself;
+
 
             return View(vm);
         }
@@ -169,8 +290,52 @@ namespace Testv3.Controllers
                 db.IndividualInventoryRecords.Add(userInv);
             }
 
+            var civilStatus = GetAllCivilStatus();
+            vm.Civil_Status__CivilStatuss = GetSelectListItems(civilStatus);
+
+            var gender = GetAllGender();
+            vm.Sexx = GetSelectListItems(gender);
+
+            var spouseEducAttainment = GetAllEducationalAttainment();
+            vm.SpouseEducationalAttainments = GetSelectListItems(spouseEducAttainment);
+
+            var motherEducAttainment = GetAllEducationalAttainment();
+            vm.MothersEducationalAttainments = GetSelectListItems(motherEducAttainment);
+
+            var fatherEducAttainment = GetAllEducationalAttainment();
+            vm.FathersEducationalAttainments = GetSelectListItems(fatherEducAttainment);
+
+            var familyDwelling = GetAllFamilyDwelling();
+            vm.FamilyDwellings = GetSelectListItems(familyDwelling);
+
+            var parentsStatus = GetAllParentsStatus();
+            vm.ParentsStatuses = GetSelectListItems(parentsStatus);
+
+            var economicStatus = GetAllEconomicStatus();
+            vm.EconomicStatuses = GetSelectListItems(economicStatus);
+
+            var livingPresentlyWith = GetAllLivingPresentlyWith();
+            vm.PresentlyLivingWiths = GetSelectListItems(livingPresentlyWith);
+
+            var presentlyStayingAt = GetAllPresentlyStaying();
+            vm.PresentlyStayingAts = GetSelectListItems(presentlyStayingAt);
+
+            var employmentStatus = GetAllEmploymentStatus();
+            vm.EmploymentStatuses = GetSelectListItems(employmentStatus);
+
+
             if (ModelState.IsValid)
             {
+                if (vm.Sex != null)
+                {
+                    u.Sex = vm.Sex;
+                }
+
+                if (vm.Civil_Status__CivilStatus != null)
+                {
+                    u.Civil_Status__CivilStatus = vm.Civil_Status__CivilStatus;
+                }
+
                 u.PhoneNumber = vm.PhoneNumber;
                 u.Address = vm.Address;
                 u.DistanceFromSchool = vm.DistanceFromSchool;
@@ -186,7 +351,11 @@ namespace Testv3.Controllers
                 u.PlaceOfMarriage = vm.PlaceOfMarriage;
                 u.SpouseName = vm.SpouseName;
                 u.SpouseAge = vm.SpouseAge;
-                u.SpouseEducationalAttainment = vm.SpouseEducationalAttainment;
+                if (vm.SpouseEducationalAttainment != null)
+                {
+                    u.SpouseEducationalAttainment = vm.SpouseEducationalAttainment;
+                }
+
                 u.Occupation = vm.Occupation;
                 u.StudentEmployerAddress = vm.StudentEmployerAddress;
                 u.NumberOfChildren = vm.NumberOfChildren;
@@ -195,23 +364,57 @@ namespace Testv3.Controllers
                 userInv.FathersName = vm.FathersName;
                 userInv.FathersAddress = vm.FathersAddress;
                 userInv.FathersAge = vm.FathersAge;
-                userInv.FathersEducationalAttainment = vm.FathersEducationalAttainment;
+
+                if (vm.FathersEducationalAttainment != null)
+                {
+                    userInv.FathersEducationalAttainment = vm.FathersEducationalAttainment;
+                }
+
                 userInv.FathersOccupation = vm.FathersOccupation;
                 userInv.FathersEmployerAddress = vm.FathersEmployerAddress;
                 userInv.MothersName = vm.MothersName;
                 userInv.MothersAddress = vm.MothersAddress;
                 userInv.MothersAge = vm.MothersAge;
-                userInv.MothersEducationalAttainment = vm.MothersEducationalAttainment;
+
+                if (vm.MothersEducationalAttainment != null)
+                {
+                    userInv.MothersEducationalAttainment = vm.MothersEducationalAttainment;
+                }
+
                 userInv.MothersOccupation = vm.MothersOccupation;
                 userInv.MothersEmployerAddress = vm.MothersEmployerAddress;
-                userInv.FamilyDwelling = vm.FamilyDwelling;
+
+                if (vm.FamilyDwelling != null)
+                {
+                    userInv.FamilyDwelling = vm.FamilyDwelling;
+                }
+
                 userInv.EmergencyContactName = vm.EmergencyContactName;
                 userInv.EmergencyContactNumber = vm.EmergencyContactNumber;
-                userInv.ParentsStatus = vm.ParentsStatus;
-                userInv.EconomicStatus = vm.EconomicStatus;
+
+                if (vm.ParentsStatus != null)
+                {
+                    userInv.ParentsStatus = vm.ParentsStatus;
+                }
+
+                if (vm.EconomicStatus != null)
+                {
+                    userInv.EconomicStatus = vm.EconomicStatus;
+                }
+
                 userInv.NoOfSiblings = vm.NoOfSiblings;
-                userInv.PresentlyLivingWith = vm.PresentlyLivingWith;
-                userInv.PresentlyStayingAt = vm.PresentlyStayingAt;
+
+                if (vm.PresentlyLivingWith != null)
+                {
+                    userInv.PresentlyLivingWith = vm.PresentlyLivingWith;
+                }
+
+                if (vm.PresentlyStayingAt != null)
+                {
+                    userInv.PresentlyStayingAt = vm.PresentlyStayingAt;
+
+                }
+
                 userInv.ElementarySchool = vm.ElementarySchool;
                 userInv.ElementaryAddress = vm.ElementaryAddress;
                 userInv.YearsAttendedElem = vm.YearsAttendedElem;
@@ -232,10 +435,20 @@ namespace Testv3.Controllers
                 userInv.WhyMMCC = vm.WhyMMCC;
                 userInv.ReferredToMMCCBy = vm.ReferredToMMCCBy;
                 userInv.Position = vm.Position;
+                if (vm.EmploymentStatus != null)
+                {
+                    userInv.EmploymentStatus = vm.EmploymentStatus.Trim();
+                }
                 userInv.Salary = vm.Salary;
                 userInv.Employer = vm.Employer;
                 userInv.EmployerAddress = vm.EmployerAddress;
-                userInv.EmploymentStatus = vm.EmploymentStatus;
+
+                if (vm.EmploymentStatus != null)
+                {
+                    userInv.EmploymentStatus = vm.EmploymentStatus;
+
+                }
+
                 userInv.MentalAbilityTestDate = vm.MentalAbilityTestDate;
                 userInv.MentalAbilityTestScore = vm.MentalAbilityTestScore;
                 userInv.MentalAbilityTestPercentile = vm.MentalAbilityTestPercentile;
@@ -271,10 +484,125 @@ namespace Testv3.Controllers
                 TempData["Error"] = "Error: Details not updated!";
             }
 
-
-
             return View(vm);
         }
+
+        private IEnumerable<string> GetAllEducationalAttainment()
+        {
+            return new List<string>
+            {
+                "Elementary Level",
+                "Elementary Graduate",
+                "High school Level",
+                "High school Graduate",
+                "College Level",
+                "College Graduate",
+                "Vocational/Associate"
+            };
+        }
+
+        private IEnumerable<string> GetAllEmploymentStatus()
+        {
+            return new List<string>
+            {
+                "Regular",
+                "Probationary",
+                "Temporary",
+                "Part-time",
+            };
+        }
+
+        private IEnumerable<string> GetAllParentsStatus()
+        {
+            return new List<string>
+            {
+                "Married",
+                "Living-in",
+                "Seperated",
+                "Annulled",
+                "Divorced",
+                "Widowed"
+            };
+        }
+
+        private IEnumerable<string> GetAllEconomicStatus()
+        {
+            return new List<string>
+            {
+                "20,000 and below",
+                "20,000 - 30,000",
+                "30,000 - 40,000",
+                "50,000 and above",
+            };
+        }
+
+        private IEnumerable<string> GetAllFamilyDwelling()
+        {
+            return new List<string>
+            {
+                "House & Lot (Owned)",
+                "Renting",
+                "Boarding",
+                "Living with relatives",
+            };
+        }
+
+        private IEnumerable<string> GetAllLivingPresentlyWith()
+        {
+            return new List<string>
+            {
+                "Both Parents",
+                "Mother only",
+                "Father only",
+                "Relatives",
+            };
+        }
+
+        private IEnumerable<string> GetAllPresentlyStaying()
+        {
+            return new List<string>
+            {
+                "Renting",
+                "Boarding",
+                "Residing at home",
+                "Residing with relatives",
+            };
+        }
+
+        private IEnumerable<string> GetAllCivilStatus()
+        {
+            return new List<string>
+            {
+                "Single",
+                "Married",
+            };
+        }
+
+        private IEnumerable<string> GetAllGender()
+        {
+            return new List<string>
+            {
+                "Male",
+                "Female",
+            };
+        }
+
+        private IEnumerable<SelectListItem> GetSelectListItems(IEnumerable<string> elements)
+        {
+            var selectList = new List<SelectListItem>();
+
+            foreach (var element in elements)
+            {
+                selectList.Add(new SelectListItem
+                {
+                    Value = element,
+                    Text = element
+                });
+            }
+
+            return selectList;
+        }
+
     }
 
 }
