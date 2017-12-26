@@ -12,7 +12,7 @@ using Testv3.Models;
 namespace Testv3.Controllers
 {
     [Authorize(Roles = "Student")]
-    public class StudentsController : HomeController
+    public class StudentsController : DefaultController
     {
         private Testv3Entities db = new Testv3Entities();
 

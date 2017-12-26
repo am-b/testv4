@@ -12,21 +12,26 @@ namespace Testv3.Controllers
 {
 
     [Authorize]
-    public class HomeController : Controller
+    public class HomeController : DefaultController
     {
         private Testv3Entities db = new Testv3Entities();
 
-        public void GetCurrentUserInViewBag()
-        {
-            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-            var currentuser = manager.FindById(User.Identity.GetUserId());
-            var currentUserId = User.Identity.GetUserId();
+        //public void GetCurrentUserInViewBag()
+        //{
+        //    var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+        //    var currentuser = manager.FindById(User.Identity.GetUserId());
+        //    var currentUserId = User.Identity.GetUserId();
 
-            var u = db.Students.FirstOrDefault(d => d.UserID == currentUserId);
-            ViewBag.CurrentUser = u.StudentFirstName.Trim() + " " + " " + u.StudentLastName.Trim();
-            ViewBag.CurrentUserStudentID = u.StudentID.Trim();
+        //    var u = db.Students.FirstOrDefault(d => d.UserID == currentUserId);
 
-        }
+        //    if (u != null)
+        //    {
+        //        ViewBag.CurrentUser = u.StudentFirstName.Trim() + " " + " " + u.StudentLastName.Trim();
+        //        ViewBag.CurrentUserStudentID = u.StudentID.Trim();
+        //    }
+            
+
+        //}
 
         public ActionResult Index(int page = 1, int recordsPerPage = 5)
         {

@@ -11,7 +11,7 @@ using Testv3.Models;
 namespace Testv3.Controllers
 {
     [Authorize(Roles = "Administrator")]
-    public class AnnouncementsController : HomeController
+    public class AnnouncementsController : DefaultController
     {
         private Testv3Entities db = new Testv3Entities();
 

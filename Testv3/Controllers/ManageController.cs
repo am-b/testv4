@@ -11,7 +11,7 @@ using Testv3.Models;
 namespace Testv3.Controllers
 {
     [Authorize]
-    public class ManageController : HomeController
+    public class ManageController : DefaultController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;

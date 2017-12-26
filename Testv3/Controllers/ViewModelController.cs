@@ -13,7 +13,7 @@ using Testv3.Models;
 namespace Testv3.Controllers
 {
     [Authorize(Roles = "Student")]
-    public class ViewModelController : HomeController
+    public class ViewModelController : DefaultController
     {
         private Testv3Entities db = new Testv3Entities();
         
@@ -141,7 +141,7 @@ namespace Testv3.Controllers
 
             vm.Religion = student.Religion;
             vm.Nationality = student.Nationality;
-            vm.Birthdate = student.Birthdate.Value.Date;
+            vm.Birthdate = student.Birthdate;
             vm.PhoneNumber = student.PhoneNumber;
             vm.Birthplace = student.Birthplace;
             vm.Dialect = student.Dialect;

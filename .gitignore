@@ -259,3 +259,6 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/Testv3/Views/Admin/AdminIndex.cshtml
+/Testv3/Views/Announcements/AnnouncementsIndex.cshtml
+/Testv3/Views/ViewModel/ViewModelIndex.cshtml

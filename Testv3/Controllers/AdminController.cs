@@ -17,8 +17,8 @@ using System.Threading.Tasks;
 
 namespace Testv3.Controllers
 {
-    [Authorize(Roles = "Administrator")]
-    public class AdminController : HomeController
+    
+    public class AdminController : DefaultController
     {
         private Testv3Entities db = new Testv3Entities();
         private ApplicationUserManager _userManager;
@@ -54,7 +54,7 @@ namespace Testv3.Controllers
         // Controllers
 
         // GET: /Admin/
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator, Counselor")]
         #region public ActionResult Index(string searchStringUserNameOrEmail)
         public ActionResult Index(string searchStringUserNameOrEmail, string currentFilter, int? page)
         {
