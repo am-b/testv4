@@ -40,7 +40,7 @@
                 
             </nav>
         </header>
-        @if (User.IsInRole("Administrator"))
+        @if (User.IsInRole("Administrator") || (User.IsInRole("Counselor")))
         {
             <div class="navbar-collapse collapse" id="#.navbar-collapse">
                 <aside class="main-sidebar">
