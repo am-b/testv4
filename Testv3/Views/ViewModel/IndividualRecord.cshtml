@@ -4,23 +4,20 @@
     ViewBag.Title = "Edit My Individual Inventory Record";
 }
 
-@*@section Scripts{
-        <script type="text/javascript">
-           function Radio() {
-            var No = document.getElementById('<%= NoRadioButton.ClientID %>').checked;
-            var Yes = document.getElementById('<%= YesRadioButton.ClientID %>').checked;
-            if (No == true)
-                {
-                document.getElementById('<%= ScholarshipTextBox.ClientID %>').disabled = true;
+@section Scripts{
+    <script>
+        $(function () {
+            $('#scholarshipRadioButton input[type=radio]').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#scholarshipRadioButton input[type=text]').attr('disabled', 'disabled');
+                    $(this).next().removeAttr('disabled');
                 }
-             if (Yes == true)
-                {
-                 document.getElementById('<%= ScholarshipTextBox.ClientID %>').disabled = false;
-                }
-            }
+            });
 
-</script>
-}*@
+            //$('#scholarshipRadioButton input[type=radio]:first').attr('checked', 'checked').change();
+        });
+    </script>
+}
 
 @if (TempData["Message"] != null)
 {
@@ -109,7 +106,7 @@
                                                 <div class="col-sm-4">
                                                     @Html.Label("Phone Number")<br />
                                                     <input type="number" class="form-control" value="63" style="text-align:center;background-color:#C0C0C0;width:45px;" disabled>
-                                                    @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Phone Number", style = "text-align:center", @type = "phone", @maxlength = "10", @width = "140px" } })
+                                                    @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Phone Number", style = "text-align:center",@maxlength = "10" } })
                                                     @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -198,11 +195,12 @@
                                         <div class="form-group">
                                             <div class="controls form-inline">
                                                 <div class="col-sm-12">
-                                                    @Html.Label("Recipient of scholarship/financial aid? ")<br />
-                                                    @Html.RadioButton("No", new { id = "NoRadioButton" }) No &nbsp;
-                                                    @Html.RadioButton("Yes", true, new { id = "YesRadioButton" }) Yes
-                                                    @Html.TextBoxFor(model => model.Scholarship, new { htmlAttributes = new { @class = "form-control", @id="ScholarshipTextBox", @placeholder = "e.g. Academic scholar etc", @style = "min-width:100%;text-align:center" } })
-                                                    @Html.ValidationMessageFor(model => model.Scholarship, "", new { @class = "text-danger" })
+                                                    <label>Recipient of scholarship/financial aid?</label><br /> 
+                                                    <span id="scholarshipRadioButton">
+                                                    @Html.RadioButtonFor(model => Model.IsScholar, "false") No <br />
+                                                    @Html.RadioButtonFor(model => Model.IsScholar, "true")  Yes
+                                                    @Html.EditorFor(model => model.Scholarship, new { htmlAttributes = new { @placeholder = "e.g. Academic scholar", style = "min-width:93%;text-align:center", @class = "form-control", @type = "text"} })
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -494,12 +492,12 @@
                                                     </div>
                                                     <div class="col-sm-2">
                                                         @Html.Label("From (Year)")<br />
-                                                        @Html.EditorFor(model => model.YearsAttendedElem, new { htmlAttributes = new { @class = "form-control", @style = "min-width:100%;text-align:center", @maxlength = "2" } })
+                                                        @Html.EditorFor(model => model.YearsAttendedElem, new { htmlAttributes = new { @class = "form-control", @style = "min-width:100%;text-align:center", @maxlength = "4" } })
                                                         @Html.ValidationMessageFor(model => model.YearsAttendedElem, "", new { @class = "text-danger" })
                                                     </div>
                                                     <div class="col-sm-2">
                                                         @Html.Label("To (Year)")<br />
-                                                        @Html.EditorFor(model => model.YearsAttendedElem, new { htmlAttributes = new { @class = "form-control", @style = "min-width:100%;text-align:center" } })
+                                                        @Html.EditorFor(model => model.YearsAttendedElem, new { htmlAttributes = new { @class = "form-control", @style = "min-width:100%;text-align:center", @maxlength = "4" } })
                                                         @Html.ValidationMessageFor(model => model.YearsAttendedElem, "", new { @class = "text-danger" })
                                                     </div>
                                                 </div>
@@ -529,12 +527,12 @@
                                                     </div>
                                                     <div class="col-sm-2">
                                                         @Html.Label("From (Year)")<br />
-                                                        @Html.EditorFor(model => model.YearsAttendedHS, new { htmlAttributes = new { @class = "form-control", @style = "min-width:100%;text-align:center", @maxlength = "2" } })
+                                                        @Html.EditorFor(model => model.YearsAttendedHS, new { htmlAttributes = new { @class = "form-control", @style = "min-width:100%;text-align:center", @maxlength = "4" } })
                                                         @Html.ValidationMessageFor(model => model.YearsAttendedHS, "", new { @class = "text-danger" })
                                                     </div>
                                                     <div class="col-sm-2">
                                                         @Html.Label("To (Year)")<br />
-                                                        @Html.EditorFor(model => model.YearsAttendedHS, new { htmlAttributes = new { @class = "form-control", @style = "min-width:100%;text-align:center" } })
+                                                        @Html.EditorFor(model => model.YearsAttendedHS, new { htmlAttributes = new { @class = "form-control", @style = "min-width:100%;text-align:center", @maxlength = "4" } })
                                                         @Html.ValidationMessageFor(model => model.YearsAttendedHS, "", new { @class = "text-danger" })
                                                     </div>
                                                 </div>
@@ -563,12 +561,12 @@
                                                     </div>
                                                     <div class="col-sm-2">
                                                         @Html.Label("From (Year)")<br />
-                                                        @Html.EditorFor(model => model.YearsAttendedCollege, new { htmlAttributes = new { @class = "form-control", @style = "min-width:100%;text-align:center", @maxlength = "2" } })
+                                                        @Html.EditorFor(model => model.YearsAttendedCollege, new { htmlAttributes = new { @class = "form-control", @style = "min-width:100%;text-align:center", @maxlength = "4" } })
                                                         @Html.ValidationMessageFor(model => model.YearsAttendedCollege, "", new { @class = "text-danger" })
                                                     </div>
                                                     <div class="col-sm-2">
                                                         @Html.Label("To (Year)")<br />
-                                                        @Html.EditorFor(model => model.YearsAttendedCollege, new { htmlAttributes = new { @class = "form-control", @style = "min-width:100%;text-align:center" } })
+                                                        @Html.EditorFor(model => model.YearsAttendedCollege, new { htmlAttributes = new { @class = "form-control", @style = "min-width:100%;text-align:center", @maxlength = "4" } })
                                                         @Html.ValidationMessageFor(model => model.YearsAttendedCollege, "", new { @class = "text-danger" })
                                                     </div>
                                                 </div>
@@ -778,3 +776,5 @@
         </div>
     </div>
 }
+
+
