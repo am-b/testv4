@@ -184,6 +184,7 @@
           <Property Name="Hobbies" Type="nvarchar(max)" />
           <Property Name="BirthRank" Type="nchar" MaxLength="10" />
           <Property Name="DistanceFromSchool" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsScholar" Type="bit" />
           <Property Name="Scholarship" Type="nvarchar" MaxLength="250" />
           <Property Name="DateOfMarriage" Type="date" />
           <Property Name="PlaceOfMarriage" Type="nvarchar" MaxLength="250" />
@@ -220,21 +221,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Individua__UserI__45F365D3">
-          <End Role="Student" Type="Self.Student" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="IndividualInventoryRecord" Type="Self.IndividualInventoryRecord" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Student">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="IndividualInventoryRecord">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Student__CourseI__3B75D760">
+        <Association Name="FK__Student__CourseI__4CA06362">
           <End Role="Course" Type="Self.Course" Multiplicity="0..1" />
           <End Role="Student" Type="Self.Student" Multiplicity="*" />
           <ReferentialConstraint>
@@ -246,7 +233,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Student__UserID__3C69FB99">
+        <Association Name="FK__Student__UserID__4D94879B">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -335,15 +322,11 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Counsellor" EntitySet="Counsellor" />
           </AssociationSet>
-          <AssociationSet Name="FK__Individua__UserI__45F365D3" Association="Self.FK__Individua__UserI__45F365D3">
-            <End Role="Student" EntitySet="Student" />
-            <End Role="IndividualInventoryRecord" EntitySet="IndividualInventoryRecord" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Student__CourseI__3B75D760" Association="Self.FK__Student__CourseI__3B75D760">
+          <AssociationSet Name="FK__Student__CourseI__4CA06362" Association="Self.FK__Student__CourseI__4CA06362">
             <End Role="Course" EntitySet="Course" />
             <End Role="Student" EntitySet="Student" />
           </AssociationSet>
-          <AssociationSet Name="FK__Student__UserID__3C69FB99" Association="Self.FK__Student__UserID__3C69FB99">
+          <AssociationSet Name="FK__Student__UserID__4D94879B" Association="Self.FK__Student__UserID__4D94879B">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Student" EntitySet="Student" />
           </AssociationSet>
@@ -469,7 +452,6 @@
           <NavigationProperty Name="AspNetUserClaims" Relationship="Testv3Model.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="Testv3Model.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
           <NavigationProperty Name="Counsellors" Relationship="Testv3Model.FK__Counsello__UserI__3F466844" FromRole="AspNetUser" ToRole="Counsellor" />
-          <NavigationProperty Name="Counsellors1" Relationship="Testv3Model.FK__Counsello__UserI__403A8C7D" FromRole="AspNetUser" ToRole="Counsellor" />
           <NavigationProperty Name="Student" Relationship="Testv3Model.FK__Student__UserID__3C69FB99" FromRole="AspNetUser" ToRole="Student" />
           <NavigationProperty Name="AspNetRoles" Relationship="Testv3Model.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
         </EntityType>
@@ -606,6 +588,7 @@
           <NavigationProperty Name="AspNetUser" Relationship="Testv3Model.FK__Student__UserID__3C69FB99" FromRole="Student" ToRole="AspNetUser" />
           <NavigationProperty Name="Course" Relationship="Testv3Model.FK__Student__CourseI__3B75D760" FromRole="Student" ToRole="Course" />
           <NavigationProperty Name="IndividualInventoryRecords" Relationship="Testv3Model.FK__Individua__UserI__4316F928" FromRole="Student" ToRole="IndividualInventoryRecord" />
+          <Property Name="IsScholar" Type="Boolean" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Type="Testv3Model.AspNetUser" Role="AspNetUser" Multiplicity="1">
@@ -868,6 +851,7 @@
           <EntitySetMapping Name="Students">
             <EntityTypeMapping TypeName="Testv3Model.Student">
               <MappingFragment StoreEntitySet="Student">
+                <ScalarProperty Name="IsScholar" ColumnName="IsScholar" />
                 <ScalarProperty Name="NumberOfChildren" ColumnName="NumberOfChildren" />
                 <ScalarProperty Name="StudentEmployerAddress" ColumnName="StudentEmployerAddress" />
                 <ScalarProperty Name="Occupation" ColumnName="Occupation" />

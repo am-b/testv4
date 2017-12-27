@@ -36,6 +36,7 @@ namespace Testv3.Models
         public string BirthRank { get; set; }
         public string DistanceFromSchool { get; set; }
         
+        public bool IsScholar { get; set; }
         public string Scholarship { get; set; }
         public Nullable<System.DateTime> DateOfMarriage { get; set; }
         public string PlaceOfMarriage { get; set; }

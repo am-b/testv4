@@ -48,6 +48,7 @@ namespace Testv3.Models
         public string Occupation { get; set; }
         public string StudentEmployerAddress { get; set; }
         public string NumberOfChildren { get; set; }
+        public Nullable<bool> IsScholar { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual Course Course { get; set; }

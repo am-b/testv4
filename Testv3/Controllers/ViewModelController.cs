@@ -148,6 +148,15 @@ namespace Testv3.Controllers
             vm.Hobbies = student.Hobbies;
             vm.BirthRank = student.BirthRank;
             vm.DistanceFromSchool = student.DistanceFromSchool;
+
+            //
+            if (student.IsScholar != null)
+            {
+                vm.IsScholar = (bool) student.IsScholar;
+            }
+
+                
+
             vm.Scholarship = student.Scholarship;
             vm.DateOfMarriage = student.DateOfMarriage;
             vm.PlaceOfMarriage = student.PlaceOfMarriage;
@@ -346,6 +355,20 @@ namespace Testv3.Controllers
                 u.BirthRank = vm.BirthRank;
                 u.Dialect = vm.Dialect;
                 u.Hobbies = vm.Hobbies;
+
+                bool isScholar = false;
+                if (vm.IsScholar == true)
+                {
+                    isScholar = true;
+                }
+                else
+                {
+                    isScholar = false;
+                }
+
+                u.IsScholar = isScholar;
+
+
                 u.Scholarship = vm.Scholarship;
                 u.DateOfMarriage = vm.DateOfMarriage;
                 u.PlaceOfMarriage = vm.PlaceOfMarriage;
