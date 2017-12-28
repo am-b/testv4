@@ -1,25 +1,29 @@
-﻿@model IEnumerable<Testv3.Models.TestViewModel>
+﻿@model PagedList.IPagedList<Testv3.Models.TestViewModel>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
     ViewBag.Title = "Index";
 }
+@using (Html.BeginForm("Index", "ViewModel", FormMethod.Get))
+{
+    <br />
+    <div class="controls form-inline">
+        @Html.TextBox("searchStringName", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search by student's name" })
+        <input type="submit" value="Search" class="btn btn-default" />
+    </div>
 
-<h2>Index</h2>
+    <br />
+}
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+
+
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.StudentFirstName)
+            Student Name
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StudentMiddleName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FathersName)
-        </th>
+
         <th></th>
     </tr>
 
@@ -27,20 +31,27 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.StudentFirstName)
+                @Html.DisplayFor(modelItem => item.StudentLastName), @Html.DisplayFor(modelItem => item.StudentFirstName) @Html.DisplayFor(modelItem => item.StudentMiddleName)
             </td>
+
             <td>
-                @Html.DisplayFor(modelItem => item.StudentMiddleName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FathersName)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.StudentLastName }) |
-                @Html.ActionLink("Details", "Details", new { id = item.StudentLastName }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.StudentLastName })
+                
+                @Html.ActionLink("Details", "Details", new { id = item.UserID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.UserID })
             </td>
         </tr>
     }
 
 </table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model,
+    page => Url.Action("Index",
+    new
+    {
+        page,
+        searchStringName = ViewBag.searchStringName,
+        currentFilter = ViewBag.CurrentFilter
+    }))
+<hr />

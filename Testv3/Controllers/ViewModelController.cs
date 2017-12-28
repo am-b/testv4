@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,40 +13,86 @@ using Testv3.Models;
 
 namespace Testv3.Controllers
 {
-    [Authorize(Roles = "Student")]
+    
     public class ViewModelController : DefaultController
     {
         private Testv3Entities db = new Testv3Entities();
-        
 
+        [Authorize(Roles = "Counselor")]
         // GET: ViewModel
-        public ActionResult Index()
-        {
-            Testv3Entities ctx = new Testv3Entities();
-            
+        public ActionResult Index(string searchStringName, string currentFilter, int? page)
+        {            
             GetCurrentUserInViewBag();
 
-            List<TestViewModel> StudentInventorylist = new List<TestViewModel>();
-
-
-            var datalist = (from student in ctx.Students
-                            join inventory in ctx.IndividualInventoryRecords on student.UserID equals inventory.UserID
-                            select new { student.StudentFirstName, student.StudentMiddleName, student.StudentLastName, inventory.FathersName }).ToList();
-
-
-            foreach (var item in datalist)
+            try
             {
-                TestViewModel pvm = new TestViewModel();
-                pvm.StudentFirstName = item.StudentFirstName;
-                pvm.StudentMiddleName = item.StudentMiddleName;
-                pvm.StudentLastName = item.StudentLastName;
-                pvm.FathersName = item.FathersName;
-                StudentInventorylist.Add(pvm);
+                int intPage = 1;
+                int intPageSize = 10;
+                int intTotalPageCount = 0;
+
+                if (searchStringName != null)
+                {
+                    intPage = 1;
+                }
+                else
+                {
+                    if (currentFilter != null)
+                    {
+                        searchStringName = currentFilter;
+                        intPage = page ?? 1;
+                    }
+                    else
+                    {
+                        searchStringName = "";
+                        intPage = page ?? 1;
+                    }
+                }
+
+                ViewBag.CurrentFilter = searchStringName;
+                List<TestViewModel> StudentInventorylist = new List<TestViewModel>();
+                int intSkip = (intPage - 1) * intPageSize;
+                intTotalPageCount = db.Students
+                    .Where(x => x.StudentFirstName.Contains(searchStringName))
+                    .Count();
+
+                var datalist = db.Students
+                    .Where(x => x.StudentLastName.Contains(searchStringName) || x.StudentFirstName.Contains(searchStringName))
+                    .OrderBy(x => x.StudentLastName)
+                    .Skip(intSkip)
+                    .Take(intPageSize)
+                    .ToList();
+
+                foreach (var item in datalist)
+                {
+                    TestViewModel pvm = new TestViewModel();
+                    pvm.StudentFirstName = item.StudentFirstName;
+                    pvm.StudentMiddleName = item.StudentMiddleName;
+                    pvm.StudentLastName = item.StudentLastName;
+                    pvm.UserID = item.UserID;
+                    StudentInventorylist.Add(pvm);
+                }
+
+                // Set the number of pages
+                var _UserAsIPagedList =
+                    new StaticPagedList<TestViewModel>
+                    (
+                        StudentInventorylist, intPage, intPageSize, intTotalPageCount
+                        );
+
+                return View(_UserAsIPagedList);
+
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Error: " + ex);
+                List<TestViewModel> StudentInventorylist = new List<TestViewModel>();
+
+                return View(StudentInventorylist.ToPagedList(1, 25));
             }
 
-            return View(StudentInventorylist);
         }
 
+        [Authorize(Roles = "Student")]
         //GET: IndividualRecord
         public ActionResult IndividualRecord()
         {
@@ -127,7 +174,6 @@ namespace Testv3.Controllers
             var employmentStatus = GetAllEmploymentStatus();
             vm.EmploymentStatuses = GetSelectListItems(employmentStatus);
 
-            //
             if (student.Sex != null)
             {
                 vm.Sex = student.Sex.Trim();
@@ -138,7 +184,6 @@ namespace Testv3.Controllers
                 vm.Civil_Status__CivilStatus = student.Civil_Status__CivilStatus.Trim();
             }
             
-
             vm.Religion = student.Religion;
             vm.Nationality = student.Nationality;
             vm.Birthdate = student.Birthdate;
@@ -149,23 +194,22 @@ namespace Testv3.Controllers
             vm.BirthRank = student.BirthRank;
             vm.DistanceFromSchool = student.DistanceFromSchool;
 
-            //
             if (student.IsScholar != null)
             {
                 vm.IsScholar = (bool) student.IsScholar;
             }
-
-                
 
             vm.Scholarship = student.Scholarship;
             vm.DateOfMarriage = student.DateOfMarriage;
             vm.PlaceOfMarriage = student.PlaceOfMarriage;
             vm.SpouseName = student.SpouseName;
             vm.SpouseAge = student.SpouseAge;
+
             if (student.SpouseEducationalAttainment != null)
             {
                 vm.SpouseEducationalAttainment = student.SpouseEducationalAttainment.Trim();
             }
+
             vm.Occupation = student.Occupation;
             vm.StudentEmployerAddress = student.StudentEmployerAddress;
             vm.NumberOfChildren = student.NumberOfChildren;
@@ -173,41 +217,51 @@ namespace Testv3.Controllers
             vm.FathersName = inventory.FathersName;
             vm.FathersAddress = inventory.FathersAddress;
             vm.FathersAge = inventory.FathersAge;
+
             if (inventory.FathersEducationalAttainment != null)
             {
                 vm.FathersEducationalAttainment = inventory.FathersEducationalAttainment.Trim();
             }
+
             vm.FathersOccupation = inventory.FathersOccupation;
             vm.FathersEmployerAddress = inventory.FathersEmployerAddress;
             vm.MothersName = inventory.MothersName;
             vm.MothersAddress = inventory.MothersAddress;
             vm.MothersAge = inventory.MothersAge;
+
             if (inventory.MothersEducationalAttainment != null)
             {
                 vm.MothersEducationalAttainment = inventory.MothersEducationalAttainment.Trim();
             }
+
             vm.MothersOccupation = inventory.MothersOccupation;
             vm.MothersEmployerAddress = inventory.MothersEmployerAddress;
             vm.FamilyDwelling = inventory.FamilyDwelling;
             vm.EmergencyContactName = inventory.EmergencyContactName;
             vm.EmergencyContactNumber = inventory.EmergencyContactNumber;
+
             if (inventory.ParentsStatus != null)
             {
                 vm.ParentsStatus = inventory.ParentsStatus.Trim();
             }
+
             if (inventory.EconomicStatus != null)
             {
                 vm.EconomicStatus = inventory.EconomicStatus.Trim();
             }
+
             vm.NoOfSiblings = inventory.NoOfSiblings;
+
             if (inventory.PresentlyLivingWith != null)
             {
                 vm.PresentlyLivingWith = inventory.PresentlyLivingWith.Trim();
             }
+
             if (inventory.PresentlyStayingAt != null)
             {
                 vm.PresentlyStayingAt = inventory.PresentlyStayingAt.Trim();
             }
+
             vm.ElementarySchool = inventory.ElementarySchool;
             vm.ElementaryAddress = inventory.ElementaryAddress;
             vm.YearsAttendedElem = inventory.YearsAttendedElem;
@@ -228,10 +282,12 @@ namespace Testv3.Controllers
             vm.WhyMMCC = inventory.WhyMMCC;
             vm.ReferredToMMCCBy = inventory.ReferredToMMCCBy;
             vm.Position = inventory.Position;
+
             if (vm.EmploymentStatus != null)
             {
                 vm.EmploymentStatus = inventory.EmploymentStatus.Trim();
             }
+
             vm.Salary = inventory.Salary;
             vm.Employer = inventory.Employer;
             vm.EmployerAddress = inventory.EmployerAddress;
@@ -272,7 +328,7 @@ namespace Testv3.Controllers
             return View(vm);
         }
 
-
+        [Authorize(Roles = "Student")]
         // POST: Students/IndividualRecord
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -374,6 +430,7 @@ namespace Testv3.Controllers
                 u.PlaceOfMarriage = vm.PlaceOfMarriage;
                 u.SpouseName = vm.SpouseName;
                 u.SpouseAge = vm.SpouseAge;
+
                 if (vm.SpouseEducationalAttainment != null)
                 {
                     u.SpouseEducationalAttainment = vm.SpouseEducationalAttainment;
@@ -458,10 +515,12 @@ namespace Testv3.Controllers
                 userInv.WhyMMCC = vm.WhyMMCC;
                 userInv.ReferredToMMCCBy = vm.ReferredToMMCCBy;
                 userInv.Position = vm.Position;
+
                 if (vm.EmploymentStatus != null)
                 {
                     userInv.EmploymentStatus = vm.EmploymentStatus.Trim();
                 }
+
                 userInv.Salary = vm.Salary;
                 userInv.Employer = vm.Employer;
                 userInv.EmployerAddress = vm.EmployerAddress;
@@ -509,6 +568,7 @@ namespace Testv3.Controllers
 
             return View(vm);
         }
+
 
         private IEnumerable<string> GetAllEducationalAttainment()
         {

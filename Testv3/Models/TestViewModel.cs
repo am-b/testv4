@@ -11,6 +11,8 @@ namespace Testv3.Models
 
     {
         public string UserID { get; set; }
+        public string StudentID { get; set; }
+
         public string StudentLastName { get; set; }
         public string StudentFirstName { get; set; }
         public string StudentMiddleName { get; set; }
