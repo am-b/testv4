@@ -18,22 +18,22 @@
 }
 
 <br />
-<div >
+@using (Html.BeginForm("Index", "Admin", FormMethod.Get))
+{
+    <br />
+    <div>
         <div class="controls form-inline">
             @Html.TextBox("searchStringUserNameOrEmail", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search by email or usename" })
             <input type="submit" value="Search" class="btn btn-default" />
-                <div style="float:right;">
-                    @Html.ActionLink("Create New User", "Create", null, new { @class = "btn btn-default" })
-                    @Html.ActionLink("Edit Roles", "ViewAllRoles", null, new { @class = "btn btn-default" })
-                </div>
-        </div>  
-</div>
-    
-<br />
-@using (Html.BeginForm("Index", "Admin", FormMethod.Get))
-{
+            <div style="float:right;">
+                @Html.ActionLink("Create New User", "Create", null, new { @class = "btn btn-default" })
+                @Html.ActionLink("Edit Roles", "ViewAllRoles", null, new { @class = "btn btn-default" })
+            </div>
+        </div>
+    </div>
 
-    
+    <br />
+
 }
 <br />
 

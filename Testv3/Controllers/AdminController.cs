@@ -54,7 +54,7 @@ namespace Testv3.Controllers
         // Controllers
 
         // GET: /Admin/
-        [Authorize(Roles = "Administrator, Counselor")]
+        [Authorize(Roles = "Administrator,Counselor")]
         #region public ActionResult Index(string searchStringUserNameOrEmail)
         public ActionResult Index(string searchStringUserNameOrEmail, string currentFilter, int? page)
         {
@@ -62,7 +62,7 @@ namespace Testv3.Controllers
             try
             {
                 int intPage = 1;
-                int intPageSize = 10;
+                int intPageSize = 5;
                 int intTotalPageCount = 0;
 
                 if (searchStringUserNameOrEmail != null)
@@ -102,6 +102,7 @@ namespace Testv3.Controllers
                 foreach (var item in result)
                 {
                     ExpandedUserDTO objUserDTO = new ExpandedUserDTO();
+
                     objUserDTO.UserName = item.UserName;
                     objUserDTO.Email = item.Email;
                     objUserDTO.LockoutEndDateUtc = item.LockoutEndDateUtc;
