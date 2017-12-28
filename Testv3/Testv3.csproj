@@ -204,7 +204,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
-    <Compile Include="Controllers\ViewModelController.cs" />
+    <Compile Include="Controllers\StudentInventoryController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -2308,10 +2308,11 @@
     <Content Include="Views\Announcements\Edit.cshtml" />
     <Content Include="Views\Shared\_StudentLayout.cshtml" />
     <Content Include="Views\Shared\_DefaultLayout.cshtml" />
-    <Content Include="Views\ViewModel\IndividualRecord.cshtml" />
-    <Content Include="Views\ViewModel\Index.cshtml" />
+    <Content Include="Views\StudentInventory\IndividualRecord.cshtml" />
+    <Content Include="Views\StudentInventory\Index.cshtml" />
     <Content Include="Views\Announcements\Index.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\StudentInventory\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

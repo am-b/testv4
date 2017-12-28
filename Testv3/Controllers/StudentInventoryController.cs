@@ -14,7 +14,7 @@ using Testv3.Models;
 namespace Testv3.Controllers
 {
     
-    public class ViewModelController : DefaultController
+    public class StudentInventoryController : DefaultController
     {
         private Testv3Entities db = new Testv3Entities();
 
@@ -91,6 +91,16 @@ namespace Testv3.Controllers
             }
 
         }
+
+        [Authorize(Roles = "Counselor")]
+        // GET: Details
+        public ActionResult Details()
+        {
+
+            return View();
+        }
+
+
 
         [Authorize(Roles = "Student")]
         //GET: IndividualRecord
