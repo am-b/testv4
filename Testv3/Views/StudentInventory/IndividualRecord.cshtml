@@ -7,14 +7,24 @@
 @section Scripts{
     <script>
         $(function () {
+            $('#IfMarriedPanel').hide();
+
             $('#scholarshipRadioButton input[type=radio]').change(function () {
                 if ($(this).is(':checked')) {
                     $('#scholarshipRadioButton input[type=text]').attr('disabled', 'disabled');
                     $(this).next().removeAttr('disabled');
+                }   
+            });
+
+            $('#CivilStatusSelect').change(function () {
+                if ($('#CivilStatusSelect :selected').text().trim() == "Married") {
+                    $('#IfMarriedPanel').show();
+                }
+                else {
+                    $('#IfMarriedPanel').hide();
                 }
             });
 
-            //$('#scholarshipRadioButton input[type=radio]:first').attr('checked', 'checked').change();
         });
     </script>
 }
@@ -106,7 +116,7 @@
                                                 <div class="col-sm-4">
                                                     @Html.Label("Phone Number")<br />
                                                     <input type="number" class="form-control" value="63" style="text-align:center;background-color:#C0C0C0;width:45px;" disabled>
-                                                    @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Phone Number", style = "text-align:center",@maxlength = "10" } })
+                                                    @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = "Phone Number", style = "text-align:center", @maxlength = "10" } })
                                                     @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -135,9 +145,11 @@
                                                     @Html.ValidationMessageFor(model => model.Sex, "", new { @class = "text-danger" })
                                                 </div>                                              
                                                 <div class="col-sm-3">
+                                                    <span id ="CivilstatusDropdown">
                                                     @Html.Label("Civil Status: ")<br />
-                                                    @Html.DropDownListFor(m => m.Civil_Status__CivilStatus, Model.Civil_Status__CivilStatuss, "Civil status", new { @class = "form-control", @style = "min-width:100%;text-align:center" })
+                                                    @Html.DropDownListFor(m => m.Civil_Status__CivilStatus, Model.Civil_Status__CivilStatuss, "Civil status", new { @class = "form-control", @style = "min-width:100%;text-align:center", @id = "CivilStatusSelect"})
                                                     @Html.ValidationMessageFor(model => model.Civil_Status__CivilStatus, "", new { @class = "text-danger" })
+                                                    </span>
                                                 </div>
                                                 <div class="col-sm-3">
                                                     @Html.Label("Religion: ")<br />
@@ -206,90 +218,92 @@
                                         </div>
 
                                         <br /><br />
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading"><b><i>If married</i></b></div>
-                                            <div class="panel-body">
+                                @*<span id="IfMarriedPanel">*@
+                                    <div class="panel panel-default" id="IfMarriedPanel">
+                                        <div class="panel-heading"><b><i>If married</i></b></div>
+                                        <div class="panel-body">
 
-                                                <div class="form-group">
-                                                    <div class="controls form-inline">
-                                                        <div class="col-sm-4">
-                                                            @Html.Label("Date of marriage") <br />
-                                                            @Html.EditorFor(model => model.DateOfMarriage, new { htmlAttributes = new { @class = "form-control", @placeholder = "MM/DD/YY", style = "min-width:100%;text-align:center" } })
-                                                            @Html.ValidationMessageFor(model => model.DateOfMarriage, "", new { @class = "text-danger" })
-                                                        </div>
-                                                        <div class="col-sm-4">
-                                                            @Html.Label("Place of marriage")<br />
-                                                            @Html.EditorFor(model => model.PlaceOfMarriage, new { htmlAttributes = new { @class = "form-control", @style = "min-width:100%;text-align:center" } })
-                                                            @Html.ValidationMessageFor(model => model.PlaceOfMarriage, "", new { @class = "text-danger" })
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <div class="controls form-inline">
-                                                        <div class="col-sm-8">
-                                                            @Html.Label("Spouse Full Name")<br />
-                                                            @Html.EditorFor(model => model.SpouseName, new { htmlAttributes = new { @class = "form-control", @style = "min-width:100%;text-align:center" } })
-                                                            @Html.ValidationMessageFor(model => model.SpouseName, "", new { @class = "text-danger" })
-                                                        </div>
-                                                        <div class="col-sm-1">
-                                                            @Html.Label("Age")<br />
-                                                            @Html.EditorFor(model => model.SpouseAge, new { htmlAttributes = new { @class = "form-control", @style = "max-width:80%;text-align:center", @maxlength = "2" } })
-                                                            @Html.ValidationMessageFor(model => model.SpouseAge, "", new { @class = "text-danger" })
-                                                        </div>
-                                                        <div class="col-sm-3">
-                                                            @Html.Label("Educational Attainment")<br />
-                                                            @Html.DropDownListFor(m => m.SpouseEducationalAttainment, Model.SpouseEducationalAttainments, "Educational Attainment", new { @class = "form-control", @style = "min-width:100%;text-align:center" })
-                                                            @Html.ValidationMessageFor(model => model.SpouseEducationalAttainment, "", new { @class = "text-danger" })
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <div class="controls form-inline">
-                                                        <div class="col-sm-4">
-                                                            @Html.Label("Occupation")<br /><br />
-                                                            @Html.EditorFor(model => model.Occupation, new { htmlAttributes = new { @class = "form-control", style = "min-width:100%;text-align:center" } })
-                                                            @Html.ValidationMessageFor(model => model.Occupation, "", new { @class = "text-danger" })
-                                                        </div>
-                                                        <div class="col-sm-8">
-                                                            @Html.Label("Employer's Address")<br />
-                                                            @Html.TextAreaFor(model => model.EmployerAddress, 3, 100, new { @class = "form-control", @style = "min-width: 100%;" })
-                                                            @Html.ValidationMessageFor(model => model.EmployerAddress, "", new { @class = "text-danger" })
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <div class="form-group">
                                                 <div class="controls form-inline">
-                                                    @Html.Label("Number of children: ")
-                                                    @Html.EditorFor(model => model.NumberOfChildren, new { htmlAttributes = new { @class = "form-control", @style = "width:45px;text-align:center" } })
-                                                    @Html.ValidationMessageFor(model => model.NumberOfChildren, "", new { @class = "text-danger" })
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <div class="controls form-inline">
-                                                        <div class="col-sm-8">
-                                                            @Html.Label("Name of children/s")<br />
-                                                            <input type="text" class="form-control" style="min-width:100%;text-align:center;background-color:#C0C0C0;" disabled><br /><br />
-                                                            <input type="text" class="form-control" style="min-width:100%;text-align:center;background-color:#C0C0C0;" disabled><br /><br />
-                                                            <input type="text" class="form-control" style="min-width:100%;text-align:center;background-color:#C0C0C0;" disabled>
-                                                        </div>
-                                                        <div class="col-sm-1">
-                                                            @Html.Label("Age")<br />
-                                                            <input type="text" class="form-control" style="text-align:center;background-color:#C0C0C0;width:80%;" disabled><br /><br />
-                                                            <input type="text" class="form-control" style="text-align:center;background-color:#C0C0C0;width:80%;" disabled><br /><br />
-                                                            <input type="text" class="form-control" style="text-align:center;background-color:#C0C0C0;width:80%;" disabled>
-                                                        </div>
-                                                        <div class="col-sm-3">
-                                                            @Html.Label("Educational Attainment")<br />
-                                                            <input type="text" class="form-control" style="text-align:center;background-color:#C0C0C0;width:100%;" disabled><br /><br />
-                                                            <input type="text" class="form-control" style="min-width:100%;text-align:center;background-color:#C0C0C0;" disabled><br /><br />
-                                                            <input type="text" class="form-control" style="min-width:100%;text-align:center;background-color:#C0C0C0;" disabled>
-                                                        </div>
+                                                    <div class="col-sm-4">
+                                                        @Html.Label("Date of marriage") <br />
+                                                        @Html.EditorFor(model => model.DateOfMarriage, new { htmlAttributes = new { @class = "form-control", @placeholder = "MM/DD/YY", style = "min-width:100%;text-align:center" } })
+                                                        @Html.ValidationMessageFor(model => model.DateOfMarriage, "", new { @class = "text-danger" })
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        @Html.Label("Place of marriage")<br />
+                                                        @Html.EditorFor(model => model.PlaceOfMarriage, new { htmlAttributes = new { @class = "form-control", @style = "min-width:100%;text-align:center" } })
+                                                        @Html.ValidationMessageFor(model => model.PlaceOfMarriage, "", new { @class = "text-danger" })
                                                     </div>
                                                 </div>
-
                                             </div>
+
+                                            <div class="form-group">
+                                                <div class="controls form-inline">
+                                                    <div class="col-sm-8">
+                                                        @Html.Label("Spouse Full Name")<br />
+                                                        @Html.EditorFor(model => model.SpouseName, new { htmlAttributes = new { @class = "form-control", @style = "min-width:100%;text-align:center" } })
+                                                        @Html.ValidationMessageFor(model => model.SpouseName, "", new { @class = "text-danger" })
+                                                    </div>
+                                                    <div class="col-sm-1">
+                                                        @Html.Label("Age")<br />
+                                                        @Html.EditorFor(model => model.SpouseAge, new { htmlAttributes = new { @class = "form-control", @style = "max-width:80%;text-align:center", @maxlength = "2" } })
+                                                        @Html.ValidationMessageFor(model => model.SpouseAge, "", new { @class = "text-danger" })
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        @Html.Label("Educational Attainment")<br />
+                                                        @Html.DropDownListFor(m => m.SpouseEducationalAttainment, Model.SpouseEducationalAttainments, "Educational Attainment", new { @class = "form-control", @style = "min-width:100%;text-align:center" })
+                                                        @Html.ValidationMessageFor(model => model.SpouseEducationalAttainment, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="controls form-inline">
+                                                    <div class="col-sm-4">
+                                                        @Html.Label("Occupation")<br /><br />
+                                                        @Html.EditorFor(model => model.Occupation, new { htmlAttributes = new { @class = "form-control", style = "min-width:100%;text-align:center" } })
+                                                        @Html.ValidationMessageFor(model => model.Occupation, "", new { @class = "text-danger" })
+                                                    </div>
+                                                    <div class="col-sm-8">
+                                                        @Html.Label("Employer's Address")<br />
+                                                        @Html.TextAreaFor(model => model.EmployerAddress, 3, 100, new { @class = "form-control", @style = "min-width: 100%;" })
+                                                        @Html.ValidationMessageFor(model => model.EmployerAddress, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="controls form-inline">
+                                                @Html.Label("Number of children: ")
+                                                @Html.EditorFor(model => model.NumberOfChildren, new { htmlAttributes = new { @class = "form-control", @style = "width:45px;text-align:center" } })
+                                                @Html.ValidationMessageFor(model => model.NumberOfChildren, "", new { @class = "text-danger" })
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="controls form-inline">
+                                                    <div class="col-sm-8">
+                                                        @Html.Label("Name of children/s")<br />
+                                                        <input type="text" class="form-control" style="min-width:100%;text-align:center;background-color:#C0C0C0;" disabled><br /><br />
+                                                        <input type="text" class="form-control" style="min-width:100%;text-align:center;background-color:#C0C0C0;" disabled><br /><br />
+                                                        <input type="text" class="form-control" style="min-width:100%;text-align:center;background-color:#C0C0C0;" disabled>
+                                                    </div>
+                                                    <div class="col-sm-1">
+                                                        @Html.Label("Age")<br />
+                                                        <input type="text" class="form-control" style="text-align:center;background-color:#C0C0C0;width:80%;" disabled><br /><br />
+                                                        <input type="text" class="form-control" style="text-align:center;background-color:#C0C0C0;width:80%;" disabled><br /><br />
+                                                        <input type="text" class="form-control" style="text-align:center;background-color:#C0C0C0;width:80%;" disabled>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        @Html.Label("Educational Attainment")<br />
+                                                        <input type="text" class="form-control" style="text-align:center;background-color:#C0C0C0;width:100%;" disabled><br /><br />
+                                                        <input type="text" class="form-control" style="min-width:100%;text-align:center;background-color:#C0C0C0;" disabled><br /><br />
+                                                        <input type="text" class="form-control" style="min-width:100%;text-align:center;background-color:#C0C0C0;" disabled>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
+                                    </div>
+                                @*</span>*@
 
                                     </div>
                                 </div>
