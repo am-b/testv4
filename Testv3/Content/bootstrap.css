@@ -1452,15 +1452,37 @@ dd {
   margin-left: 0;
 }
 @media (min-width: 768px) {
-  .dl-horizontal dt {
-    float: left;
+    .dl-horizontal dt {
+        /*float: left;
     width: 160px;
     overflow: hidden;
     clear: left;
     text-align: right;
     text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+    white-space: nowrap;*/
+        float: left;
+        width: 200px;
+        overflow: auto;
+        clear: left;
+        text-align: left;
+        word-wrap: break-word;
+    }
+    .dl-horizontal-student dt {
+        /*float: left;
+        width: 310px;
+        overflow: auto;
+        clear: left;
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;*/
+        float: left;
+        width: 160px;
+        overflow: hidden;
+        clear: left;
+        text-align: right;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
   .dl-horizontal dd {
     margin-left: 180px;
   }
