@@ -2032,6 +2032,7 @@
     <Content Include="Content\Images\makatimed-logo.png" />
     <Content Include="Content\Images\psychmonth_mmcc.jpg" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\print.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\tether\tether-theme-arrows-dark.css" />
     <Content Include="Content\tether\tether-theme-arrows-dark.min.css" />
