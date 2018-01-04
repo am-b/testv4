@@ -161,6 +161,21 @@
           <Property Name="HaveTalkedWithAPsychologistWhy" Type="nvarchar(max)" />
           <Property Name="AboutYourself" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="PsychTest">
+          <Key>
+            <PropertyRef Name="QuestionID" />
+          </Key>
+          <Property Name="QuestionID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Answer" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PsychTestQuestions">
+          <Key>
+            <PropertyRef Name="QuestionID" />
+          </Key>
+          <Property Name="QuestionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Question" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
         <EntityType Name="Student">
           <Key>
             <PropertyRef Name="UserID" />
@@ -195,6 +210,16 @@
           <Property Name="StudentEmployerAddress" Type="nvarchar" MaxLength="250" />
           <Property Name="NumberOfChildren" Type="nvarchar" MaxLength="3" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
         <Association Name="FK__Counsello__UserI__3F466844">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="Counsellor" Type="Self.Counsellor" Multiplicity="*" />
@@ -217,6 +242,34 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Counsellor">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PsychTest__Quest__6FE99F9F">
+          <End Role="PsychTestQuestions" Type="Self.PsychTestQuestions" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PsychTest" Type="Self.PsychTest" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="PsychTestQuestions">
+              <PropertyRef Name="QuestionID" />
+            </Principal>
+            <Dependent Role="PsychTest">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PsychTest__UserI__6EF57B66">
+          <End Role="Student" Type="Self.Student" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PsychTest" Type="Self.PsychTest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="PsychTest">
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -313,7 +366,10 @@
           <EntitySet Name="Counsellor" EntityType="Self.Counsellor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="IndividualInventoryRecord" EntityType="Self.IndividualInventoryRecord" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PsychTest" EntityType="Self.PsychTest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PsychTestQuestions" EntityType="Self.PsychTestQuestions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__Counsello__UserI__3F466844" Association="Self.FK__Counsello__UserI__3F466844">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Counsellor" EntitySet="Counsellor" />
@@ -321,6 +377,14 @@
           <AssociationSet Name="FK__Counsello__UserI__403A8C7D" Association="Self.FK__Counsello__UserI__403A8C7D">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Counsellor" EntitySet="Counsellor" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PsychTest__Quest__6FE99F9F" Association="Self.FK__PsychTest__Quest__6FE99F9F">
+            <End Role="PsychTestQuestions" EntitySet="PsychTestQuestions" />
+            <End Role="PsychTest" EntitySet="PsychTest" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PsychTest__UserI__6EF57B66" Association="Self.FK__PsychTest__UserI__6EF57B66">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="PsychTest" EntitySet="PsychTest" />
           </AssociationSet>
           <AssociationSet Name="FK__Student__CourseI__4CA06362" Association="Self.FK__Student__CourseI__4CA06362">
             <End Role="Course" EntitySet="Course" />
@@ -392,6 +456,17 @@
           <AssociationSet Name="AspNetUserRoles" Association="Testv3Model.AspNetUserRoles">
             <End Role="AspNetRole" EntitySet="AspNetRoles" />
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
+          </AssociationSet>
+          <EntitySet Name="PsychTests" EntityType="Testv3Model.PsychTest" />
+          <EntitySet Name="PsychTestQuestions" EntityType="Testv3Model.PsychTestQuestion" />
+          <EntitySet Name="sysdiagrams" EntityType="Testv3Model.sysdiagram" />
+          <AssociationSet Name="FK__PsychTest__Quest__6FE99F9F" Association="Testv3Model.FK__PsychTest__Quest__6FE99F9F">
+            <End Role="PsychTestQuestion" EntitySet="PsychTestQuestions" />
+            <End Role="PsychTest" EntitySet="PsychTests" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PsychTest__UserI__6EF57B66" Association="Testv3Model.FK__PsychTest__UserI__6EF57B66">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="PsychTest" EntitySet="PsychTests" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Announcement">
@@ -589,6 +664,7 @@
           <NavigationProperty Name="Course" Relationship="Testv3Model.FK__Student__CourseI__3B75D760" FromRole="Student" ToRole="Course" />
           <NavigationProperty Name="IndividualInventoryRecords" Relationship="Testv3Model.FK__Individua__UserI__4316F928" FromRole="Student" ToRole="IndividualInventoryRecord" />
           <Property Name="IsScholar" Type="Boolean" />
+          <NavigationProperty Name="PsychTests" Relationship="Testv3Model.FK__PsychTest__UserI__6EF57B66" FromRole="Student" ToRole="PsychTest" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Type="Testv3Model.AspNetUser" Role="AspNetUser" Multiplicity="1">
@@ -687,6 +763,62 @@
         <Association Name="AspNetUserRoles">
           <End Type="Testv3Model.AspNetRole" Role="AspNetRole" Multiplicity="*" />
           <End Type="Testv3Model.AspNetUser" Role="AspNetUser" Multiplicity="*" />
+        </Association>
+        <EntityType Name="PsychTest">
+          <Key>
+            <PropertyRef Name="QuestionID" />
+          </Key>
+          <Property Name="QuestionID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Answer" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PsychTestQuestion" Relationship="Testv3Model.FK__PsychTest__Quest__6FE99F9F" FromRole="PsychTest" ToRole="PsychTestQuestion" />
+          <NavigationProperty Name="Student" Relationship="Testv3Model.FK__PsychTest__UserI__6EF57B66" FromRole="PsychTest" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="PsychTestQuestion">
+          <Key>
+            <PropertyRef Name="QuestionID" />
+          </Key>
+          <Property Name="QuestionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Question" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PsychTest" Relationship="Testv3Model.FK__PsychTest__Quest__6FE99F9F" FromRole="PsychTestQuestion" ToRole="PsychTest" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK__PsychTest__Quest__6FE99F9F">
+          <End Type="Testv3Model.PsychTestQuestion" Role="PsychTestQuestion" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Testv3Model.PsychTest" Role="PsychTest" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="PsychTestQuestion">
+              <PropertyRef Name="QuestionID" />
+            </Principal>
+            <Dependent Role="PsychTest">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PsychTest__UserI__6EF57B66">
+          <End Type="Testv3Model.Student" Role="Student" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Testv3Model.PsychTest" Role="PsychTest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="PsychTest">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -891,6 +1023,34 @@
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="PsychTests">
+            <EntityTypeMapping TypeName="Testv3Model.PsychTest">
+              <MappingFragment StoreEntitySet="PsychTest">
+                <ScalarProperty Name="Answer" ColumnName="Answer" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PsychTestQuestions">
+            <EntityTypeMapping TypeName="Testv3Model.PsychTestQuestion">
+              <MappingFragment StoreEntitySet="PsychTestQuestions">
+                <ScalarProperty Name="Question" ColumnName="Question" />
+                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="Testv3Model.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

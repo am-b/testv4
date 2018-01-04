@@ -22,6 +22,11 @@
         <AssociationConnector Association="Testv3Model.FK__Student__CourseI__3B75D760" />
         <AssociationConnector Association="Testv3Model.FK__Individua__UserI__4316F928" />
         <AssociationConnector Association="Testv3Model.AspNetUserRoles" />
+        <EntityTypeShape EntityType="Testv3Model.PsychTest" Width="1.5" PointX="10.5" PointY="16.125" />
+        <EntityTypeShape EntityType="Testv3Model.PsychTestQuestion" Width="1.5" PointX="8.25" PointY="25.25" />
+        <EntityTypeShape EntityType="Testv3Model.sysdiagram" Width="1.5" PointX="3.375" PointY="0.75" />
+        <AssociationConnector Association="Testv3Model.FK__PsychTest__Quest__6FE99F9F" />
+        <AssociationConnector Association="Testv3Model.FK__PsychTest__UserI__6EF57B66" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -18,6 +18,7 @@ namespace Testv3.Models
         public Student()
         {
             this.IndividualInventoryRecords = new HashSet<IndividualInventoryRecord>();
+            this.PsychTests = new HashSet<PsychTest>();
         }
     
         public string UserID { get; set; }
@@ -54,5 +55,7 @@ namespace Testv3.Models
         public virtual Course Course { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<IndividualInventoryRecord> IndividualInventoryRecords { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PsychTest> PsychTests { get; set; }
     }
 }
