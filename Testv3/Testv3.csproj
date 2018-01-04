@@ -203,6 +203,7 @@
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\PsychTestController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="Controllers\StudentInventoryController.cs" />
     <Compile Include="Global.asax.cs">
@@ -235,7 +236,17 @@
       <DependentUpon>Testv3.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\PsychTest.cs">
+      <DependentUpon>Testv3.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PsychTestQuestion.cs">
+      <DependentUpon>Testv3.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PsychTestViewModel.cs" />
     <Compile Include="Models\Student.cs">
+      <DependentUpon>Testv3.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>Testv3.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Testv3.Context.cs">
@@ -2315,6 +2326,9 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\StudentInventory\Details.cshtml" />
     <Content Include="Views\StudentInventory\View.cshtml" />
+    <Content Include="Views\PsychTest\CreateTest.cshtml" />
+    <Content Include="Views\PsychTest\Index.cshtml" />
+    <Content Include="Views\PsychTest\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

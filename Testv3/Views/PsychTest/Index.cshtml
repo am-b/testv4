@@ -1,0 +1,82 @@
+﻿@model PagedList.IPagedList<Testv3.Models.PsychTestViewModel>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Index";
+}
+@if (TempData["Message"] != null)
+{
+    <br />
+    <div class="alert alert-success alert-dismissable">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>@TempData["Message"]</strong>
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <br />
+    <div class="alert alert-danger alert-dismissable">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>@TempData["Error"]</strong>
+    </div>
+}
+@using (Html.BeginForm("Index", "PsychTest", FormMethod.Get))
+{
+    <br />
+    <div class="controls form-inline">
+        @Html.TextBox("searchStringQuestion", ViewBag.CurrentFilter as string, new { @class = "form-control"})
+        <input type="submit" value="Search" class="btn btn-default" />
+        <div style="float:right;">
+            @Html.ActionLink("Add New Question", "CreateTest", null, new { @class = "btn btn-default" })
+        </div>
+    </div>
+
+    <br />
+}
+
+
+
+<table class="table">
+    <tr>
+        <th>
+            Question no.
+        </th>
+        <th>
+            Question
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuestionID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Question)
+            </td>
+            <td>
+
+                @Html.ActionLink("View", "View", new { QuestionID = item.QuestionID }) |
+                @Html.ActionLink("Edit", "Edit", new { QuestionID = item.QuestionID }) |
+                @Html.ActionLink("Delete", "Delete", new { QuestionID = item.QuestionID })
+            </td>
+        </tr>
+    }
+
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model,
+    page => Url.Action("Index",
+    new
+    {
+        page,
+        searchStringQuestion = ViewBag.searchStringQuestion,
+        currentFilter = ViewBag.CurrentFilter
+    }))
+<hr />
