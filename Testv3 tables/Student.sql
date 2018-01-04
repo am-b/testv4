@@ -1,7 +1,7 @@
 USE [Testv3]
 GO
 
-/****** Object:  Table [dbo].[Student]    Script Date: 12/23/2017 12:06:39 AM ******/
+/****** Object:  Table [dbo].[Student]    Script Date: 1/4/2018 6:59:49 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -29,6 +29,7 @@ CivilStatus] [nchar](10) NULL,
 	[Hobbies] [nvarchar](max) NULL,
 	[BirthRank] [nchar](10) NULL,
 	[DistanceFromSchool] [nvarchar](50) NULL,
+	[IsScholar] [bit] NULL,
 	[Scholarship] [nvarchar](250) NULL,
 	[DateOfMarriage] [date] NULL,
 	[PlaceOfMarriage] [nvarchar](250) NULL,
