@@ -1,12 +1,27 @@
 ﻿@model PagedList.IPagedList<Testv3.Models.Announcement>
 @using PagedList.Mvc;
 
+@if (TempData["Message"] != null)
+{
+    <br />
+    <div class="alert alert-success alert-dismissable">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>@TempData["Message"]</strong>
+    </div>
+}
 
+@if (TempData["Error"] != null)
+{
+    <br />
+    <div class="alert alert-danger alert-dismissable">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>@TempData["Error"]</strong>
+    </div>
+}
 @{
     ViewBag.Title = "Home Page";
 }
 <br />
-@*<p class="title3">@ViewBag.Message</p>*@
 
 <div class="jumbotron">
     <div class="body-content">
@@ -46,22 +61,42 @@
         @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
         </div>
 </div>
-
 <div class="row">
-    <div class="col-md-6">
-        <h2>Individual Inventory Record</h2>
-        <p>
-             All information from the filled out forms are considered confidential and will be used by the Guidance Counselors in communicating with parents or guardians regarding concerns about students.
-        </p>
-        <p><a class="btn btn-default" href="/StudentInventory/IndividualRecord">Edit and update your individual record &raquo;</a></p>
-    </div>
-
-    <div class="col-md-6">
+    <div class="col-md-12">
         <h2>Set an appointment with your counselor</h2>
-        <p>Counseling services at Makati Medical Center College are in place to help students identify and clarify personal, career and educational goals.  
-           The intent is to help students choose options that will improve the quality of their lives.
+        <p>
+            Counseling services at Makati Medical Center College are in place to help students identify and clarify personal, career and educational goals.
+            The intent is to help students choose options that will improve the quality of their lives.
         </p>
         <p><a class="btn btn-default" href="">Click here to schedule an appointment &raquo;</a></p>
     </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="div1">
+            <h2>Individual Inventory Record</h2>
+            <p>
+                All information from the filled out forms are considered confidential and will be used by the Guidance Counselors in communicating with parents or guardians regarding concerns about students.
+            </p>
+            <p><a class="btn btn-default" href="/StudentInventory/IndividualRecord">Edit and update your individual record &raquo;</a></p>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <h2>Survey Form for Students</h2>
+        <p>
+            The Guidance Office is currently updating your records and we would like to gather information directly from you. All information will be treated with utmost confidentiality. 
+        </p>
+        <p><a class="btn btn-default" href="">Answer the survey &raquo;</a></p>
+    </div>
+
+    <div class="col-md-4">
+        <h2>Psychological Test for Students</h2>
+        <p>
+            All information from the filled out forms are considered confidential and will be used by the Guidance Counselors in communicating with parents or guardians regarding concerns about students.
+        </p>
+        <p><a class="btn btn-default" href="/PsychTest/Student">Answer the Psychological Test &raquo;</a></p>
+    </div>
+
 
 </div>
