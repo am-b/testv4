@@ -25,78 +25,108 @@
 
 <div class="jumbotron">
     <div class="body-content">
-    <h2>Announcements</h2>
-    <table class="table">
-        <tr>
-            <th>
-                Date Posted
-            </th>
-            <th>
-                Title
-            </th>
-            <th>
-                Body
-            </th>
-
-        </tr>
-
-        @foreach (var item in Model)
-        {
+        <h2>Announcements</h2>
+        <table class="table">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AnnouncementDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AnnouncementTitle)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AnnouncementBody)
-                </td>
-            </tr>
-        }
+                <th>
+                    Date Posted
+                </th>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Body
+                </th>
 
-    </table>
- 
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AnnouncementDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AnnouncementTitle)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AnnouncementBody)
+                    </td>
+                </tr>
+            }
+
+        </table>
+
         Showing page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
         @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
-        </div>
+    </div>
 </div>
+
+
 <div class="row">
-    <div class="col-md-12">
-        <h2>Set an appointment with your counselor</h2>
-        <p>
-            Counseling services at Makati Medical Center College are in place to help students identify and clarify personal, career and educational goals.
+    <div class="col-lg-6 col-xs-6">
+        <div class="small-box bg-purple">
+            <div class="inner">
+                <h3>Survey</h3>
+                <p>The Guidance Office is currently updating your records and we would like to gather information directly from you. All information will be treated with utmost confidentiality.<br /> </p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-users"></i>
+            </div>
+            <a class="small-box-footer" href="">
+                Answer the survey <i class="fa fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-xs-6">
+        <div class="small-box bg-orange">
+            <div class="inner">
+                <h3>Psychological Test</h3>
+                <p>
+                    All information from the filled out forms are considered confidential and will be used by the Guidance Counselors in communicating with parents or guardians regarding concerns about students.
+                </p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-user-md"></i>
+            </div>
+            <a class="small-box-footer" href="/PsychTest/Student">
+                Answer the Psychological Test <i class="fa fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6 col-xs-6">
+        <div class="small-box bg-aqua">
+            <div class="inner">
+                <h3>Individual Record</h3>
+                <p>All information from the filled out forms are considered confidential and will be used by the Guidance Counselors in communicating with parents or guardians regarding concerns about students.</p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-address-book-o"></i>
+            </div>
+            <a class="small-box-footer" href="/StudentInventory/IndividualRecord">
+                Edit and update your individual record <i class="fa fa-arrow-circle-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-xs-6">
+        <div class="small-box bg-olive">
+            <div class="inner">
+                <h3>Counseling</h3>
+                <p>Counseling services at Makati Medical Center College are in place to help students identify and clarify personal, career and educational goals.
             The intent is to help students choose options that will improve the quality of their lives.
-        </p>
-        <p><a class="btn btn-default" href="">Click here to schedule an appointment &raquo;</a></p>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-4">
-        <div class="div1">
-            <h2>Individual Inventory Record</h2>
-            <p>
-                All information from the filled out forms are considered confidential and will be used by the Guidance Counselors in communicating with parents or guardians regarding concerns about students.
-            </p>
-            <p><a class="btn btn-default" href="/StudentInventory/IndividualRecord">Edit and update your individual record &raquo;</a></p>
+                </p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-calendar"></i>
+            </div>
+            <a class="small-box-footer" href="#">
+                Set an appointment with your counselor <i class="fa fa-arrow-circle-right"></i>
+            </a>
         </div>
     </div>
-
-    <div class="col-md-4">
-        <h2>Survey Form for Students</h2>
-        <p>
-            The Guidance Office is currently updating your records and we would like to gather information directly from you. All information will be treated with utmost confidentiality. 
-        </p>
-        <p><a class="btn btn-default" href="">Answer the survey &raquo;</a></p>
-    </div>
-
-    <div class="col-md-4">
-        <h2>Psychological Test for Students</h2>
-        <p>
-            All information from the filled out forms are considered confidential and will be used by the Guidance Counselors in communicating with parents or guardians regarding concerns about students.
-        </p>
-        <p><a class="btn btn-default" href="/PsychTest/Student">Answer the Psychological Test &raquo;</a></p>
-    </div>
-
-
 </div>
