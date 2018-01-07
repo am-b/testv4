@@ -1,4 +1,5 @@
-﻿using PagedList;
+﻿using Microsoft.AspNet.Identity;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -45,13 +46,13 @@ namespace Testv3.Controllers
                 }
 
                 ViewBag.CurrentFilter = searchStringQuestion;
-                List<PsychTestViewModel>PsychTestList = new List<PsychTestViewModel>();
+                List<PsychTestViewModel> PsychTestList = new List<PsychTestViewModel>();
                 int intSkip = (intPage - 1) * intPageSize;
-                intTotalPageCount = db.PsychTestQuestions
+                intTotalPageCount = db.Questions
                     .Where(x => x.Question.Contains(searchStringQuestion))
                     .Count();
 
-                var datalist = db.PsychTestQuestions
+                var datalist = db.Questions
                     .Where(x => x.Question.Contains(searchStringQuestion))
                     .OrderBy(x => x.QuestionID)
                     .Skip(intSkip)
@@ -92,8 +93,9 @@ namespace Testv3.Controllers
         {
             GetCurrentUserInViewBag();
 
-            PsychTestQuestion psychTest = new PsychTestQuestion();
+            Questions psychTest = new Questions();
             PsychTestViewModel pvm = new PsychTestViewModel();
+
             pvm.QuestionID = psychTest.QuestionID;
             pvm.Question = psychTest.Question;
 
@@ -104,25 +106,26 @@ namespace Testv3.Controllers
         [Authorize(Roles = "Counselor")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateTest([Bind(Include = "QuestionID,Question")] PsychTestViewModel psychTestViewModel)
+        public ActionResult CreateTest([Bind(Include = "QuestionnaireID,QuestionID,Question")] PsychTestViewModel psychTestViewModel)
         {
             GetCurrentUserInViewBag();
-            PsychTestQuestion psychTest = new PsychTestQuestion();
-            
+
+            Questions Questions = new Questions();
 
             if (ModelState.IsValid)
             {
+                //put question in Questions Table
+                Questions.QuestionID = psychTestViewModel.QuestionID;
+                Questions.Question = psychTestViewModel.Question;
 
-                psychTest.QuestionID = psychTestViewModel.QuestionID;
-                psychTest.Question = psychTestViewModel.Question;
-
-                db.PsychTestQuestions.Add(psychTest);
+                db.Questions.Add(Questions);
                 db.SaveChanges();
-                TempData["Message"] = "Question " + psychTest.QuestionID + " successfully added!";
+
+                TempData["Message"] = "Question " + Questions.QuestionID + " successfully added!";
             }
             else
             {
-                TempData["Error"] = "Question " + psychTest.QuestionID + " not added!";
+                TempData["Error"] = "Question " + Questions.QuestionID + " not added!";
             }
 
             return RedirectToAction("Index");
@@ -137,14 +140,14 @@ namespace Testv3.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PsychTestQuestion psychTestQuestion = db.PsychTestQuestions.Find(QuestionID);
-            if (psychTestQuestion == null)
+            Questions Questions = db.Questions.Find(QuestionID);
+            if (Questions == null)
             {
                 return HttpNotFound();
             }
 
             PsychTestViewModel ptvm = new PsychTestViewModel();
-            ptvm.Question = psychTestQuestion.Question;
+            ptvm.Question = Questions.Question;
 
             return View(ptvm);
         }
@@ -155,37 +158,131 @@ namespace Testv3.Controllers
         public ActionResult Edit(int? QuestionID, PsychTestViewModel ptvm)
         {
             GetCurrentUserInViewBag();
-            PsychTestQuestion psychTestQuestion = db.PsychTestQuestions.Find(QuestionID);
-            if (psychTestQuestion == null)
+            Questions Questions = db.Questions.Find(QuestionID);
+            if (Questions == null)
             {
                 return HttpNotFound();
             }
 
             if (ModelState.IsValid)
             {
-                psychTestQuestion.Question = ptvm.Question;
+                Questions.Question = ptvm.Question;
                 db.SaveChanges();
 
-                TempData["Message"] = "Question " + psychTestQuestion.QuestionID + " successfully updated!";
+                TempData["Message"] = "Question " + Questions.QuestionID + " successfully updated!";
             }
             else
             {
-                TempData["Error"] = "Question " + psychTestQuestion.QuestionID + " not updated!";
+                TempData["Error"] = "Question " + Questions.QuestionID + " not updated!";
             }
 
             return RedirectToAction("Index");
 
         }
+
         // DELETE: /PsychologicalTest/Delete
         [Authorize(Roles = "Counselor")]
         public ActionResult Delete(int QuestionID)
         {
             GetCurrentUserInViewBag();
 
-            PsychTestQuestion psychTestQuestion = db.PsychTestQuestions.Find(QuestionID);
-            db.PsychTestQuestions.Remove(psychTestQuestion);
+            Questions Questions = db.Questions.Find(QuestionID);
+            db.Questions.Remove(Questions);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        // GET: PsychologicalTest/Student
+        [Authorize(Roles = "Student")]
+        public ActionResult Student()
+        {
+            GetCurrentUserInViewBag();
+
+            var currentUserId = User.Identity.GetUserId();
+
+            List<PsychTestViewModel> PsychTestList = new List<PsychTestViewModel>();
+
+            //get lahat ng questions sa Questions table
+            var datalist = db.Questions
+                    .OrderBy(x => x.QuestionID)
+                    .ToList();
+
+
+            foreach (var item in datalist)
+            {
+                PsychTestViewModel pvm = new PsychTestViewModel();
+
+                //lagay sa vm yung value sa db
+                pvm.QuestionID = item.QuestionID;
+                pvm.Question = item.Question;
+                PsychTestList.Add(pvm);
+            }
+
+            //get lahat ng answers sa Answers table
+            var answers = db.Answers
+                    .OrderBy(x => x.QuestionID)
+                    .ToList();
+
+
+            foreach (var item in answers)
+            {
+
+                //check if may row na may laman ang userID, questionID, answerid, answer
+                var check = db.Answers
+                    .Where(x => x.AnswerID == item.AnswerID && x.QuestionID == item.QuestionID && x.UserID == currentUserId && x.Answer == item.Answer)
+                    .ToList();
+
+                if (check.Count() != 0)
+                {
+                    TempData["Message"] = "You have already completed this test!";
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
+            return View(PsychTestList);
+
+        }
+
+        // POST: PsychologicalTest/Student
+        [Authorize(Roles = "Student")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Student(List<PsychTestViewModel> pvm)
+        {
+            GetCurrentUserInViewBag();
+
+            var currentUserId = User.Identity.GetUserId();
+
+            List<PsychTestViewModel> PsychTestList = new List<PsychTestViewModel>();
+
+                foreach (PsychTestViewModel item in pvm)
+                {
+
+                    //check if may row na may laman ang userID, questionID, answerid, answer
+                    var check = db.Answers
+                        .Where(x => x.AnswerID == item.AnswerID && x.QuestionID == item.QuestionID && x.UserID == currentUserId && x.Answer == item.Answer)
+                        .ToList(); 
+
+                    if (check.Count() == 0)
+                    {
+                        //query ang row where answerid = answerid sa vm, syempre dapat wala
+                        //var newTestId = db.Answers.FirstOrDefault(d => d.QuestionID == item.QuestionID);
+                        var newTestId = db.Answers.FirstOrDefault(d => d.AnswerID == item.AnswerID);
+
+                        //create ng bagong entry and lagyan ng laman the ff:
+                        newTestId = db.Answers.Create();
+                        newTestId.AnswerID = item.AnswerID;
+                        newTestId.QuestionID = item.QuestionID;
+                        newTestId.UserID = currentUserId;
+                        newTestId.Answer = item.Answer;
+
+                        db.Answers.Add(newTestId);
+                        db.SaveChanges();
+                        TempData["Message"] = "Survey successfully completed!";
+                    }
+                }
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }
