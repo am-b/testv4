@@ -34,10 +34,8 @@ namespace Testv3.Models
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<IndividualInventoryRecord> IndividualInventoryRecords { get; set; }
         public virtual DbSet<Student> Students { get; set; }
-        public virtual DbSet<PsychTest> PsychTests { get; set; }
-        public virtual DbSet<PsychTestQuestion> PsychTestQuestions { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
-
-        public System.Data.Entity.DbSet<Testv3.Models.PsychTestViewModel> PsychTestViewModels { get; set; }
+        public virtual DbSet<Questions> Questions { get; set; }
+        public virtual DbSet<Answers> Answers { get; set; }
     }
 }

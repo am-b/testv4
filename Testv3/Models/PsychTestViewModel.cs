@@ -8,16 +8,17 @@ namespace Testv3.Models
 {
     public class PsychTestViewModel
     {
-        //PsychTestQuestion
-        [Required]
-        [Key]
+        //PsychTestQuestion Questions
         public int QuestionID { get; set; }
+        public int QuestionnaireID { get; set; }
         [Required]
         public string Question { get; set; }
 
-        //PsychTest
+        //PsychTest Answers
         public string UserID { get; set; }
-        [Required]
+        public int AnswerID { get; set; }
+        [Required(ErrorMessage = "Select your answer")]
         public int Answer { get; set; }
+
     }
 }

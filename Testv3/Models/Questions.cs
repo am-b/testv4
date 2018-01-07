@@ -12,13 +12,18 @@ namespace Testv3.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class PsychTest
+    public partial class Questions
     {
-        public int QuestionID { get; set; }
-        public string UserID { get; set; }
-        public int Answer { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Questions()
+        {
+            this.Answers = new HashSet<Answers>();
+        }
     
-        public virtual PsychTestQuestion PsychTestQuestion { get; set; }
-        public virtual Student Student { get; set; }
+        public int QuestionID { get; set; }
+        public string Question { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Answers> Answers { get; set; }
     }
 }

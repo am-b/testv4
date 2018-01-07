@@ -12,11 +12,14 @@ namespace Testv3.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class PsychTestQuestion
+    public partial class Answers
     {
+        public int AnswerID { get; set; }
         public int QuestionID { get; set; }
-        public string Question { get; set; }
+        public string UserID { get; set; }
+        public int Answer { get; set; }
     
-        public virtual PsychTest PsychTest { get; set; }
+        public virtual Questions Questions { get; set; }
+        public virtual Student Student { get; set; }
     }
 }
