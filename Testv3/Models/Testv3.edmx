@@ -176,6 +176,7 @@
           </Key>
           <Property Name="QuestionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Question" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="QuestionTag" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Student">
           <Key>
@@ -782,6 +783,7 @@
           <Property Name="QuestionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Question" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Answers" Relationship="Testv3Model.FK__Answers__Questio__45BE5BA9" FromRole="Questions" ToRole="Answers" />
+          <Property Name="QuestionTag" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Answers">
           <Key>
@@ -1039,6 +1041,7 @@
           <EntitySetMapping Name="Questions">
             <EntityTypeMapping TypeName="Testv3Model.Questions">
               <MappingFragment StoreEntitySet="Questions">
+                <ScalarProperty Name="QuestionTag" ColumnName="QuestionTag" />
                 <ScalarProperty Name="Question" ColumnName="Question" />
                 <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
               </MappingFragment>

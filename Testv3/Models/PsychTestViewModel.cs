@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Testv3.Models
 {
@@ -13,6 +14,9 @@ namespace Testv3.Models
         public int QuestionnaireID { get; set; }
         [Required]
         public string Question { get; set; }
+
+        public string QuestionTag { get; set; }
+        public IEnumerable<SelectListItem> QuestionTags { get; set; }
 
         //PsychTest Answers
         public string UserID { get; set; }
