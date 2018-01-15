@@ -1,7 +1,7 @@
 USE [Testv3]
 GO
 
-/****** Object:  Table [dbo].[Questions]    Script Date: 1/8/2018 12:22:57 AM ******/
+/****** Object:  Table [dbo].[Questions]    Script Date: 1/15/2018 3:44:12 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -11,6 +11,7 @@ GO
 CREATE TABLE [dbo].[Questions](
 	[QuestionID] [int] IDENTITY(1,1) NOT NULL,
 	[Question] [nvarchar](max) NOT NULL,
+	[QuestionTag] [nvarchar](50) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[QuestionID] ASC
