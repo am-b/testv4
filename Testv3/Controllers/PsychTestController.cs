@@ -96,6 +96,14 @@ namespace Testv3.Controllers
             Questions psychTest = new Questions();
             PsychTestViewModel pvm = new PsychTestViewModel();
 
+            var questionTag = GetAllQuestionTags();
+            pvm.QuestionTags = GetSelectListItems(questionTag);
+            
+            if (psychTest.QuestionTag != null)
+            {
+                pvm.QuestionTag = psychTest.QuestionTag.Trim();
+            }
+
             pvm.QuestionID = psychTest.QuestionID;
             pvm.Question = psychTest.Question;
 
@@ -106,7 +114,7 @@ namespace Testv3.Controllers
         [Authorize(Roles = "Counselor")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateTest([Bind(Include = "QuestionnaireID,QuestionID,Question")] PsychTestViewModel psychTestViewModel)
+        public ActionResult CreateTest([Bind(Include = "QuestionID,Question,QuestionTag")] PsychTestViewModel psychTestViewModel)
         {
             GetCurrentUserInViewBag();
 
@@ -115,6 +123,14 @@ namespace Testv3.Controllers
             if (ModelState.IsValid)
             {
                 //put question in Questions Table
+                var questionTag = GetAllQuestionTags();
+                psychTestViewModel.QuestionTags = GetSelectListItems(questionTag);
+
+                if (psychTestViewModel.QuestionTag != null)
+                {
+                    Questions.QuestionTag = psychTestViewModel.QuestionTag;
+                }
+
                 Questions.QuestionID = psychTestViewModel.QuestionID;
                 Questions.Question = psychTestViewModel.Question;
 
@@ -283,6 +299,41 @@ namespace Testv3.Controllers
                 }
 
             return RedirectToAction("Index", "Home");
+        }
+
+        // GET: PsychologicalTest/Student
+        [Authorize(Roles = "Counselor")]
+        public ActionResult Responses()
+        {
+
+
+            return View();
+        }
+
+        private IEnumerable<string> GetAllQuestionTags()
+        {
+            return new List<string>
+            {
+                "Physical",
+                "Emotional",
+                "Social",
+            };
+        }
+
+        private IEnumerable<SelectListItem> GetSelectListItems(IEnumerable<string> elements)
+        {
+            var selectList = new List<SelectListItem>();
+
+            foreach (var element in elements)
+            {
+                selectList.Add(new SelectListItem
+                {
+                    Value = element,
+                    Text = element
+                });
+            }
+
+            return selectList;
         }
     }
 }
