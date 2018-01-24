@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace Testv3.Controllers
     public class PsychTestController : DefaultController
     {
         private Testv3Entities db = new Testv3Entities();
+
 
         // GET: PsychTest
         [Authorize(Roles = "Counselor")]
@@ -107,6 +109,13 @@ namespace Testv3.Controllers
             pvm.QuestionID = psychTest.QuestionID;
             pvm.Question = psychTest.Question;
 
+            if (psychTest.IsQuestionPositive != null)
+            {
+                pvm.IsQuestionPositive = (bool)psychTest.IsQuestionPositive;
+            }
+
+            
+
             return View(pvm);
         }
 
@@ -133,6 +142,19 @@ namespace Testv3.Controllers
 
                 Questions.QuestionID = psychTestViewModel.QuestionID;
                 Questions.Question = psychTestViewModel.Question;
+
+                bool IsQuestionPositive = false;
+                if (psychTestViewModel.IsQuestionPositive == true)
+                {
+                    IsQuestionPositive = true;
+                }
+                else
+                {
+                    IsQuestionPositive = false;
+                }
+
+                Questions.IsQuestionPositive = IsQuestionPositive;
+                
 
                 db.Questions.Add(Questions);
                 db.SaveChanges();
@@ -164,6 +186,20 @@ namespace Testv3.Controllers
 
             PsychTestViewModel ptvm = new PsychTestViewModel();
             ptvm.Question = Questions.Question;
+            var questionTag = GetAllQuestionTags();
+            ptvm.QuestionTags = GetSelectListItems(questionTag);
+
+            if (Questions.QuestionTag != null)
+            {
+                ptvm.QuestionTag = Questions.QuestionTag.Trim();
+            }
+
+            if (Questions.IsQuestionPositive != null)
+            {
+                ptvm.IsQuestionPositive = (bool)Questions.IsQuestionPositive;
+            }
+
+            
 
             return View(ptvm);
         }
@@ -183,6 +219,28 @@ namespace Testv3.Controllers
             if (ModelState.IsValid)
             {
                 Questions.Question = ptvm.Question;
+
+                var questionTag = GetAllQuestionTags();
+                ptvm.QuestionTags = GetSelectListItems(questionTag);
+
+                if (ptvm.QuestionTag != null)
+                {
+                    Questions.QuestionTag = ptvm.QuestionTag;
+                }
+
+                bool IsQuestionPositive = false;
+                if (ptvm.IsQuestionPositive == true)
+                {
+                    IsQuestionPositive = true;
+                }
+                else
+                {
+                    IsQuestionPositive = false;
+                }
+
+                Questions.IsQuestionPositive = IsQuestionPositive;
+                
+
                 db.SaveChanges();
 
                 TempData["Message"] = "Question " + Questions.QuestionID + " successfully updated!";
@@ -291,8 +349,9 @@ namespace Testv3.Controllers
                         newTestId.QuestionID = item.QuestionID;
                         newTestId.UserID = currentUserId;
                         newTestId.Answer = item.Answer;
+                        newTestId.TestCompletionDate = DateTime.Now;
 
-                        db.Answers.Add(newTestId);
+                    db.Answers.Add(newTestId);
                         db.SaveChanges();
                         TempData["Message"] = "Survey successfully completed!";
                     }
@@ -301,14 +360,258 @@ namespace Testv3.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        // GET: PsychologicalTest/Student
-        [Authorize(Roles = "Counselor")]
-        public ActionResult Responses()
-        {
+        public ContentResult GetData()
+      {
+            var currentUserId = User.Identity.GetUserId();
+            List<PsychTestViewModel> pvm = new List<PsychTestViewModel>();
+            var results = db.Answers.ToList();
 
+            foreach (Answers answers in results)
+            {
+                PsychTestViewModel viewmodel = new PsychTestViewModel();
+                viewmodel.QuestionID = answers.QuestionID;
+                viewmodel.Answer = answers.Answer;
 
-            return View();
+                
+
+                pvm.Add(viewmodel);
+            }
+
+            return Content(JsonConvert.SerializeObject(pvm), "application/json");
         }
+
+        // GET: PsychologicalTest/Responses
+        [Authorize(Roles = "Counselor")]
+        public ActionResult Responses(string UserID)
+        {
+            GetCurrentUserInViewBag();
+
+            var value = db.Answers
+                .Where( a => a.UserID == UserID)
+                .OrderByDescending(x => x.TestCompletionDate)
+                .Select(y => y.TestCompletionDate)
+                .First().ToString();
+
+            ViewBag.TestCompletionDate = value;
+
+            List<PsychTestViewModel> PsychTestList = new List<PsychTestViewModel>();
+
+            var datalist =
+                        (from ans in db.Answers
+                                 join question in db.Questions
+                                 on ans.QuestionID equals question.QuestionID
+                                 where ans.UserID == UserID
+                                 select new { Answer = ans.Answer, QuestionID = question.QuestionID, Question = question.Question });
+
+            foreach (var item in datalist)
+            {
+                PsychTestViewModel pvm = new PsychTestViewModel();
+
+                pvm.QuestionID = item.QuestionID;
+                pvm.Question = item.Question;
+                pvm.Answer = item.Answer;
+                PsychTestList.Add(pvm);
+            }
+
+            var answers = db.Answers
+                    .OrderBy(x => x.QuestionID)
+                    .ToList();
+
+            var u = db.Students.FirstOrDefault(d => d.UserID == UserID);
+
+            if ((u.StudentFirstName != null) && (u.StudentLastName != null))
+            {
+                ViewBag.Student = u.StudentFirstName.Trim() + " " + " " + u.StudentLastName.Trim();
+            }
+            else
+            {
+                ViewBag.Student = "Error: User has no name record.";
+            }
+
+            //loop through selectlist para dynamic si questiontag?
+            //PHYSICAL
+            var totalNumberOfNegativeQuestions = from question in db.Questions
+                                            where question.IsQuestionPositive == false
+                                            select new { Tag = question.IsQuestionPositive };
+
+            //PHYSICAL
+            var numberOfPhysicalQuestions = from question in db.Questions
+                                    where question.QuestionTag == "Physical"
+                                    select new { Tag = question.QuestionTag };
+
+
+            var disagreeInPosPhysicalQuery =
+                                (from ans in db.Answers
+                                 join question in db.Questions
+                                 on ans.QuestionID equals question.QuestionID
+                                 where ans.UserID == UserID && ans.Answer == 3 && question.QuestionTag == "Physical" && question.IsQuestionPositive == true
+                                 select new { Answer = ans.Answer });
+
+
+            //query Number of AGREE(Negative) in PHYSICAL
+            var agreeInNegPhysicalQuery =
+                                (from ans in db.Answers
+                                 join question in db.Questions on ans.QuestionID equals question.QuestionID
+                                 where ans.UserID == UserID && ans.Answer == 1 && question.QuestionTag == "Physical" && question.IsQuestionPositive == false
+                                 select new { Answer = ans.Answer });
+
+
+            //EMOTIONAL
+            var numberOfEmotionalQuestions = from question in db.Questions
+                                             where question.QuestionTag == "Emotional"
+                                             select new { Tag = question.QuestionTag };
+
+
+            var disagreeInPosEmotionalQuery =
+                                (from ans in db.Answers
+                                 join question in db.Questions
+                                 on ans.QuestionID equals question.QuestionID
+                                 where ans.UserID == UserID && ans.Answer == 3 && question.QuestionTag == "Emotional" && question.IsQuestionPositive == true
+                                 select new { Answer = ans.Answer });
+
+            //query Number of AGREE(Negative) in Emotional
+            var agreeInNegEmotionalQuery = from ans in db.Answers
+                                           join question in db.Questions on ans.QuestionID equals question.QuestionID
+                                           where ans.UserID == UserID && ans.Answer == 1 && question.QuestionTag == "Emotional" && question.IsQuestionPositive == false
+                                           select new { Answer = ans.Answer };
+
+
+            //Social
+            var numberOfSocialQuestions = from question in db.Questions
+                                          where question.QuestionTag == "Social"
+                                          select new { Tag = question.QuestionTag };
+
+            //query Number of DISAGREE(Positive) in Social
+            var disagreeInPosSocialQuery =
+                                        (from ans in db.Answers
+                                         join question in db.Questions
+                                         on ans.QuestionID equals question.QuestionID
+                                         where ans.UserID == UserID && ans.Answer == 3 && question.QuestionTag == "Social" && question.IsQuestionPositive == true
+                                         select new { Answer = ans.Answer });
+
+            //query Number of AGREE(Negative) in Social
+            var agreeInNegSocialQuery = from ans in db.Answers
+                                        join question in db.Questions on ans.QuestionID equals question.QuestionID
+                                        where ans.UserID == UserID && ans.Answer == 1 && question.QuestionTag == "Social" && question.IsQuestionPositive == false
+                                        select new { Answer = ans.Answer };
+
+            int NumberOfPhysicalQuestions = numberOfPhysicalQuestions.Count();
+            int TotalNumberOfNegativeQuestions = totalNumberOfNegativeQuestions.Count();
+            int DiagreeInPosPhysicalQuery = disagreeInPosPhysicalQuery.Count();
+            int AgreeInNegPhysicalQuery = agreeInNegPhysicalQuery.Count();
+            int TotalNegativeAnswersInPhysical = DiagreeInPosPhysicalQuery + AgreeInNegPhysicalQuery;
+
+            int NumberOfEmotionalQuestions = numberOfEmotionalQuestions.Count();
+            int DisagreeInPosEmotionalQuery = disagreeInPosEmotionalQuery.Count();
+            int AgreeInNegEmotionalQuery = agreeInNegEmotionalQuery.Count();
+            int TotalNegativeAnswersInEmotional = DisagreeInPosEmotionalQuery + AgreeInNegEmotionalQuery;
+
+            int NumberOfSocialQuestions = numberOfSocialQuestions.Count();
+            int DisagreeInPosSocialQuery = disagreeInPosSocialQuery.Count();
+            int AgreeInNegSocialQuery = agreeInNegSocialQuery.Count();
+            int TotalNegativeAnswersInSocial = DisagreeInPosEmotionalQuery + AgreeInNegEmotionalQuery;
+
+            int TotalNumberOfNegativeAnswers = TotalNegativeAnswersInPhysical + TotalNegativeAnswersInEmotional + TotalNegativeAnswersInSocial;
+            
+            //PHYSICAL
+            int percentageOfPhysicalIssues = ((TotalNegativeAnswersInPhysical) * 200 + TotalNumberOfNegativeAnswers) / (TotalNumberOfNegativeAnswers * 2);
+            //If positive ang question, 1 = good, 2= meh, 3 = bad
+            //If negative ang question, 1 = bad, 2 = meh, 3 = good
+
+            ViewBag.numOfPhysicalIssues = TotalNegativeAnswersInPhysical;
+            ViewBag.countOfPhysicalIssues = NumberOfPhysicalQuestions;
+            ViewBag.percentageOfPhysicalIssues = percentageOfPhysicalIssues;
+
+            //EMOTIONAL
+            int percentageOfEmotionalIssues = ((TotalNegativeAnswersInEmotional) * 200 + TotalNumberOfNegativeAnswers) / (TotalNumberOfNegativeAnswers * 2);
+            ViewBag.numOfEmotionalIssues = TotalNegativeAnswersInEmotional;
+            ViewBag.countOfEmotionalIssues = NumberOfEmotionalQuestions;
+            ViewBag.percentageOfEmotionalIssues = percentageOfEmotionalIssues;
+
+            //SOCIAL
+            int percentageOfSocialIssues = ((TotalNegativeAnswersInSocial) * 200 + TotalNumberOfNegativeAnswers) / (TotalNumberOfNegativeAnswers * 2);
+            ViewBag.numOfSocialIssues = TotalNegativeAnswersInSocial;
+            ViewBag.countOfSocialIssues = NumberOfSocialQuestions;
+            ViewBag.percentageOfSocialIssues = percentageOfSocialIssues;
+
+            return View(PsychTestList);
+        }
+
+
+        [Authorize(Roles = "Counselor")]
+        // GET: PsychologicalTest/StudentList
+        public ActionResult StudentList(string searchStringName, string currentFilter, int? page)
+        {
+            GetCurrentUserInViewBag();
+
+            try
+            {
+                int intPage = 1;
+                int intPageSize = 10;
+                int intTotalPageCount = 0;
+
+                if (searchStringName != null)
+                {
+                    intPage = 1;
+                }
+                else
+                {
+                    if (currentFilter != null)
+                    {
+                        searchStringName = currentFilter;
+                        intPage = page ?? 1;
+                    }
+                    else
+                    {
+                        searchStringName = "";
+                        intPage = page ?? 1;
+                    }
+                }
+
+                ViewBag.CurrentFilter = searchStringName;
+                List<TestViewModel> StudentInventorylist = new List<TestViewModel>();
+                int intSkip = (intPage - 1) * intPageSize;
+                intTotalPageCount = db.Students
+                    .Where(x => x.StudentFirstName.Contains(searchStringName))
+                    .Count();
+
+                var datalist = db.Students
+                    .Where(x => x.StudentLastName.Contains(searchStringName) || x.StudentFirstName.Contains(searchStringName))
+                    .OrderBy(x => x.StudentLastName)
+                    .Skip(intSkip)
+                    .Take(intPageSize)
+                    .ToList();
+
+                foreach (var item in datalist)
+                {
+                    TestViewModel pvm = new TestViewModel();
+                    pvm.StudentFirstName = item.StudentFirstName;
+                    pvm.StudentMiddleName = item.StudentMiddleName;
+                    pvm.StudentLastName = item.StudentLastName;
+                    pvm.UserID = item.UserID;
+                    StudentInventorylist.Add(pvm);
+                }
+
+                // Set the number of pages
+                var _UserAsIPagedList =
+                    new StaticPagedList<TestViewModel>
+                    (
+                        StudentInventorylist, intPage, intPageSize, intTotalPageCount
+                        );
+
+                return View(_UserAsIPagedList);
+
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Error: " + ex);
+                List<TestViewModel> StudentInventorylist = new List<TestViewModel>();
+
+                return View(StudentInventorylist.ToPagedList(1, 25));
+            }
+
+        }
+
 
         private IEnumerable<string> GetAllQuestionTags()
         {
@@ -331,9 +634,11 @@ namespace Testv3.Controllers
                     Value = element,
                     Text = element
                 });
+
             }
 
             return selectList;
         }
+
     }
 }
