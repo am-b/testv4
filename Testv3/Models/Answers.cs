@@ -18,6 +18,7 @@ namespace Testv3.Models
         public int QuestionID { get; set; }
         public string UserID { get; set; }
         public int Answer { get; set; }
+        public Nullable<System.DateTime> TestCompletionDate { get; set; }
     
         public virtual Questions Questions { get; set; }
         public virtual Student Student { get; set; }

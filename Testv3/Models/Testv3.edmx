@@ -23,6 +23,7 @@
           <Property Name="QuestionID" Type="int" Nullable="false" />
           <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="Answer" Type="int" Nullable="false" />
+          <Property Name="TestCompletionDate" Type="datetime" />
         </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
@@ -177,6 +178,7 @@
           <Property Name="QuestionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Question" Type="nvarchar(max)" Nullable="false" />
           <Property Name="QuestionTag" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsQuestionPositive" Type="bit" />
         </EntityType>
         <EntityType Name="Student">
           <Key>
@@ -222,7 +224,7 @@
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
-        <Association Name="FK__Answers__Questio__4C6B5938">
+        <Association Name="FK__Answers__Questio__7E02B4CC">
           <End Role="Questions" Type="Self.Questions" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -236,7 +238,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Answers__UserID__4D5F7D71">
+        <Association Name="FK__Answers__UserID__7EF6D905">
           <End Role="Student" Type="Self.Student" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -372,11 +374,11 @@
           <EntitySet Name="Questions" EntityType="Self.Questions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Answers__Questio__4C6B5938" Association="Self.FK__Answers__Questio__4C6B5938">
+          <AssociationSet Name="FK__Answers__Questio__7E02B4CC" Association="Self.FK__Answers__Questio__7E02B4CC">
             <End Role="Questions" EntitySet="Questions" />
             <End Role="Answers" EntitySet="Answers" />
           </AssociationSet>
-          <AssociationSet Name="FK__Answers__UserID__4D5F7D71" Association="Self.FK__Answers__UserID__4D5F7D71">
+          <AssociationSet Name="FK__Answers__UserID__7EF6D905" Association="Self.FK__Answers__UserID__7EF6D905">
             <End Role="Student" EntitySet="Student" />
             <End Role="Answers" EntitySet="Answers" />
           </AssociationSet>
@@ -784,6 +786,7 @@
           <Property Name="Question" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Answers" Relationship="Testv3Model.FK__Answers__Questio__45BE5BA9" FromRole="Questions" ToRole="Answers" />
           <Property Name="QuestionTag" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsQuestionPositive" Type="Boolean" />
         </EntityType>
         <EntityType Name="Answers">
           <Key>
@@ -795,6 +798,7 @@
           <Property Name="Answer" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Questions" Relationship="Testv3Model.FK__Answers__Questio__45BE5BA9" FromRole="Answers" ToRole="Questions" />
           <NavigationProperty Name="Student" Relationship="Testv3Model.FK__Answers__UserID__46B27FE2" FromRole="Answers" ToRole="Student" />
+          <Property Name="TestCompletionDate" Type="DateTime" Precision="3" />
         </EntityType>
         <Association Name="FK__Answers__Questio__45BE5BA9">
           <End Type="Testv3Model.Questions" Role="Questions" Multiplicity="1">
@@ -1041,6 +1045,7 @@
           <EntitySetMapping Name="Questions">
             <EntityTypeMapping TypeName="Testv3Model.Questions">
               <MappingFragment StoreEntitySet="Questions">
+                <ScalarProperty Name="IsQuestionPositive" ColumnName="IsQuestionPositive" />
                 <ScalarProperty Name="QuestionTag" ColumnName="QuestionTag" />
                 <ScalarProperty Name="Question" ColumnName="Question" />
                 <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
@@ -1050,6 +1055,7 @@
           <EntitySetMapping Name="Answers">
             <EntityTypeMapping TypeName="Testv3Model.Answers">
               <MappingFragment StoreEntitySet="Answers">
+                <ScalarProperty Name="TestCompletionDate" ColumnName="TestCompletionDate" />
                 <ScalarProperty Name="Answer" ColumnName="Answer" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />

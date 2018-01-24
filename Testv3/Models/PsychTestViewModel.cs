@@ -11,7 +11,6 @@ namespace Testv3.Models
     {
         //PsychTestQuestion Questions
         public int QuestionID { get; set; }
-        public int QuestionnaireID { get; set; }
         [Required]
         public string Question { get; set; }
 
@@ -23,6 +22,8 @@ namespace Testv3.Models
         public int AnswerID { get; set; }
         [Required(ErrorMessage = "Select your answer")]
         public int Answer { get; set; }
+
+        public bool IsQuestionPositive { get; set; }
 
     }
 }
