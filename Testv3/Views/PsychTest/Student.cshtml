@@ -13,6 +13,7 @@
                 <th></th>
                 <th>Question</th>
                 <th></th>
+                <th></th>
                 <th class="text-center">Strongly Agree</th>
                 <th class="text-center">Somewhat Agree</th>
                 <th class="text-center">Strongly Disagree</th>
@@ -22,10 +23,9 @@
             {
                 <tr>   
                     <td>@Html.HiddenFor(m => m[i].AnswerID)</td>
-                    <td>
-                        @Html.HiddenFor(m => m[i].QuestionID)
-                    </td>
+                    <td>@Html.HiddenFor(m => m[i].QuestionID)</td>
                     <td>@Html.DisplayFor(m => m[i].Question)</td>
+                    <td>@Html.HiddenFor(m => m[i].QuestionTag)</td>
                     <td align="right">@Html.ValidationMessageFor(m => m[i].Answer, "", new { @class = "text-danger" })</td>
                     <td align="center">@Html.RadioButtonFor(m => m[i].Answer, 1)</td>
                     <td align="center">@Html.RadioButtonFor(m => m[i].Answer, 2)</td>

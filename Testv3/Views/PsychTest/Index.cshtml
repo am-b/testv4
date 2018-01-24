@@ -30,7 +30,7 @@
         <input type="submit" value="Search" class="btn btn-default" />
         <div style="float:right;">
             @Html.ActionLink("Add New Question", "CreateTest", null, new { @class = "btn btn-default" })
-            @Html.ActionLink("View test responses", "", null, new { @class = "btn btn-default" })
+            @Html.ActionLink("View test responses", "StudentList", null, new { @class = "btn btn-default" })
         </div>
     </div>
 
@@ -42,7 +42,7 @@
 <table class="table">
     <tr>
         <th>
-            Question no.
+            Question ID
         </th>
         <th>
             Question

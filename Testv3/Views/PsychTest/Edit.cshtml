@@ -19,6 +19,16 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Question, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Question, "", new { @class = "text-danger" })
+                <br />
+                @Html.DropDownListFor(m => m.QuestionTag, Model.QuestionTags, "Question Tag", new { @class = "form-control", @style = "text-align:center" })
+                <br />
+                <div class="controls form-inline">
+                    <label>Select type of question:</label><br />
+                    <span id="questionTypeRadioButton">
+                        @Html.RadioButtonFor(model => Model.IsQuestionPositive, "true")  Positive
+                        @Html.RadioButtonFor(model => Model.IsQuestionPositive, "false") Negative
+                    </span>
+                </div>
             </div>
         </div>
 
