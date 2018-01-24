@@ -2265,6 +2265,8 @@
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
+    <Content Include="Scripts\Chart.js" />
+    <Content Include="Scripts\Chart.min.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.js" />
@@ -2330,6 +2332,8 @@
     <Content Include="Views\PsychTest\Index.cshtml" />
     <Content Include="Views\PsychTest\Edit.cshtml" />
     <Content Include="Views\PsychTest\Student.cshtml" />
+    <Content Include="Views\PsychTest\Responses.cshtml" />
+    <Content Include="Views\PsychTest\StudentList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
