@@ -1,0 +1,157 @@
+﻿@model List<Testv3.Models.PsychTestViewModel>
+@{
+    ViewBag.Title = "Student responses";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">Test result of @ViewBag.Student</h3>
+        </div>
+
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <p class="text-center">
+                        <strong>Psychological Test Results</strong>
+                    </p>
+
+                    <div class="chart">
+                        <canvas id="line-chart" width="657" height="150" style="width: 657px; height: 150px;"></canvas>
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <div class="progress-group">
+                        <span class="progress-text">Physical</span>
+                        <span class="progress-number"><b>@ViewBag.numOfPhysicalIssues</b>/@ViewBag.countOfPhysicalIssues</span>
+
+                        <div class="progress sm">
+                            <div class="progress-bar progress-bar-aqua" style="width: @ViewBag.percentageOfPhysicalIssues%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="progress-group">
+                        <span class="progress-text">Emotional</span>
+                        <span class="progress-number"><b>@ViewBag.numOfEmotionalIssues</b>/@ViewBag.countOfEmotionalIssues</span>
+
+                        <div class="progress sm">
+                            <div class="progress-bar progress-bar-red" style="width: @ViewBag.percentageOfEmotionalIssues%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="progress-group">
+                        <span class="progress-text">Social</span>
+                        <span class="progress-number"><b>@ViewBag.numOfSocialIssues</b>/@ViewBag.countOfSocialIssues</span>
+
+                        <div class="progress sm">
+                            <div class="progress-bar progress-bar-green" style="width: @ViewBag.percentageOfSocialIssues%;"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-sm-3 col-xs-6">
+                    <div class="description-block border-right">
+                        <span class="description-percentage text-green">@ViewBag.percentageOfPhysicalIssues%</span>
+                        <h5 class="description-header">PHYSICAL</h5>
+                    </div>
+                </div>
+
+                <div class="col-sm-3 col-xs-6">
+                    <div class="description-block border-right">
+                        <span class="description-percentage text-yellow">@ViewBag.percentageOfEmotionalIssues%</span>
+                        <h5 class="description-header">EMOTIONAL</h5>
+                    </div>
+                </div>
+
+                <div class="col-sm-3 col-xs-6">
+                    <div class="description-block border-right">
+                        <span class="description-percentage text-green">@ViewBag.percentageOfSocialIssues%</span>
+                        <h5 class="description-header">SOCIAL</h5>
+                    </div>
+                </div>
+                <div class="col-sm-3 col-xs-6">
+                    <div class="description-block">
+                        <h5 class="description-header">Test Completed:</h5>
+                        <span class="description-text">@ViewBag.TestCompletionDate</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*</div>*@
+
+
+        <br />
+        <table class="table">
+            <tr>
+                <th></th>
+                <th></th>
+                <th>Question</th>
+                <th></th>
+                <th class="text-center">Strongly Agree</th>
+                <th class="text-center">Somewhat Agree</th>
+                <th class="text-center">Strongly Disagree</th>
+            </tr>
+
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                <tr>
+                    <td>@Html.HiddenFor(m => m[i].AnswerID)</td>
+                    <td>@Html.HiddenFor(m => m[i].QuestionID)</td>
+                    <td>@Html.DisplayFor(m => m[i].Question)</td>
+                    <td>@Html.HiddenFor(m => m[i].QuestionTag)</td>
+                    <td align="center">@Html.RadioButtonFor(m => m[i].Answer, 1)</td>
+                    <td align="center">@Html.RadioButtonFor(m => m[i].Answer, 2)</td>
+                    <td align="center">@Html.RadioButtonFor(m => m[i].Answer, 3)</td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+@Scripts.Render("~/bundles/jquery")
+@section Scripts {
+    <script type="text/javascript">
+
+        $(function () {
+            $('input[type=radio]').attr('disabled', 'disabled');
+        });
+
+        var linechart = {
+            labels: [],
+            datasets: [{
+                data: [],
+                label: "Student",
+                borderColor: "#3e95cd",
+                fill: true
+            }
+            ]
+        };
+
+        $.getJSON("/PsychTest/GetData/", function (data) {
+            $.each(data, function (i, item) {
+                linechart.labels.push(item.QuestionID);
+                linechart.datasets[0].data.push(item.Answer); //individual student
+                //linechart.datasets[1].data.push();  //overall population
+            })
+            var ctx = document.getElementById("line-chart").getContext("2d");
+
+            var myLineChart = new Chart(ctx,
+                {
+                    type: 'line',
+                    data: linechart,
+                    options: {}
+                });
+        });
+    </script>
+}
