@@ -1,7 +1,23 @@
 ﻿@model PagedList.IPagedList<Testv3.Models.TestViewModel>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@if (TempData["Message"] != null)
+{
+    <br />
+    <div class="alert alert-success alert-dismissable">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>@TempData["Message"]</strong>
+    </div>
+}
 
+@if (TempData["Error"] != null)
+{
+    <br />
+    <div class="alert alert-danger alert-dismissable">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>@TempData["Error"]</strong>
+    </div>
+}
 @{
     ViewBag.Title = "Student List of Responses";
 }

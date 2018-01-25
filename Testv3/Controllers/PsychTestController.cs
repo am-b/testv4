@@ -386,14 +386,6 @@ namespace Testv3.Controllers
         {
             GetCurrentUserInViewBag();
 
-            var value = db.Answers
-                .Where( a => a.UserID == UserID)
-                .OrderByDescending(x => x.TestCompletionDate)
-                .Select(y => y.TestCompletionDate)
-                .First().ToString();
-
-            ViewBag.TestCompletionDate = value;
-
             List<PsychTestViewModel> PsychTestList = new List<PsychTestViewModel>();
 
             var datalist =
@@ -403,138 +395,155 @@ namespace Testv3.Controllers
                                  where ans.UserID == UserID
                                  select new { Answer = ans.Answer, QuestionID = question.QuestionID, Question = question.Question });
 
-            foreach (var item in datalist)
-            {
-                PsychTestViewModel pvm = new PsychTestViewModel();
+            if (datalist.Count() == 0){
 
-                pvm.QuestionID = item.QuestionID;
-                pvm.Question = item.Question;
-                pvm.Answer = item.Answer;
-                PsychTestList.Add(pvm);
-            }
-
-            var answers = db.Answers
-                    .OrderBy(x => x.QuestionID)
-                    .ToList();
-
-            var u = db.Students.FirstOrDefault(d => d.UserID == UserID);
-
-            if ((u.StudentFirstName != null) && (u.StudentLastName != null))
-            {
-                ViewBag.Student = u.StudentFirstName.Trim() + " " + " " + u.StudentLastName.Trim();
+                TempData["Error"] = "This user has not completed the test yet!";
             }
             else
             {
-                ViewBag.Student = "Error: User has no name record.";
+                var testCompletionDate = db.Answers
+                        .Where(a => a.UserID == UserID)
+                        .OrderByDescending(x => x.TestCompletionDate)
+                        .Select(y => y.TestCompletionDate)
+                        .First().ToString();
+
+                ViewBag.TestCompletionDate = testCompletionDate;
+
+                foreach (var item in datalist)
+                {
+                    PsychTestViewModel pvm = new PsychTestViewModel();
+
+                    pvm.QuestionID = item.QuestionID;
+                    pvm.Question = item.Question;
+                    pvm.Answer = item.Answer;
+                    PsychTestList.Add(pvm);
+                }
+
+                var answers = db.Answers
+                        .OrderBy(x => x.QuestionID)
+                        .ToList();
+
+                var u = db.Students.FirstOrDefault(d => d.UserID == UserID);
+
+                if ((u.StudentFirstName != null) && (u.StudentLastName != null))
+                {
+                    ViewBag.Student = u.StudentFirstName.Trim() + " " + " " + u.StudentLastName.Trim();
+                }
+                else
+                {
+                    ViewBag.Student = "Error: User has no name record.";
+                }
+
+                //loop through selectlist para dynamic si questiontag?
+                //PHYSICAL
+                var totalNumberOfNegativeQuestions = from question in db.Questions
+                                                     where question.IsQuestionPositive == false
+                                                     select new { Tag = question.IsQuestionPositive };
+
+                //PHYSICAL
+                var numberOfPhysicalQuestions = from question in db.Questions
+                                                where question.QuestionTag == "Physical"
+                                                select new { Tag = question.QuestionTag };
+
+
+                var disagreeInPosPhysicalQuery =
+                                    (from ans in db.Answers
+                                     join question in db.Questions
+                                     on ans.QuestionID equals question.QuestionID
+                                     where ans.UserID == UserID && ans.Answer == 3 && question.QuestionTag == "Physical" && question.IsQuestionPositive == true
+                                     select new { Answer = ans.Answer });
+
+
+                //query Number of AGREE(Negative) in PHYSICAL
+                var agreeInNegPhysicalQuery =
+                                    (from ans in db.Answers
+                                     join question in db.Questions on ans.QuestionID equals question.QuestionID
+                                     where ans.UserID == UserID && ans.Answer == 1 && question.QuestionTag == "Physical" && question.IsQuestionPositive == false
+                                     select new { Answer = ans.Answer });
+
+
+                //EMOTIONAL
+                var numberOfEmotionalQuestions = from question in db.Questions
+                                                 where question.QuestionTag == "Emotional"
+                                                 select new { Tag = question.QuestionTag };
+
+
+                var disagreeInPosEmotionalQuery =
+                                    (from ans in db.Answers
+                                     join question in db.Questions
+                                     on ans.QuestionID equals question.QuestionID
+                                     where ans.UserID == UserID && ans.Answer == 3 && question.QuestionTag == "Emotional" && question.IsQuestionPositive == true
+                                     select new { Answer = ans.Answer });
+
+                //query Number of AGREE(Negative) in Emotional
+                var agreeInNegEmotionalQuery = from ans in db.Answers
+                                               join question in db.Questions on ans.QuestionID equals question.QuestionID
+                                               where ans.UserID == UserID && ans.Answer == 1 && question.QuestionTag == "Emotional" && question.IsQuestionPositive == false
+                                               select new { Answer = ans.Answer };
+
+
+                //Social
+                var numberOfSocialQuestions = from question in db.Questions
+                                              where question.QuestionTag == "Social"
+                                              select new { Tag = question.QuestionTag };
+
+                //query Number of DISAGREE(Positive) in Social
+                var disagreeInPosSocialQuery =
+                                            (from ans in db.Answers
+                                             join question in db.Questions
+                                             on ans.QuestionID equals question.QuestionID
+                                             where ans.UserID == UserID && ans.Answer == 3 && question.QuestionTag == "Social" && question.IsQuestionPositive == true
+                                             select new { Answer = ans.Answer });
+
+                //query Number of AGREE(Negative) in Social
+                var agreeInNegSocialQuery = from ans in db.Answers
+                                            join question in db.Questions on ans.QuestionID equals question.QuestionID
+                                            where ans.UserID == UserID && ans.Answer == 1 && question.QuestionTag == "Social" && question.IsQuestionPositive == false
+                                            select new { Answer = ans.Answer };
+
+                int NumberOfPhysicalQuestions = numberOfPhysicalQuestions.Count();
+                int TotalNumberOfNegativeQuestions = totalNumberOfNegativeQuestions.Count();
+                int DiagreeInPosPhysicalQuery = disagreeInPosPhysicalQuery.Count();
+                int AgreeInNegPhysicalQuery = agreeInNegPhysicalQuery.Count();
+                int TotalNegativeAnswersInPhysical = DiagreeInPosPhysicalQuery + AgreeInNegPhysicalQuery;
+
+                int NumberOfEmotionalQuestions = numberOfEmotionalQuestions.Count();
+                int DisagreeInPosEmotionalQuery = disagreeInPosEmotionalQuery.Count();
+                int AgreeInNegEmotionalQuery = agreeInNegEmotionalQuery.Count();
+                int TotalNegativeAnswersInEmotional = DisagreeInPosEmotionalQuery + AgreeInNegEmotionalQuery;
+
+                int NumberOfSocialQuestions = numberOfSocialQuestions.Count();
+                int DisagreeInPosSocialQuery = disagreeInPosSocialQuery.Count();
+                int AgreeInNegSocialQuery = agreeInNegSocialQuery.Count();
+                int TotalNegativeAnswersInSocial = DisagreeInPosEmotionalQuery + AgreeInNegEmotionalQuery;
+
+                int TotalNumberOfNegativeAnswers = TotalNegativeAnswersInPhysical + TotalNegativeAnswersInEmotional + TotalNegativeAnswersInSocial;
+
+                //PHYSICAL
+                int percentageOfPhysicalIssues = ((TotalNegativeAnswersInPhysical) * 200 + TotalNumberOfNegativeAnswers) / (TotalNumberOfNegativeAnswers * 2);
+                //If positive ang question, 1 = good, 2= meh, 3 = bad
+                //If negative ang question, 1 = bad, 2 = meh, 3 = good
+
+                ViewBag.numOfPhysicalIssues = TotalNegativeAnswersInPhysical;
+                ViewBag.countOfPhysicalIssues = NumberOfPhysicalQuestions;
+                ViewBag.percentageOfPhysicalIssues = percentageOfPhysicalIssues;
+
+                //EMOTIONAL
+                int percentageOfEmotionalIssues = ((TotalNegativeAnswersInEmotional) * 200 + TotalNumberOfNegativeAnswers) / (TotalNumberOfNegativeAnswers * 2);
+                ViewBag.numOfEmotionalIssues = TotalNegativeAnswersInEmotional;
+                ViewBag.countOfEmotionalIssues = NumberOfEmotionalQuestions;
+                ViewBag.percentageOfEmotionalIssues = percentageOfEmotionalIssues;
+
+                //SOCIAL
+                int percentageOfSocialIssues = ((TotalNegativeAnswersInSocial) * 200 + TotalNumberOfNegativeAnswers) / (TotalNumberOfNegativeAnswers * 2);
+                ViewBag.numOfSocialIssues = TotalNegativeAnswersInSocial;
+                ViewBag.countOfSocialIssues = NumberOfSocialQuestions;
+                ViewBag.percentageOfSocialIssues = percentageOfSocialIssues;
+
+                return View(PsychTestList);
             }
 
-            //loop through selectlist para dynamic si questiontag?
-            //PHYSICAL
-            var totalNumberOfNegativeQuestions = from question in db.Questions
-                                            where question.IsQuestionPositive == false
-                                            select new { Tag = question.IsQuestionPositive };
-
-            //PHYSICAL
-            var numberOfPhysicalQuestions = from question in db.Questions
-                                    where question.QuestionTag == "Physical"
-                                    select new { Tag = question.QuestionTag };
-
-
-            var disagreeInPosPhysicalQuery =
-                                (from ans in db.Answers
-                                 join question in db.Questions
-                                 on ans.QuestionID equals question.QuestionID
-                                 where ans.UserID == UserID && ans.Answer == 3 && question.QuestionTag == "Physical" && question.IsQuestionPositive == true
-                                 select new { Answer = ans.Answer });
-
-
-            //query Number of AGREE(Negative) in PHYSICAL
-            var agreeInNegPhysicalQuery =
-                                (from ans in db.Answers
-                                 join question in db.Questions on ans.QuestionID equals question.QuestionID
-                                 where ans.UserID == UserID && ans.Answer == 1 && question.QuestionTag == "Physical" && question.IsQuestionPositive == false
-                                 select new { Answer = ans.Answer });
-
-
-            //EMOTIONAL
-            var numberOfEmotionalQuestions = from question in db.Questions
-                                             where question.QuestionTag == "Emotional"
-                                             select new { Tag = question.QuestionTag };
-
-
-            var disagreeInPosEmotionalQuery =
-                                (from ans in db.Answers
-                                 join question in db.Questions
-                                 on ans.QuestionID equals question.QuestionID
-                                 where ans.UserID == UserID && ans.Answer == 3 && question.QuestionTag == "Emotional" && question.IsQuestionPositive == true
-                                 select new { Answer = ans.Answer });
-
-            //query Number of AGREE(Negative) in Emotional
-            var agreeInNegEmotionalQuery = from ans in db.Answers
-                                           join question in db.Questions on ans.QuestionID equals question.QuestionID
-                                           where ans.UserID == UserID && ans.Answer == 1 && question.QuestionTag == "Emotional" && question.IsQuestionPositive == false
-                                           select new { Answer = ans.Answer };
-
-
-            //Social
-            var numberOfSocialQuestions = from question in db.Questions
-                                          where question.QuestionTag == "Social"
-                                          select new { Tag = question.QuestionTag };
-
-            //query Number of DISAGREE(Positive) in Social
-            var disagreeInPosSocialQuery =
-                                        (from ans in db.Answers
-                                         join question in db.Questions
-                                         on ans.QuestionID equals question.QuestionID
-                                         where ans.UserID == UserID && ans.Answer == 3 && question.QuestionTag == "Social" && question.IsQuestionPositive == true
-                                         select new { Answer = ans.Answer });
-
-            //query Number of AGREE(Negative) in Social
-            var agreeInNegSocialQuery = from ans in db.Answers
-                                        join question in db.Questions on ans.QuestionID equals question.QuestionID
-                                        where ans.UserID == UserID && ans.Answer == 1 && question.QuestionTag == "Social" && question.IsQuestionPositive == false
-                                        select new { Answer = ans.Answer };
-
-            int NumberOfPhysicalQuestions = numberOfPhysicalQuestions.Count();
-            int TotalNumberOfNegativeQuestions = totalNumberOfNegativeQuestions.Count();
-            int DiagreeInPosPhysicalQuery = disagreeInPosPhysicalQuery.Count();
-            int AgreeInNegPhysicalQuery = agreeInNegPhysicalQuery.Count();
-            int TotalNegativeAnswersInPhysical = DiagreeInPosPhysicalQuery + AgreeInNegPhysicalQuery;
-
-            int NumberOfEmotionalQuestions = numberOfEmotionalQuestions.Count();
-            int DisagreeInPosEmotionalQuery = disagreeInPosEmotionalQuery.Count();
-            int AgreeInNegEmotionalQuery = agreeInNegEmotionalQuery.Count();
-            int TotalNegativeAnswersInEmotional = DisagreeInPosEmotionalQuery + AgreeInNegEmotionalQuery;
-
-            int NumberOfSocialQuestions = numberOfSocialQuestions.Count();
-            int DisagreeInPosSocialQuery = disagreeInPosSocialQuery.Count();
-            int AgreeInNegSocialQuery = agreeInNegSocialQuery.Count();
-            int TotalNegativeAnswersInSocial = DisagreeInPosEmotionalQuery + AgreeInNegEmotionalQuery;
-
-            int TotalNumberOfNegativeAnswers = TotalNegativeAnswersInPhysical + TotalNegativeAnswersInEmotional + TotalNegativeAnswersInSocial;
-            
-            //PHYSICAL
-            int percentageOfPhysicalIssues = ((TotalNegativeAnswersInPhysical) * 200 + TotalNumberOfNegativeAnswers) / (TotalNumberOfNegativeAnswers * 2);
-            //If positive ang question, 1 = good, 2= meh, 3 = bad
-            //If negative ang question, 1 = bad, 2 = meh, 3 = good
-
-            ViewBag.numOfPhysicalIssues = TotalNegativeAnswersInPhysical;
-            ViewBag.countOfPhysicalIssues = NumberOfPhysicalQuestions;
-            ViewBag.percentageOfPhysicalIssues = percentageOfPhysicalIssues;
-
-            //EMOTIONAL
-            int percentageOfEmotionalIssues = ((TotalNegativeAnswersInEmotional) * 200 + TotalNumberOfNegativeAnswers) / (TotalNumberOfNegativeAnswers * 2);
-            ViewBag.numOfEmotionalIssues = TotalNegativeAnswersInEmotional;
-            ViewBag.countOfEmotionalIssues = NumberOfEmotionalQuestions;
-            ViewBag.percentageOfEmotionalIssues = percentageOfEmotionalIssues;
-
-            //SOCIAL
-            int percentageOfSocialIssues = ((TotalNegativeAnswersInSocial) * 200 + TotalNumberOfNegativeAnswers) / (TotalNumberOfNegativeAnswers * 2);
-            ViewBag.numOfSocialIssues = TotalNegativeAnswersInSocial;
-            ViewBag.countOfSocialIssues = NumberOfSocialQuestions;
-            ViewBag.percentageOfSocialIssues = percentageOfSocialIssues;
-
-            return View(PsychTestList);
+            return RedirectToAction("StudentList", "PsychTest");
         }
 
 
