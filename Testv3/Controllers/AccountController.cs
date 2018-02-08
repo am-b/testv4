@@ -472,7 +472,7 @@ namespace Testv3.Controllers
                     IdentityRole objAdminRole = new IdentityRole("Administrator");
                     RoleManager.Create(objAdminRole);
                 }
-
+                
                 // Create Admin user
                 var objNewAdminUser = new ApplicationUser { UserName = AdminUserName, Email = AdminUserName };
                 var AdminUserCreateResult = UserManager.Create(objNewAdminUser, AdminPassword);
