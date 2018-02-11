@@ -201,5 +201,8 @@ namespace Testv3.Models
 
         [Display(Name = "About the student:")]
         public string AboutYourself { get; set; }
+
+        //for initial interview
+        public Nullable<System.DateTime> CompletionDateInitialInterview { get; set; }
     }
 }

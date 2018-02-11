@@ -19,6 +19,7 @@ namespace Testv3.Models
         {
             this.IndividualInventoryRecords = new HashSet<IndividualInventoryRecord>();
             this.Answers = new HashSet<Answers>();
+            this.InitialInterview = new HashSet<InitialInterview>();
         }
     
         public string UserID { get; set; }
@@ -27,7 +28,6 @@ namespace Testv3.Models
         public string StudentFirstName { get; set; }
         public string StudentMiddleName { get; set; }
         public string StudentEmail { get; set; }
-        public Nullable<int> CourseID { get; set; }
         public string Address { get; set; }
         public string Sex { get; set; }
         public string Civil_Status__CivilStatus { get; set; }
@@ -50,12 +50,15 @@ namespace Testv3.Models
         public string StudentEmployerAddress { get; set; }
         public string NumberOfChildren { get; set; }
         public Nullable<bool> IsScholar { get; set; }
+        public string Program { get; set; }
+        public Nullable<int> YearLevel { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
-        public virtual Course Course { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<IndividualInventoryRecord> IndividualInventoryRecords { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Answers> Answers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<InitialInterview> InitialInterview { get; set; }
     }
 }

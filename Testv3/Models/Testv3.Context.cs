@@ -31,11 +31,11 @@ namespace Testv3.Models
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<Counsellor> Counsellors { get; set; }
-        public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<IndividualInventoryRecord> IndividualInventoryRecords { get; set; }
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Questions> Questions { get; set; }
         public virtual DbSet<Answers> Answers { get; set; }
+        public virtual DbSet<InitialInterview> InitialInterview { get; set; }
     }
 }
