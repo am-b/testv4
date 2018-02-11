@@ -1,0 +1,106 @@
+﻿@model Testv3.Models.StudentInterviewViewModel
+
+@{
+    ViewBag.Title = "Student's Initial Interview";
+}
+@section Scripts{
+    <script>
+        $(function () {
+                $('#studentSection textarea').attr('disabled', 'disabled');
+        });
+    </script>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="body-content">
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="controls form-inline">
+                                        <br />
+                                        @Html.Label("Student Name: ")
+                                        @Html.DisplayFor(model => model.StudentLastName), @Html.DisplayFor(model => model.StudentFirstName) @Html.DisplayFor(model => model.StudentMiddleName)
+                                        <div style="float:right;">
+                                            @Html.Label("Completion Date: ")
+                                            @Html.DisplayFor(model => model.CompletionDate)
+                                        </div>
+                                        <br />
+                                        @Html.Label("Student Number: ")
+                                        @Html.DisplayFor(model => model.StudentID)
+                                        <br />
+                                        @Html.Label("Program: ")
+                                        @Html.DisplayFor(model => model.Program)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="studentSection">
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.ReasonForProgram, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextAreaFor(model => model.ReasonForProgram, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.ReasonForMMCC, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextAreaFor(model => model.ReasonForMMCC, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.CollegeLifeAdjustments, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextAreaFor(model => model.CollegeLifeAdjustments, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.ChoiceOfProgramAdjustments, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextAreaFor(model => model.ChoiceOfProgramAdjustments, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.PeersAdjustments, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextAreaFor(model => model.PeersAdjustments, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.MMCCStaffAdjustments, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextAreaFor(model => model.MMCCStaffAdjustments, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.FamilyAdjustments, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextAreaFor(model => model.FamilyAdjustments, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                            </div>
+                        </div>
+                        <br />
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="controls form-inline">
+                                    @Html.LabelFor(model => model.CounselorNotes, htmlAttributes: new { @class = "control-label" })<br />
+                                    @Html.TextAreaFor(model => model.CounselorNotes, 5, 100, new { @class = "form-control", @style = "min-width: 90%;" })
+                                    @Html.ValidationMessageFor(model => model.CounselorNotes, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-4 col-md-offset-5">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                    @Html.ActionLink("Back", "Index", "Home", null, new { @class = "btn btn-default" })
+                </div>
+            </div>
+
+        </div>
+    </div>
+}

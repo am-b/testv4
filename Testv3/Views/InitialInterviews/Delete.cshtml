@@ -1,0 +1,104 @@
+﻿@model Testv3.Models.InitialInterview
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>InitialInterview</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CompletionDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompletionDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReasonForProgram)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReasonForProgram)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReasonForMMCC)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReasonForMMCC)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CollegeLifeAdjustments)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CollegeLifeAdjustments)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ChoiceOfProgramAdjustments)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ChoiceOfProgramAdjustments)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PeersAdjustments)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PeersAdjustments)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MMCCStaffAdjustments)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MMCCStaffAdjustments)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FamilyAdjustments)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FamilyAdjustments)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CounselorNotes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CounselorNotes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Student.StudentID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Student.StudentID)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
