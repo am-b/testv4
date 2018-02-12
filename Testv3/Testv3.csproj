@@ -26,7 +26,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-  <Use64BitIISExpress />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -201,12 +201,13 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AnnouncementsController.cs" />
-    <Compile Include="Controllers\AppointmentController.cs" /> 
+    <Compile Include="Controllers\AppointmentController.cs" />
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InitialInterviewsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PsychTestController.cs" />
+    <Compile Include="Controllers\RoutineInterviewsController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="Controllers\StudentInventoryController.cs" />
     <Compile Include="Global.asax.cs">
@@ -244,6 +245,9 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PsychTestViewModel.cs" />
     <Compile Include="Models\Questions.cs">
+      <DependentUpon>Testv3.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RoutineInterview.cs">
       <DependentUpon>Testv3.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Student.cs">
@@ -2342,10 +2346,13 @@
     <Content Include="Views\InitialInterviews\Delete.cshtml" />
     <Content Include="Views\InitialInterviews\Details.cshtml" />
     <Content Include="Views\InitialInterviews\Index.cshtml" />
+    <Content Include="Views\RoutineInterviews\Student.cshtml" />
+    <Content Include="Views\RoutineInterviews\Details.cshtml" />
+    <Content Include="Views\RoutineInterviews\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-  <Folder Include="Views\Appointment\" /> 
+    <Folder Include="Views\Appointment\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
