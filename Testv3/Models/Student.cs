@@ -20,6 +20,7 @@ namespace Testv3.Models
             this.IndividualInventoryRecords = new HashSet<IndividualInventoryRecord>();
             this.Answers = new HashSet<Answers>();
             this.InitialInterview = new HashSet<InitialInterview>();
+            this.RoutineInterview = new HashSet<RoutineInterview>();
         }
     
         public string UserID { get; set; }
@@ -60,5 +61,7 @@ namespace Testv3.Models
         public virtual ICollection<Answers> Answers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InitialInterview> InitialInterview { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RoutineInterview> RoutineInterview { get; set; }
     }
 }

@@ -37,5 +37,6 @@ namespace Testv3.Models
         public virtual DbSet<Questions> Questions { get; set; }
         public virtual DbSet<Answers> Answers { get; set; }
         public virtual DbSet<InitialInterview> InitialInterview { get; set; }
+        public virtual DbSet<RoutineInterview> RoutineInterview { get; set; }
     }
 }

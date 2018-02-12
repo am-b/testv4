@@ -27,6 +27,8 @@
         <AssociationConnector Association="Testv3Model.FK__Answers__UserID__46B27FE2" />
         <EntityTypeShape EntityType="Testv3Model.InitialInterview" Width="1.5" PointX="7.5" PointY="4.5" />
         <AssociationConnector Association="Testv3Model.FK__InitialIn__UserI__0D44F85C" />
+        <EntityTypeShape EntityType="Testv3Model.RoutineInterview" Width="1.5" PointX="7.5" PointY="28.75" />
+        <AssociationConnector Association="Testv3Model.FK__RoutineIn__UserI__10216507" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -52,7 +52,31 @@ namespace Testv3.Models
         [Required(ErrorMessage = "Write your answer")]
         [Display(Name = "5. Family Concerns")]
         public string FamilyAdjustments { get; set; }
-        
+
         public string CounselorNotes { get; set; }
+
+        [Required(ErrorMessage = "Write your answer")]
+        [Display(Name = "What are the best year or moment in your life?")]
+        public string Q1 { get; set; }
+
+        [Required(ErrorMessage = "Write your answer")]
+        [Display(Name = "What are your inhibitions and fear now that your in your year level?")]
+        public string Q2 { get; set; }
+
+        [Required(ErrorMessage = "Write your answer")]
+        [Display(Name = "How are your difficulties with your academic requirements?")]
+        public string Q3 { get; set; }
+
+        [Required(ErrorMessage = "Write your answer")]
+        [Display(Name = "How are you coping up with your group mates and classmates?")]
+        public string Q4 { get; set; }
+
+        [Required(ErrorMessage = "Write your answer")]
+        [Display(Name = "What are the factors that greatly influence your performance at school?")]
+        public string Q5 { get; set; }
+
+        [Required(ErrorMessage = "Write your answer")]
+        [Display(Name = "Other Matters")]
+        public string OtherMatters { get; set; }
     }
 }
