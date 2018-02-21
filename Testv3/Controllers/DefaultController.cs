@@ -37,7 +37,7 @@ namespace Testv3.Controllers
             }
             else if (User.IsInRole("Counselor"))
             {
-                var u = db.Counsellors.FirstOrDefault(d => d.UserID == currentUserId);
+                var u = db.Counsellor.FirstOrDefault(d => d.UserID == currentUserId);
 
                 if ((u.CounsellorFirstName != null) && (u.CounsellorLastName != null))
                 {
