@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Testv3.Models.CounsellingForm>
+@{
+    ViewBag.Title = "Details";
+}
+<table class="table">
+    <tr>
+        <th>
+            Case
+        </th>
+
+        <th>Date Completed</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Case)
+            </td>
+
+            <td>
+
+                @Html.ActionLink("View", "Details", new { CounsellingFormID = item.CounsellingFormID}) |
+                @Html.DisplayFor(modelItem => item.CompletionDate)
+            </td>
+        </tr>
+    }
+
+</table>

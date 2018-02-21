@@ -1,0 +1,116 @@
+﻿@model Testv3.Models.StudentCounsellingViewModel
+
+@{
+    ViewBag.Title = "Student's Counselling Record";
+}
+@if (TempData["Error"] != null)
+{
+    <br />
+                    <div class="alert alert-danger alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>@TempData["Error"]</strong>
+                    </div>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="body-content">
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="controls form-inline">
+                                <div class="controls form-inline">
+                                    <div class="col-sm-4">
+                                        <label for="Studentname">First Name</label><br />
+                                        @Html.EditorFor(model => model.StudentFirstName, new { htmlAttributes = new { @style = "min-width:100%;text-align:center", @class = "form-control", @type = "text", @readonly = "readonly" } })
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label for="Studentname">Middle Name</label><br />
+                                        @Html.EditorFor(model => model.StudentMiddleName, new { htmlAttributes = new { @style = "min-width:100%;text-align:center", @class = "form-control", @type = "text", @readonly = "readonly" } })
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label for="Studentname">Last Name</label><br />
+                                        @Html.EditorFor(model => model.StudentLastName, new { htmlAttributes = new { @style = "min-width:100%;text-align:center", @class = "form-control", @type = "text", @readonly = "readonly" } })
+                                    </div>
+                                    <br />
+                                    <div class="col-sm-4">
+                                        <label for="Studentname">Program</label><br />
+                                        @Html.EditorFor(model => model.Program, new { htmlAttributes = new { @style = "min-width:100%;text-align:center", @class = "form-control", @type = "text", @readonly = "readonly" } })
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label for="Studentname">Student Number</label><br />
+                                        @Html.EditorFor(model => model.StudentID, new { htmlAttributes = new { style = "min-width:100%;text-align:center", @class = "form-control", @type = "text", @readonly = "readonly" } })
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label for="Studentname">Year Level</label><br />
+                                        @Html.EditorFor(model => model.YearLevel, new { htmlAttributes = new { style = "min-width:100%;text-align:center", @class = "form-control", @type = "text", @readonly = "readonly" } })
+                                    </div>
+                                    <br />
+                                    @Html.HiddenFor(model => model.StudentUserID)
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div id="studentSection">
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.Case, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextAreaFor(model => model.Case, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.Session, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextAreaFor(model => model.Session, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.PctionPlan, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextAreaFor(model => model.PctionPlan, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.Recommendation, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextAreaFor(model => model.Recommendation, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                            </div>
+                            
+                        </div>
+                        <br />
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                            <div class="controls form-inline">
+                                @Html.Label("Guidance Counsellor: ")
+                                @Html.DisplayFor(model => model.CounsellorLastName), @Html.DisplayFor(model => model.CounsellorFirstName) @Html.DisplayFor(model => model.CounsellorMiddleName)
+                            </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="controls form-inline">
+                                    @Html.LabelFor(model => model.Followup, htmlAttributes: new { @class = "control-label" })<br />
+                                    @Html.TextAreaFor(model => model.Followup, 5, 100, new { @class = "form-control", @style = "min-width: 90%;" })
+                                    @Html.ValidationMessageFor(model => model.Followup, "", new { @class = "text-danger" })
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+           
+            <div class="form-group">
+                <div class="col-md-4 col-md-offset-5">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                    @Html.ActionLink("Back", "Index", "Home", null, new { @class = "btn btn-default" })
+                </div>
+            </div>
+           
+
+        </div>
+    </div>
+}
