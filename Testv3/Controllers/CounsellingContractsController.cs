@@ -17,9 +17,92 @@ namespace Testv3.Controllers
         private Testv3Entities db = new Testv3Entities();
 
         // GET: CounsellingContracts
-        public ActionResult Index()
+        [Authorize(Roles = "Counselor")]
+        public ActionResult Index(string searchStringName, string currentFilter, int? page)
         {
-            return View();
+            GetCurrentUserInViewBag();
+
+            try
+            {
+                int intPage = 1;
+                int intPageSize = 10;
+                int intTotalPageCount = 0;
+
+                if (searchStringName != null)
+                {
+                    intPage = 1;
+                }
+                else
+                {
+                    if (currentFilter != null)
+                    {
+                        searchStringName = currentFilter;
+                        intPage = page ?? 1;
+                    }
+                    else
+                    {
+                        searchStringName = "";
+                        intPage = page ?? 1;
+                    }
+                }
+
+                ViewBag.CurrentFilter = searchStringName;
+                List<TestViewModel> StudentInventorylist = new List<TestViewModel>();
+                int intSkip = (intPage - 1) * intPageSize;
+                intTotalPageCount = db.Students
+                    .Where(x => x.StudentFirstName.Contains(searchStringName))
+                    .Count();
+
+                var datalist = db.Students
+                    .Where(x => x.StudentLastName.Contains(searchStringName) || x.StudentFirstName.Contains(searchStringName))
+                    .OrderBy(x => x.StudentLastName)
+                    .Skip(intSkip)
+                    .Take(intPageSize)
+                    .ToList();
+
+                foreach (var item in datalist)
+                {
+                    TestViewModel pvm = new TestViewModel();
+                    pvm.StudentFirstName = item.StudentFirstName;
+                    pvm.StudentMiddleName = item.StudentMiddleName;
+                    pvm.StudentLastName = item.StudentLastName;
+                    pvm.UserID = item.UserID;
+
+                    var completionDate =
+                        (from ans in db.CounsellingContract
+                         where ans.StudentUserID == pvm.UserID
+                         select new { CompletionDate = ans.CompletionDate })
+                         .ToList();
+
+                    CounsellingContract contract = db.CounsellingContract.FirstOrDefault(x => x.StudentUserID == pvm.UserID);
+
+
+                    if (completionDate.Count() != 0)
+                    {
+                        pvm.CompletionDate = contract.CompletionDate;
+                    }
+
+
+                    StudentInventorylist.Add(pvm);
+                }
+
+                // Set the number of pages
+                var _UserAsIPagedList =
+                    new StaticPagedList<TestViewModel>
+                    (
+                        StudentInventorylist, intPage, intPageSize, intTotalPageCount
+                        );
+
+                return View(_UserAsIPagedList);
+
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Error: " + ex);
+                List<TestViewModel> StudentInventorylist = new List<TestViewModel>();
+
+                return View(StudentInventorylist.ToPagedList(1, 25));
+            }
         }
 
 
@@ -96,6 +179,7 @@ namespace Testv3.Controllers
         }
 
         // POST: CounsellingContracts/Create
+        [Authorize(Roles = "Student")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Student(CounsellingContract vm)
