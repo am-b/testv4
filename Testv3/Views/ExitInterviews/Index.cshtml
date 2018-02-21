@@ -1,0 +1,57 @@
+﻿@model PagedList.IPagedList<Testv3.Models.TestViewModel>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Index";
+}
+@using (Html.BeginForm("Index", "StudentInventory", FormMethod.Get))
+{
+    <br />
+    <div class="controls form-inline">
+        @Html.TextBox("searchStringName", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search by student's name", @style = "min-width:50%" })
+        <input type="submit" value="Search" class="btn btn-default" />
+    </div>
+
+    <br />
+}
+
+
+
+<table class="table">
+    <tr>
+        <th>
+            Student Name
+        </th>
+
+        <th>Date Completed</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentLastName), @Html.DisplayFor(modelItem => item.StudentFirstName) @Html.DisplayFor(modelItem => item.StudentMiddleName)
+            </td>
+
+            <td>
+
+                @Html.ActionLink("View", "Details", new { UserID = item.UserID }) |
+                @Html.DisplayFor(modelItem => item.CompletionDate)
+            </td>
+        </tr>
+    }
+
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model,
+    page => Url.Action("Index",
+    new
+    {
+        page,
+        searchStringName = ViewBag.searchStringName,
+        currentFilter = ViewBag.CurrentFilter
+    }))
+<hr />

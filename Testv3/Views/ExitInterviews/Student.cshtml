@@ -1,0 +1,99 @@
+﻿@model Testv3.Models.StudentInterviewViewModel
+
+@{
+    ViewBag.Title = "Answer the Exit Interview";
+}
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <br />
+    <div class="body-content">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="controls form-inline">
+                                        <br />
+                                        @Html.Label("Student Name: ")
+                                        @Html.DisplayFor(model => model.StudentLastName), @Html.DisplayFor(model => model.StudentFirstName) @Html.DisplayFor(model => model.StudentMiddleName)
+                                        <br />
+                                        @Html.Label("Student Number: ")
+                                        @Html.DisplayFor(model => model.StudentID)
+                                        <br />
+                                        @Html.Label("Program: ")
+                                        @Html.DisplayFor(model => model.Program)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br />
+                        <div class="controls form-inline">
+                            @Html.LabelFor(model => model.MMCCLikes, htmlAttributes: new { @class = "control-label" })<br />
+                            @Html.ValidationMessageFor(model => model.MMCCLikes, "", new { @class = "text-danger" })<br />
+                            @Html.TextAreaFor(model => model.MMCCLikes, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+
+                        </div>
+                        <br />
+                        <div class="controls form-inline">
+                            @Html.LabelFor(model => model.MMCCDislikes, htmlAttributes: new { @class = "control-label" })<br />
+                            @Html.ValidationMessageFor(model => model.MMCCDislikes, "", new { @class = "text-danger" })<br />
+                            @Html.TextAreaFor(model => model.MMCCDislikes, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+
+                        </div>
+                        <br />
+                        <div class="controls form-inline">
+                            @Html.LabelFor(model => model.MMCCMoments, htmlAttributes: new { @class = "control-label" })<br />
+                            @Html.ValidationMessageFor(model => model.MMCCMoments, "", new { @class = "text-danger" })<br />
+                            @Html.TextAreaFor(model => model.MMCCMoments, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+
+                        </div>
+                        <br />
+                        <div class="controls form-inline">
+                            @Html.LabelFor(model => model.Professors, htmlAttributes: new { @class = "control-label" })<br />
+                            @Html.ValidationMessageFor(model => model.Professors, "", new { @class = "text-danger" })<br />
+                            @Html.TextAreaFor(model => model.Professors, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+
+                        </div>
+                        <br />
+                        <div class="controls form-inline">
+                            @Html.LabelFor(model => model.Staff, htmlAttributes: new { @class = "control-label" })<br />
+                            @Html.ValidationMessageFor(model => model.Staff, "", new { @class = "text-danger" })<br />
+                            @Html.TextAreaFor(model => model.Staff, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+
+                        </div>
+                        <br />
+                        <div class="controls form-inline">
+                            @Html.LabelFor(model => model.Future, htmlAttributes: new { @class = "control-label" })<br />
+                            @Html.ValidationMessageFor(model => model.Future, "", new { @class = "text-danger" })<br />
+                            @Html.TextAreaFor(model => model.Future, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+
+                        </div>
+                        <br />
+                        <div class="controls form-inline">
+                            @Html.LabelFor(model => model.Others, htmlAttributes: new { @class = "control-label" })<br />
+                            @Html.ValidationMessageFor(model => model.Others, "", new { @class = "text-danger" })<br />
+                            @Html.TextAreaFor(model => model.Others, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-4 col-md-offset-5">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                    @Html.ActionLink("Back", "Index", "Home", null, new { @class = "btn btn-default" })
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
