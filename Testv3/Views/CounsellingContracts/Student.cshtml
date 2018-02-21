@@ -1,0 +1,42 @@
+﻿@model Testv3.Models.StudentCounsellingViewModel
+
+@{
+    ViewBag.Title = "Agree to the Counselling Terms and Agreement";
+}
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <br />
+    <div class="body-content">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                                <p>
+                                    <b>
+                                        All things that will be talked about and revealed during the counselling session will follow the ethical standards of confidentiality, and will only be known upon the student's knowledge and approval.
+                                        The student's case may also be discussed for analysis prior notice.
+                                    </b>
+                                    <br /><br />
+                                    
+                                    @Html.CheckBoxFor(model => model.StudentAgrees) I, <u><i>@Html.DisplayFor(model => model.StudentLastName), @Html.DisplayFor(model => model.StudentFirstName) @Html.DisplayFor(model => model.StudentMiddleName)</i></u>, a <u>
+                                    <i> @Html.DisplayFor(model => model.Program) - @Html.DisplayFor(model => model.YearLevel) </i></u> student, willingly agree to the terms mentioned above and agree to have a counselling session to the Guidance and Counselling Office.
+                                </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-4 col-md-offset-5">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                    @Html.ActionLink("Back", "Index", "Home", null, new { @class = "btn btn-default" })
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
