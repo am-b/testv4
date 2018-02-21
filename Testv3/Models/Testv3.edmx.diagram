@@ -10,13 +10,10 @@
         <EntityTypeShape EntityType="Testv3Model.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="28.25" />
         <EntityTypeShape EntityType="Testv3Model.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="9.875" />
         <EntityTypeShape EntityType="Testv3Model.AspNetUser" Width="1.5" PointX="3" PointY="11.625" />
-        <EntityTypeShape EntityType="Testv3Model.Counsellor" Width="1.5" PointX="5.25" PointY="31" />
         <EntityTypeShape EntityType="Testv3Model.IndividualInventoryRecord" Width="1.5" PointX="7.5" PointY="9.25" />
         <EntityTypeShape EntityType="Testv3Model.Student" Width="1.5" PointX="5.25" PointY="13.375" />
         <AssociationConnector Association="Testv3Model.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="Testv3Model.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
-        <AssociationConnector Association="Testv3Model.FK__Counsello__UserI__3F466844" />
-        <AssociationConnector Association="Testv3Model.FK__Counsello__UserI__403A8C7D" />
         <AssociationConnector Association="Testv3Model.FK__Student__UserID__3C69FB99" />
         <AssociationConnector Association="Testv3Model.FK__Individua__UserI__4316F928" />
         <AssociationConnector Association="Testv3Model.AspNetUserRoles" />
@@ -29,6 +26,13 @@
         <AssociationConnector Association="Testv3Model.FK__InitialIn__UserI__0D44F85C" />
         <EntityTypeShape EntityType="Testv3Model.RoutineInterview" Width="1.5" PointX="7.5" PointY="28.75" />
         <AssociationConnector Association="Testv3Model.FK__RoutineIn__UserI__10216507" />
+        <EntityTypeShape EntityType="Testv3Model.CounsellingForm" Width="1.5" PointX="10.5" PointY="11.375" />
+        <EntityTypeShape EntityType="Testv3Model.Counsellor" Width="1.5" PointX="5.25" PointY="6.5" />
+        <AssociationConnector Association="Testv3Model.FK__Counsello__UserI__16CE6296" />
+        <AssociationConnector Association="Testv3Model.FK__Counselli__Stude__2704CA5F" />
+        <AssociationConnector Association="Testv3Model.FK__Counselli__UserI__2610A626" />
+        <EntityTypeShape EntityType="Testv3Model.CounsellingContract" Width="1.5" PointX="7.5" PointY="1.5" />
+        <AssociationConnector Association="Testv3Model.FK__Counselli__Stude__2EA5EC27" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

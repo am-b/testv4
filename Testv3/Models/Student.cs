@@ -21,6 +21,8 @@ namespace Testv3.Models
             this.Answers = new HashSet<Answers>();
             this.InitialInterview = new HashSet<InitialInterview>();
             this.RoutineInterview = new HashSet<RoutineInterview>();
+            this.CounsellingForm = new HashSet<CounsellingForm>();
+            this.CounsellingContract = new HashSet<CounsellingContract>();
         }
     
         public string UserID { get; set; }
@@ -63,5 +65,9 @@ namespace Testv3.Models
         public virtual ICollection<InitialInterview> InitialInterview { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RoutineInterview> RoutineInterview { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CounsellingForm> CounsellingForm { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CounsellingContract> CounsellingContract { get; set; }
     }
 }

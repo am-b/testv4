@@ -14,13 +14,21 @@ namespace Testv3.Models
     
     public partial class Counsellor
     {
-        public int CounsellorID { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Counsellor()
+        {
+            this.CounsellingForm = new HashSet<CounsellingForm>();
+        }
+    
+        public string UserID { get; set; }
+        public string CounsellorID { get; set; }
         public string CounsellorLastName { get; set; }
         public string CounsellorFirstName { get; set; }
         public string CounsellorMiddleName { get; set; }
         public string CounsellorEmail { get; set; }
-        public string UserID { get; set; }
     
-        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual AspNetUser AspNetUsers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CounsellingForm> CounsellingForm { get; set; }
     }
 }

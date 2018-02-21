@@ -9,12 +9,12 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[Counsellor](
-	[CounsellorID] [int] IDENTITY(1,1) NOT NULL,
+	[UserID] [nvarchar](128) NOT NULL,
+	[CounsellorID] [nvarchar](50) NULL,
 	[CounsellorLastName] [nvarchar](50) NULL,
 	[CounsellorFirstName] [nvarchar](50) NULL,
 	[CounsellorMiddleName] [nvarchar](50) NULL,
 	[CounsellorEmail] [nvarchar](256) NULL,
-	[UserID] [nvarchar](128) NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[CounsellorID] ASC
@@ -22,9 +22,6 @@ PRIMARY KEY CLUSTERED
 ) ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[Counsellor]  WITH CHECK ADD FOREIGN KEY([UserID])
-REFERENCES [dbo].[AspNetUsers] ([Id])
-GO
 
 ALTER TABLE [dbo].[Counsellor]  WITH CHECK ADD FOREIGN KEY([UserID])
 REFERENCES [dbo].[AspNetUsers] ([Id])
