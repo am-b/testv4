@@ -213,13 +213,13 @@ namespace Testv3.Controllers
                         if (strNewRole == "Counselor")
                         {
 
-                            var newid = db.Counsellors.FirstOrDefault(d => d.UserID == objNewAdminUser.Id);
+                            var newid = db.Counsellor.FirstOrDefault(d => d.UserID == objNewAdminUser.Id);
                             if (newid == null)
                             {
-                                newid = db.Counsellors.Create();
+                                newid = db.Counsellor.Create();
                                 newid.UserID = objNewAdminUser.Id;
                                 newid.CounsellorEmail = objNewAdminUser.Email;
-                                db.Counsellors.Add(newid);
+                                db.Counsellor.Add(newid);
                                 db.SaveChanges();
                             }
                         }
