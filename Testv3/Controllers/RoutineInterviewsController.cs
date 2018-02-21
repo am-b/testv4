@@ -71,7 +71,7 @@ namespace Testv3.Controllers
                     var completionDate =
                         (from ans in db.RoutineInterview
                          where ans.UserID == pvm.UserID
-                         select new { CompletionDateInitialInterview = ans.CompletionDate })
+                         select new { CompletionDate = ans.CompletionDate })
                          .ToList();
 
                     RoutineInterview routine = db.RoutineInterview.FirstOrDefault(x => x.UserID == pvm.UserID);
@@ -79,7 +79,7 @@ namespace Testv3.Controllers
 
                     if (completionDate.Count() != 0)
                     {
-                        pvm.CompletionDateInitialInterview = routine.CompletionDate;
+                        pvm.CompletionDate = routine.CompletionDate;
                     }
 
 
