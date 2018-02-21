@@ -33,6 +33,11 @@
         <AssociationConnector Association="Testv3Model.FK__Counselli__UserI__2610A626" />
         <EntityTypeShape EntityType="Testv3Model.CounsellingContract" Width="1.5" PointX="7.5" PointY="1.5" />
         <AssociationConnector Association="Testv3Model.FK__Counselli__Stude__2EA5EC27" />
+        <EntityTypeShape EntityType="Testv3Model.IncidentReport" Width="1.5" PointX="10.5" PointY="15.5" />
+        <AssociationConnector Association="Testv3Model.FK__IncidentR__UserI__3CF40B7E" />
+        <AssociationConnector Association="Testv3Model.FK__IncidentR__Stude__3DE82FB7" />
+        <EntityTypeShape EntityType="Testv3Model.ExitInterview" Width="1.5" PointX="7.5" PointY="33" />
+        <AssociationConnector Association="Testv3Model.FK__ExitInter__Stude__40C49C62" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

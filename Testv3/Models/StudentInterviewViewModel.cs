@@ -78,5 +78,41 @@ namespace Testv3.Models
         [Required(ErrorMessage = "Write your answer")]
         [Display(Name = "Other Matters")]
         public string OtherMatters { get; set; }
+
+
+        public int ExitInterviewID { get; set; }
+        public string StudentUserID { get; set; }
+
+        [Required(ErrorMessage = "Write your answer")]
+        [Display(Name = "What are the things that you like about MMCC? Why?")]
+        public string MMCCLikes { get; set; }
+
+        [Required(ErrorMessage = "Write your answer")]
+        [Display(Name = "What are the things that you dislike about MMCC? Why?")]
+        public string MMCCDislikes { get; set; }
+
+        [Required(ErrorMessage = "Write your answer")]
+        [Display(Name = "What is the most memorable moment that you had duting your stay here at MMCC? Why?")]
+        public string MMCCMoments { get; set; }
+
+        [Required(ErrorMessage = "Write your answer")]
+        [Display(Name = "What can you say about your professors? ")]
+        public string Professors { get; set; }
+
+        [Required(ErrorMessage = "Write your answer")]
+        [Display(Name = "What can you say about the staff?")]
+        public string Staff { get; set; }
+
+        [Required(ErrorMessage = "Write your answer")]
+        [Display(Name = "How do you see yourself 5 years from now?")]
+        public string Future { get; set; }
+
+        [Required(ErrorMessage = "Write your answer")]
+        [Display(Name = "Other matters or concerns?")]
+        public string Others { get; set; }
+
+        [Required(ErrorMessage = "Write your answer")]
+        [Display(Name = "Guidance Counsellor's Notes")]
+        public string GuidanceNotes { get; set; }
     }
 }

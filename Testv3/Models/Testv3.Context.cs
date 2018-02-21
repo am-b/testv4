@@ -40,5 +40,7 @@ namespace Testv3.Models
         public virtual DbSet<CounsellingForm> CounsellingForm { get; set; }
         public virtual DbSet<Counsellor> Counsellor { get; set; }
         public virtual DbSet<CounsellingContract> CounsellingContract { get; set; }
+        public virtual DbSet<IncidentReport> IncidentReport { get; set; }
+        public virtual DbSet<ExitInterview> ExitInterview { get; set; }
     }
 }
