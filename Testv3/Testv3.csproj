@@ -202,6 +202,8 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AnnouncementsController.cs" />
     <Compile Include="Controllers\AppointmentController.cs" />
+    <Compile Include="Controllers\CounsellingContractsController.cs" />
+    <Compile Include="Controllers\CounsellingFormsController.cs" />
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InitialInterviewsController.cs" />
@@ -232,6 +234,12 @@
     <Compile Include="Models\AspNetUserLogin.cs">
       <DependentUpon>Testv3.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CounsellingContract.cs">
+      <DependentUpon>Testv3.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CounsellingForm.cs">
+      <DependentUpon>Testv3.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Counsellor.cs">
       <DependentUpon>Testv3.tt</DependentUpon>
     </Compile>
@@ -253,6 +261,7 @@
     <Compile Include="Models\Student.cs">
       <DependentUpon>Testv3.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\StudentCounsellingViewModel.cs" />
     <Compile Include="Models\StudentInterviewViewModel.cs" />
     <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>Testv3.tt</DependentUpon>
@@ -2349,6 +2358,13 @@
     <Content Include="Views\RoutineInterviews\Student.cshtml" />
     <Content Include="Views\RoutineInterviews\Details.cshtml" />
     <Content Include="Views\RoutineInterviews\Index.cshtml" />
+    <Content Include="Views\CounsellingForms\Counsellor.cshtml" />
+    <Content Include="Views\CounsellingForms\Student.cshtml" />
+    <Content Include="Views\CounsellingForms\Index.cshtml" />
+    <Content Include="Views\CounsellingForms\Search.cshtml" />
+    <Content Include="Views\CounsellingForms\Details.cshtml" />
+    <Content Include="Views\CounsellingContracts\Student.cshtml" />
+    <Content Include="Views\CounsellingContracts\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
