@@ -1,0 +1,107 @@
+﻿@model Testv3.Models.StudentInterviewViewModel
+
+@{
+    ViewBag.Title = "Student's Incident Record";
+}
+@section Scripts{
+    <script>
+        $(function () {
+            $('#studentSection textarea').attr('disabled', 'disabled');
+            $('#studentSection input').attr('disabled', 'disabled');
+        });
+    </script>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="body-content">
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="pull-right">
+                            @Html.Label("Date Reported: ")
+                            @Html.DisplayFor(model => model.CompletionDate)
+                            <br />
+                            @Html.Label("Reported by: ")
+                            @Html.DisplayFor(model => model.ReportedByName)
+                        </div>
+                        <br /><br />
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="controls form-inline">
+                                <br />
+                                @Html.Label("Student Name: ")
+                                @Html.DisplayFor(model => model.StudentLastName), @Html.DisplayFor(model => model.StudentFirstName) @Html.DisplayFor(model => model.StudentMiddleName)
+                                <br />
+                                @Html.Label("Student Number: ")
+                                @Html.DisplayFor(model => model.StudentID)
+                                <br />
+                                @Html.Label("Program and Year Level: ")
+                                @Html.DisplayFor(model => model.Program) - @Html.DisplayFor(model => model.YearLevel)
+                            </div>
+                        </div>
+
+                        <div id="studentSection">
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.DateTimeOfIncident, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.EditorFor(model => model.DateTimeOfIncident, new { htmlAttributes = new { @placeholder = "MM/DD/YYYY 12:00:00 PM", @style = "min-width:25%;", @class = "form-control" } })
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.TypeOfIncident, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextAreaFor(model => model.TypeOfIncident, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.PlaceOfIncident, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextAreaFor(model => model.PlaceOfIncident, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.Details, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextAreaFor(model => model.Details, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.Witness, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextAreaFor(model => model.Witness, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                            </div>
+                            <br />
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="controls form-inline">
+                                    @Html.Label("Guidance Counsellor: ")
+                                    @Html.DisplayFor(model => model.CounsellorLastName), @Html.DisplayFor(model => model.CounsellorFirstName) @Html.DisplayFor(model => model.CounsellorMiddleName)
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="controls form-inline">
+                                    @Html.LabelFor(model => model.CounselorNotes, htmlAttributes: new { @class = "control-label" })<br />
+                                    @Html.TextAreaFor(model => model.CounselorNotes, 5, 100, new { @class = "form-control", @style = "min-width: 90%;" })
+                                </div>
+
+                            </div>
+                        </div>
+                        
+
+                    </div>
+                </div>
+            </div>
+        
+        
+            <div class="form-group">
+                <div class="col-md-4 col-md-offset-5">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                    @Html.ActionLink("Back", "Index", "Home", null, new { @class = "btn btn-default" })
+                </div>
+            </div>
+        </div>
+    </div>
+}

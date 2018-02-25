@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Testv3.Models.IncidentReport>
+@{
+    ViewBag.Title = "Details";
+}
+<table class="table">
+    <tr>
+        <th>
+            Type Of Incident
+        </th>
+
+        <th>Date Reported</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TypeOfIncident)
+            </td>
+
+            <td>
+
+                @Html.ActionLink("View", "Details", new { IncidentReportID = item.IncidentReportID }) |
+                @Html.DisplayFor(modelItem => item.CompletionDate)
+            </td>
+        </tr>
+    }
+
+</table>

@@ -207,6 +207,7 @@
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\ExitInterviewsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IncidentReportsController.cs" />
     <Compile Include="Controllers\InitialInterviewsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PsychTestController.cs" />
@@ -262,6 +263,7 @@
     <Compile Include="Models\Questions.cs">
       <DependentUpon>Testv3.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ResultViewModel.cs" />
     <Compile Include="Models\RoutineInterview.cs">
       <DependentUpon>Testv3.tt</DependentUpon>
     </Compile>
@@ -2375,6 +2377,11 @@
     <Content Include="Views\ExitInterviews\Student.cshtml" />
     <Content Include="Views\ExitInterviews\Details.cshtml" />
     <Content Include="Views\ExitInterviews\Index.cshtml" />
+    <Content Include="Views\IncidentReports\Add.cshtml" />
+    <Content Include="Views\IncidentReports\Student.cshtml" />
+    <Content Include="Views\IncidentReports\Details.cshtml" />
+    <Content Include="Views\IncidentReports\Submit.cshtml" />
+    <Content Include="Views\IncidentReports\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

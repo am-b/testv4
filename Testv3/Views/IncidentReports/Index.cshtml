@@ -1,0 +1,70 @@
+﻿@model PagedList.IPagedList<Testv3.Models.TestViewModel>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Index";
+    <br />
+    <div class="alert alert-success alert-dismissable">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>To file an Incident Report, select the name of the student involved.</strong>
+    </div>
+}
+
+
+@using (Html.BeginForm("Index", "StudentInventory", FormMethod.Get))
+{
+    <br />
+    <div class="controls form-inline">
+        @Html.TextBox("searchStringName", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search by student name or student number", @style = "min-width:50%" })
+        <input type="submit" value="Search" class="btn btn-default" />
+    </div>
+
+    <br />
+}
+
+<table class="table">
+    <tr>
+        <th>
+            Student Name
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentLastName), @Html.DisplayFor(modelItem => item.StudentFirstName) @Html.DisplayFor(modelItem => item.StudentMiddleName)  
+                
+            </td>
+
+            <td>
+            @if (User.IsInRole("Student"))
+                {
+                @Html.ActionLink("Select", "Submit", new { UserID = item.UserID })
+            }
+            else if (User.IsInRole("Counselor"))
+            {
+                @Html.ActionLink("Select ", "Add", new { UserID = item.UserID })
+                @Html.ActionLink("| View IRs for this student", "Student", new { UserID = item.UserID })
+            }
+
+            </td>
+        </tr>
+    }
+
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model,
+    page => Url.Action("Index",
+    new
+    {
+        page,
+        searchStringName = ViewBag.searchStringName,
+        currentFilter = ViewBag.CurrentFilter
+    }))
+<hr />
