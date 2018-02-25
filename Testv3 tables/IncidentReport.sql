@@ -1,7 +1,7 @@
 USE [Testv3]
 GO
 
-/****** Object:  Table [dbo].[ExitInterview]    Script Date: 2/2/2018 1:39:01 AM ******/
+/****** Object:  Table [dbo].[IncidentReport]    Script Date: 2/26/2018 12:08:17 AM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -10,18 +10,15 @@ GO
 
 CREATE TABLE [dbo].[IncidentReport](
 	[IncidentReportID] [int] IDENTITY(1,1) NOT NULL,
-	[UserID] [nvarchar](128) NOT NULL,
+	[EeportedBy] [nvarchar](128) NOT NULL,
 	[StudentUserID] [nvarchar](128) NOT NULL,
 	[CompletionDate] [datetime] NULL,
-
 	[TypeOfIncident] [nvarchar](max) NULL,
 	[PlaceOfIncident] [nvarchar](max) NULL,
 	[DateTimeOfIncident] [datetime] NULL,
 	[Witness] [nvarchar](max) NULL,
 	[Details] [nvarchar](max) NULL,
 	[CounsellorNotes] [nvarchar](max) NULL,
-
-
 PRIMARY KEY CLUSTERED 
 (
 	[IncidentReportID] ASC
@@ -29,13 +26,11 @@ PRIMARY KEY CLUSTERED
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[IncidentReport]  WITH CHECK ADD FOREIGN KEY([UserID])
-REFERENCES [dbo].[Counsellor] ([UserID])
+ALTER TABLE [dbo].[IncidentReport]  WITH CHECK ADD FOREIGN KEY([StudentUserID])
+REFERENCES [dbo].[Student] ([UserID])
 ON DELETE CASCADE
 GO
 
-ALTER TABLE [dbo].[IncidentReport]  WITH CHECK ADD FOREIGN KEY([StudentUserID])
-REFERENCES [dbo].[Student] ([UserID])
-GO
+
 
 

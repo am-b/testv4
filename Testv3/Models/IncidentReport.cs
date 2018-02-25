@@ -15,7 +15,7 @@ namespace Testv3.Models
     public partial class IncidentReport
     {
         public int IncidentReportID { get; set; }
-        public string UserID { get; set; }
+        public string EeportedBy { get; set; }
         public string StudentUserID { get; set; }
         public Nullable<System.DateTime> CompletionDate { get; set; }
         public string TypeOfIncident { get; set; }
@@ -25,7 +25,6 @@ namespace Testv3.Models
         public string Details { get; set; }
         public string CounsellorNotes { get; set; }
     
-        public virtual Counsellor Counsellor { get; set; }
         public virtual Student Student { get; set; }
     }
 }

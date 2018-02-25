@@ -114,5 +114,36 @@ namespace Testv3.Models
         [Required(ErrorMessage = "Write your answer")]
         [Display(Name = "Guidance Counsellor's Notes")]
         public string GuidanceNotes { get; set; }
+
+
+
+        [Required(ErrorMessage = "Write your answer")]
+        [Display(Name = "Type of Incident:")]
+        public string TypeOfIncident { get; set; }
+
+        [Required(ErrorMessage = "Write your answer")]
+        [Display(Name = "Place of Incident: ")]
+        public string PlaceOfIncident { get; set; }
+
+        [Required(ErrorMessage = "Write your answer")]
+        [Display(Name = "Date and time of Incident")]
+        public Nullable<System.DateTime> DateTimeOfIncident { get; set; }
+
+        [Required(ErrorMessage = "Write your answer")]
+        [Display(Name = "Witness:")]
+        public string Witness { get; set; }
+
+        [Required(ErrorMessage = "Write your answer")]
+        [Display(Name = "Details:")]
+        public string Details { get; set; }
+
+        public string ReportedByName { get; set; }
+
+        public string CounsellorUserID { get; set; }
+        public string CounsellorID { get; set; }
+        public string CounsellorLastName { get; set; }
+        public string CounsellorFirstName { get; set; }
+        public string CounsellorMiddleName { get; set; }
+        public string CounsellorEmail { get; set; }
     }
 }
