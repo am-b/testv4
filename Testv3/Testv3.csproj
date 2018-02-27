@@ -200,6 +200,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AnecdotalRecordsController.cs" />
     <Compile Include="Controllers\AnnouncementsController.cs" />
     <Compile Include="Controllers\AppointmentController.cs" />
     <Compile Include="Controllers\CounsellingContractsController.cs" />
@@ -218,6 +219,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AnecdotalRecord.cs">
+      <DependentUpon>Testv3.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Announcement.cs">
       <DependentUpon>Testv3.tt</DependentUpon>
     </Compile>
@@ -2382,6 +2386,10 @@
     <Content Include="Views\IncidentReports\Details.cshtml" />
     <Content Include="Views\IncidentReports\Submit.cshtml" />
     <Content Include="Views\IncidentReports\Index.cshtml" />
+    <Content Include="Views\AnecdotalRecords\Add.cshtml" />
+    <Content Include="Views\AnecdotalRecords\Details.cshtml" />
+    <Content Include="Views\AnecdotalRecords\Student.cshtml" />
+    <Content Include="Views\AnecdotalRecords\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

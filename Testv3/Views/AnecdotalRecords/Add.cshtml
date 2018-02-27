@@ -1,0 +1,105 @@
+﻿@model Testv3.Models.StudentCounsellingViewModel
+
+@{
+    ViewBag.Title = "Anecdotal Records";
+}
+@if (TempData["Error"] != null)
+{
+    <br />
+    <div class="alert alert-danger alert-dismissable">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>@TempData["Error"]</strong>
+    </div>
+}
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="body-content">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="controls form-inline">
+                                <br />
+                                @Html.Label("Student Name: ")
+                                @Html.DisplayFor(model => model.StudentLastName), @Html.DisplayFor(model => model.StudentFirstName) @Html.DisplayFor(model => model.StudentMiddleName)
+                                <br />
+                                @Html.Label("Student Number: ")
+                                @Html.DisplayFor(model => model.StudentID)
+                                <br />
+                                @Html.Label("Program and Year Level: ")
+                                @Html.DisplayFor(model => model.Program) - @Html.DisplayFor(model => model.YearLevel)
+                            </div>
+                        </div>
+
+                        <div id="studentSection">
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.DateTimeObserved, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.ValidationMessageFor(model => model.DateTimeObserved, "", new { @class = "text-danger" })<br />
+                                @Html.EditorFor(model => model.DateTimeObserved, new { htmlAttributes = new { @placeholder = "MM/DD/YYYY 12:00:00 PM", @style = "min-width:25%;", @class = "form-control" } })
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.Place, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.ValidationMessageFor(model => model.Place, "", new { @class = "text-danger" })<br />
+                                @Html.TextAreaFor(model => model.Place, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.Observer, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.ValidationMessageFor(model => model.Observer, "", new { @class = "text-danger" })<br />
+                                @Html.TextAreaFor(model => model.Observer, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.BehaviorObserved, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.ValidationMessageFor(model => model.BehaviorObserved, "", new { @class = "text-danger" })<br />
+                                @Html.TextAreaFor(model => model.BehaviorObserved, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.Action, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.ValidationMessageFor(model => model.Action, "", new { @class = "text-danger" })<br />
+                                @Html.TextAreaFor(model => model.Action, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                            </div>
+                        </div>
+                        <br />
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="controls form-inline">
+                                    @Html.Label("Guidance Counsellor: ")
+                                    @Html.DisplayFor(model => model.CounsellorLastName), @Html.DisplayFor(model => model.CounsellorFirstName) @Html.DisplayFor(model => model.CounsellorMiddleName)
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="controls form-inline">
+                                    @Html.LabelFor(model => model.Summary, htmlAttributes: new { @class = "control-label" })<br />
+                                    @Html.TextAreaFor(model => model.Summary, 5, 100, new { @class = "form-control", @style = "min-width: 90%;" })
+                                    @Html.ValidationMessageFor(model => model.Summary, "", new { @class = "text-danger" })
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-md-4 col-md-offset-5">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                    @Html.ActionLink("Back", "Index", "Home", null, new { @class = "btn btn-default" })
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+}
