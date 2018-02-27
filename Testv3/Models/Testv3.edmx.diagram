@@ -37,6 +37,9 @@
         <AssociationConnector Association="Testv3Model.FK__ExitInter__Stude__40C49C62" />
         <EntityTypeShape EntityType="Testv3Model.IncidentReport" Width="1.5" PointX="7.5" PointY="38.125" />
         <AssociationConnector Association="Testv3Model.FK__IncidentR__Stude__54CB950F" />
+        <EntityTypeShape EntityType="Testv3Model.AnecdotalRecord" Width="1.5" PointX="10.5" PointY="15.625" />
+        <AssociationConnector Association="Testv3Model.FK__Anecdotal__Stude__5B78929E" />
+        <AssociationConnector Association="Testv3Model.FK__Anecdotal__UserI__5C6CB6D7" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

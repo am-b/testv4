@@ -25,6 +25,7 @@ namespace Testv3.Models
             this.CounsellingContract = new HashSet<CounsellingContract>();
             this.ExitInterview = new HashSet<ExitInterview>();
             this.IncidentReport = new HashSet<IncidentReport>();
+            this.AnecdotalRecord = new HashSet<AnecdotalRecord>();
         }
     
         public string UserID { get; set; }
@@ -75,5 +76,7 @@ namespace Testv3.Models
         public virtual ICollection<ExitInterview> ExitInterview { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<IncidentReport> IncidentReport { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AnecdotalRecord> AnecdotalRecord { get; set; }
     }
 }

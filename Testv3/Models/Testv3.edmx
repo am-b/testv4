@@ -5,6 +5,21 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="Testv3Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AnecdotalRecord">
+          <Key>
+            <PropertyRef Name="AnecdotalRecordID" />
+          </Key>
+          <Property Name="AnecdotalRecordID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StudentUserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="CompletionDate" Type="datetime" />
+          <Property Name="DateTimeObserved" Type="datetime" />
+          <Property Name="Place" Type="nvarchar" MaxLength="128" />
+          <Property Name="Observer" Type="nvarchar" MaxLength="128" />
+          <Property Name="BehaviorObserved" Type="nvarchar(max)" />
+          <Property Name="Action" Type="nvarchar(max)" />
+          <Property Name="Summary" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="Announcement">
           <Key>
             <PropertyRef Name="AnnouncementID" />
@@ -301,6 +316,32 @@
           <Property Name="version" Type="int" />
           <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
+        <Association Name="FK__Anecdotal__Stude__5B78929E">
+          <End Role="Student" Type="Self.Student" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AnecdotalRecord" Type="Self.AnecdotalRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="AnecdotalRecord">
+              <PropertyRef Name="StudentUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Anecdotal__UserI__5C6CB6D7">
+          <End Role="Counsellor" Type="Self.Counsellor" Multiplicity="1" />
+          <End Role="AnecdotalRecord" Type="Self.AnecdotalRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Counsellor">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="AnecdotalRecord">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Answers__Questio__7E02B4CC">
           <End Role="Questions" Type="Self.Questions" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -510,6 +551,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="Testv3ModelStoreContainer">
+          <EntitySet Name="AnecdotalRecord" EntityType="Self.AnecdotalRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Announcement" EntityType="Self.Announcement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Answers" EntityType="Self.Answers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
@@ -528,6 +570,14 @@
           <EntitySet Name="RoutineInterview" EntityType="Self.RoutineInterview" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Anecdotal__Stude__5B78929E" Association="Self.FK__Anecdotal__Stude__5B78929E">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="AnecdotalRecord" EntitySet="AnecdotalRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Anecdotal__UserI__5C6CB6D7" Association="Self.FK__Anecdotal__UserI__5C6CB6D7">
+            <End Role="Counsellor" EntitySet="Counsellor" />
+            <End Role="AnecdotalRecord" EntitySet="AnecdotalRecord" />
+          </AssociationSet>
           <AssociationSet Name="FK__Answers__Questio__7E02B4CC" Association="Self.FK__Answers__Questio__7E02B4CC">
             <End Role="Questions" EntitySet="Questions" />
             <End Role="Answers" EntitySet="Answers" />
@@ -670,6 +720,15 @@
           <AssociationSet Name="FK__IncidentR__Stude__54CB950F" Association="Testv3Model.FK__IncidentR__Stude__54CB950F">
             <End Role="Student" EntitySet="Students" />
             <End Role="IncidentReport" EntitySet="IncidentReport" />
+          </AssociationSet>
+          <EntitySet Name="AnecdotalRecord" EntityType="Testv3Model.AnecdotalRecord" />
+          <AssociationSet Name="FK__Anecdotal__Stude__5B78929E" Association="Testv3Model.FK__Anecdotal__Stude__5B78929E">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="AnecdotalRecord" EntitySet="AnecdotalRecord" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Anecdotal__UserI__5C6CB6D7" Association="Testv3Model.FK__Anecdotal__UserI__5C6CB6D7">
+            <End Role="Counsellor" EntitySet="Counsellor" />
+            <End Role="AnecdotalRecord" EntitySet="AnecdotalRecord" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Announcement">
@@ -853,6 +912,7 @@
           <NavigationProperty Name="CounsellingContract" Relationship="Testv3Model.FK__Counselli__Stude__2EA5EC27" FromRole="Student" ToRole="CounsellingContract" />
           <NavigationProperty Name="ExitInterview" Relationship="Testv3Model.FK__ExitInter__Stude__40C49C62" FromRole="Student" ToRole="ExitInterview" />
           <NavigationProperty Name="IncidentReport" Relationship="Testv3Model.FK__IncidentR__Stude__54CB950F" FromRole="Student" ToRole="IncidentReport" />
+          <NavigationProperty Name="AnecdotalRecord" Relationship="Testv3Model.FK__Anecdotal__Stude__5B78929E" FromRole="Student" ToRole="AnecdotalRecord" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Type="Testv3Model.AspNetUser" Role="AspNetUser" Multiplicity="1">
@@ -1062,6 +1122,7 @@
           <Property Name="CounsellorEmail" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUsers" Relationship="Testv3Model.FK__Counsello__UserI__16CE6296" FromRole="Counsellor" ToRole="AspNetUser" />
           <NavigationProperty Name="CounsellingForm" Relationship="Testv3Model.FK__Counselli__UserI__2610A626" FromRole="Counsellor" ToRole="CounsellingForm" />
+          <NavigationProperty Name="AnecdotalRecord" Relationship="Testv3Model.FK__Anecdotal__UserI__5C6CB6D7" FromRole="Counsellor" ToRole="AnecdotalRecord" />
         </EntityType>
         <Association Name="FK__Counsello__UserI__16CE6296">
           <End Type="Testv3Model.AspNetUser" Role="AspNetUser" Multiplicity="1">
@@ -1185,6 +1246,49 @@
             </Principal>
             <Dependent Role="IncidentReport">
               <PropertyRef Name="StudentUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="AnecdotalRecord">
+          <Key>
+            <PropertyRef Name="AnecdotalRecordID" />
+          </Key>
+          <Property Name="AnecdotalRecordID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentUserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CompletionDate" Type="DateTime" Precision="3" />
+          <Property Name="DateTimeObserved" Type="DateTime" Precision="3" />
+          <Property Name="Place" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Observer" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="BehaviorObserved" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Action" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Summary" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Student" Relationship="Testv3Model.FK__Anecdotal__Stude__5B78929E" FromRole="AnecdotalRecord" ToRole="Student" />
+          <NavigationProperty Name="Counsellor" Relationship="Testv3Model.FK__Anecdotal__UserI__5C6CB6D7" FromRole="AnecdotalRecord" ToRole="Counsellor" />
+        </EntityType>
+        <Association Name="FK__Anecdotal__Stude__5B78929E">
+          <End Type="Testv3Model.Student" Role="Student" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Testv3Model.AnecdotalRecord" Role="AnecdotalRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="AnecdotalRecord">
+              <PropertyRef Name="StudentUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Anecdotal__UserI__5C6CB6D7">
+          <End Type="Testv3Model.Counsellor" Role="Counsellor" Multiplicity="1" />
+          <End Type="Testv3Model.AnecdotalRecord" Role="AnecdotalRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Counsellor">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="AnecdotalRecord">
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1502,6 +1606,22 @@
                 <ScalarProperty Name="StudentUserID" ColumnName="StudentUserID" />
                 <ScalarProperty Name="EeportedBy" ColumnName="EeportedBy" />
                 <ScalarProperty Name="IncidentReportID" ColumnName="IncidentReportID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AnecdotalRecord">
+            <EntityTypeMapping TypeName="Testv3Model.AnecdotalRecord">
+              <MappingFragment StoreEntitySet="AnecdotalRecord">
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="BehaviorObserved" ColumnName="BehaviorObserved" />
+                <ScalarProperty Name="Observer" ColumnName="Observer" />
+                <ScalarProperty Name="Place" ColumnName="Place" />
+                <ScalarProperty Name="DateTimeObserved" ColumnName="DateTimeObserved" />
+                <ScalarProperty Name="CompletionDate" ColumnName="CompletionDate" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="StudentUserID" ColumnName="StudentUserID" />
+                <ScalarProperty Name="AnecdotalRecordID" ColumnName="AnecdotalRecordID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

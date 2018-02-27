@@ -38,5 +38,15 @@ namespace Testv3.Models
         public bool StudentAgrees { get; set; }
 
 
+        public int AnecdotalRecordID { get; set; }
+        public string UserID { get; set; }
+        public Nullable<System.DateTime> DateTimeObserved { get; set; }
+        public string Place { get; set; }
+        public string Observer { get; set; }
+        public string BehaviorObserved { get; set; }
+        public string Action { get; set; }
+        public string Summary { get; set; }
+
+
     }
 }

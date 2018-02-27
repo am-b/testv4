@@ -18,6 +18,7 @@ namespace Testv3.Models
         public Counsellor()
         {
             this.CounsellingForm = new HashSet<CounsellingForm>();
+            this.AnecdotalRecord = new HashSet<AnecdotalRecord>();
         }
     
         public string UserID { get; set; }
@@ -30,5 +31,7 @@ namespace Testv3.Models
         public virtual AspNetUser AspNetUsers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CounsellingForm> CounsellingForm { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AnecdotalRecord> AnecdotalRecord { get; set; }
     }
 }
