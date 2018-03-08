@@ -21,19 +21,130 @@
 @{
     ViewBag.Title = "Student List of Responses";
 }
+
+
+<div class="box">
+    <div class="box-header">
+        <h3 class="box-title">Overall report of student's test results</h3>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" type="button" data-toggle="collapse" data-target="#LOL">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-sm-3 col-xs-6">
+                <div class="description-block border-right">
+                    <span class="description-percentage text-green">@ViewBag.percentageOfPhysicalIssues%</span>
+                    <h5 class="description-header">PHYSICAL</h5>
+                </div>
+            </div>
+
+            <div class="col-sm-3 col-xs-6">
+                <div class="description-block border-right">
+                    <span class="description-percentage text-yellow">@ViewBag.percentageOfEmotionalIssues%</span>
+                    <h5 class="description-header">EMOTIONAL</h5>
+                </div>
+            </div>
+
+            <div class="col-sm-3 col-xs-6">
+                <div class="description-block border-right">
+                    <span class="description-percentage text-green">@ViewBag.percentageOfSocialIssues%</span>
+                    <h5 class="description-header">SOCIAL</h5>
+                </div>
+            </div>
+            <div class="col-sm-3 col-xs-6">
+                <div class="description-block">
+                    <h5 class="description-header">Total Test Completion:</h5>
+                    <span class="description-text">@ViewBag.CountOfStudentsWithNoPsychTest/@ViewBag.CountOfTotalStudents students</span>
+
+                    @if (@ViewBag.ListOfStudents != null)
+                    {
+                        <small><br />@ViewBag.ListOfStudents</small>
+                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">See list</button>
+                        <div id="myModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <table class="table">
+                                            <tr>
+                                                <th>
+                                                    Student ID
+                                                </th>
+                                                <th>
+                                                    Student Name
+                                                </th>
+                                            </tr>
+                                            @foreach (var name in (List<Testv3.Models.TestViewModel>)ViewData["studentlist"])
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @name.StudentID
+                                                    </td>
+                                                    <td>
+                                                        @name.StudentLastName, @name.StudentFirstName @name.StudentMiddleName
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="LOL" class="collapse in">
+        <div class="box-body">
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                        <table class="table">
+                            <tr>
+                                <th></th>
+                                
+                            </tr>
+                            @foreach (var question in (List<Testv3.Models.PsychTestViewModel>)ViewData["questionlist"])
+                            {
+                                <tr>
+                                    <td>
+                                        <b>@question.Question</b>
+                                        <br />
+                                        <div class="col-xs-4">
+                                            <canvas id="myCharts"></canvas>
+                                        </div>
+                                    </td>
+                                    
+                                </tr>
+                            }
+                        </table>
+                        @*<canvas id="myCharts"></canvas>
+                        <canvas class="chart"></canvas>*@
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+
+
+
 @using (Html.BeginForm("StudentList", "PsychTest", FormMethod.Get))
 {
     <br />
     <div class="controls form-inline">
-        @Html.TextBox("searchStringName", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search by student's name" })
+        @Html.TextBox("searchStringName", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search by student's name or student number", @style = "min-width:50%" })
         <input type="submit" value="Search" class="btn btn-default" />
     </div>
 
     <br />
 }
-
-
-
 <table class="table">
     <tr>
         <th>
@@ -44,7 +155,7 @@
     </tr>
 
     @foreach (var item in Model)
-    {
+        {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.StudentLastName), @Html.DisplayFor(modelItem => item.StudentFirstName) @Html.DisplayFor(modelItem => item.StudentMiddleName)
@@ -56,13 +167,16 @@
                 @Html.ActionLink("Delete", "Delete", new { UserID = item.UserID })
             </td>
         </tr>
-    }
+        }
 
 </table>
-<br />
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
-@Html.PagedListPager(Model,
+
+
+        <br />
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+        @Html.PagedListPager(Model,
     page => Url.Action("Index",
     new
     {
@@ -70,4 +184,171 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
         searchStringName = ViewBag.searchStringName,
         currentFilter = ViewBag.CurrentFilter
     }))
-<hr />
+        <hr />
+        @Scripts.Render("~/bundles/jquery")
+        @section Scripts {
+            <script type="text/javascript">
+
+                //var aLabels = ["Agree", "Somewhat Agree", "Disagree"];
+                //var aDatasets1 = [];
+
+                //var pieChart = {
+                //    labels: aLabels,
+                //    datasets: [{
+                //        label: "",
+                //        data: aDatasets1,
+                //        fill: false,
+                //        backgroundColor: ["rgba(54, 162, 235, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)", "rgba(255, 205, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(201, 203, 207, 0.2)"],
+                //        borderColor: ["rgb(54, 162, 235)", "rgb(255, 99, 132)", "rgb(255, 159, 64)", "rgb(255, 205, 86)", "rgb(75, 192, 192)", "rgb(153, 102, 255)", "rgb(201, 203, 207)"],
+                //        borderWidth: 1
+                //    }]
+                //};
+
+
+                //$.get("/PsychTest/GetData", function (questionlist) {
+                //    $.each(questionlist, function (i, item) { //bawat item from array: [0], [1], [2], etc
+                //        aDatasets1.push(item); //push bawat item from array: push agree then loop, sa, loop, disagree
+                //    })
+
+
+                //    var ctx = document.getElementById("pie-chart").getContext("2d");
+                //    var myNewChart = new Chart(ctx, {
+                //        type: 'pie',
+                //        data: pieChart,
+                //        options: {
+
+                //            responsive: true,
+                //            maintainAspectRatio: true,
+                //            legend: {
+                //                position: 'right'
+                //            }
+
+                //        }
+                //    });
+                //});
+
+
+
+                //
+                //var canvasArray = [];
+                //var dataArray = [];
+
+                //var jsonData =
+                //    [
+                //        { "A": 1, "B": 1, "C": 3, "ID": 93396 },
+                //        { "A": 0, "B": 2, "C": 1, "ID": 93397 }
+                //    ]
+
+
+                //for (var i = 0; i < jsonData.length; i++) {
+                //    var pieChart =
+                //        [
+                //            {
+                //                value: jsonData[i].A,
+                //                color: "#000000",
+                //                highlight: "#000000",
+                //                label: "A"
+
+                //            },
+                //            {
+                //                value: jsonData[i].B,
+                //                color: "#1C9915",
+                //                highlight: "#1C9915",
+                //                label: "B"
+
+                //            },
+                //            {
+                //                value: jsonData[i].C,
+                //                color: "#F7464A",
+                //                highlight: "#FF5A5E",
+                //                label: "C"
+
+                //            },
+
+                //        ]
+
+
+                //    //document.getElementById("myCharts").innerHTML += "<canvas id=\"" + jsonData[i].ID + "\"></canvas>"
+                //    //var ctxPrep = "#" + jsonData[i].ID;
+                //    //canvasArray.push(ctxPrep);
+                //    //dataArray.push(pieChart);
+
+                //};
+
+                ////$.each(canvasArray, function (index, value) {
+                ////    var ctx = $(value).get(0).getContext("2d");
+
+                ////    var myNewChart = new Chart(ctx, {
+                ////        type: 'pie',
+                ////        data: dataArray[index],
+                ////        options: {
+                ////            animation: false
+                ////        }
+
+                ////    });
+
+
+                ////});
+
+                //$('.chart').each(function (index, element) {
+                //    var ctx = element.getContext("2d");
+                //    var myNewChart = new Chart(ctx, {
+                //        type: 'pie',
+                //        data: dataArray[index],
+                //        options: {
+                //            animation: false
+                //        }
+                //    });
+                //});
+
+                var canvasArray = [];
+                var dataArray = [];
+                var jsonData =
+                    [
+                        { "A": 1, "B": 1, "C": 3, "ID": 93396 },
+                        { "A": 0, "B": 2, "C": 1, "ID": 93397 }
+                    ]
+                for (var i = 0; i < jsonData.length; i++) {
+                    var pieChart =
+                        [
+                            {
+                                value: jsonData[i].A,
+                                color: "#000000",
+                                highlight: "#000000",
+                                label: "A"
+                            },
+                            {
+                                value: jsonData[i].B,
+                                color: "#1C9915",
+                                highlight: "#1C9915",
+                                label: "B"
+                            },
+                            {
+                                value: jsonData[i].C,
+                                color: "#F7464A",
+                                highlight: "#FF5A5E",
+                                label: "C"
+                            },
+                        ]
+
+                    document.getElementById("myCharts").innerHTML += "<canvas id=\"" + jsonData[i].ID + "\"></canvas>"
+                    var ctxPrep = "#" + jsonData[i].ID;
+                    canvasArray.push(ctxPrep);
+                    dataArray.push(pieChart);
+
+                };
+
+                $.each(canvasArray, function (index, value) {
+                    var ctx = $(value).get(0).getContext("2d");
+                    var myNewChart = new Chart(ctx, {
+                        type: 'pie',
+                        data: dataArray[index],
+                        options: {
+                            animation: false
+                        }
+                    });
+                });
+
+
+</script>
+        }

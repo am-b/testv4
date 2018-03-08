@@ -360,24 +360,41 @@ namespace Testv3.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+
         public ContentResult GetData()
-      {
-            var currentUserId = User.Identity.GetUserId();
-            List<PsychTestViewModel> pvm = new List<PsychTestViewModel>();
-            var results = db.Answers.ToList();
+        {
+            var datalistQuestions = db.Questions.ToList();
+            List<ResultViewModel> questionlist = new List<ResultViewModel>();
 
-            foreach (Answers answers in results)
+            foreach (var question in datalistQuestions)
             {
-                PsychTestViewModel viewmodel = new PsychTestViewModel();
-                viewmodel.QuestionID = answers.QuestionID;
-                viewmodel.Answer = answers.Answer;
+                ResultViewModel ptvm = new ResultViewModel();
 
+                var agree = from ans in db.Answers
+                            where ans.Answer == 1 && ans.QuestionID == question.QuestionID
+                            select new { Answer = ans.Answer };
+
+
+                var somewhatAgree = from ans in db.Answers
+                                    where ans.Answer == 2 && ans.QuestionID == question.QuestionID
+                                    select new { Answer = ans.Answer };
+
+
+                var disagree = from ans in db.Answers
+                               where ans.Answer == 3 && ans.QuestionID == question.QuestionID
+                               select new { Answer = ans.Answer };
+
+                ptvm.countAgree = agree.Count();
+                ptvm.countSomewhatAgree = somewhatAgree.Count();
+                ptvm.countDisagree = disagree.Count();
+
+                questionlist.Add(ptvm);
                 
-
-                pvm.Add(viewmodel);
             }
 
-            return Content(JsonConvert.SerializeObject(pvm), "application/json");
+            
+            return Content(JsonConvert.SerializeObject(questionlist), "application/json");
+
         }
 
         // GET: PsychologicalTest/Responses
@@ -591,6 +608,9 @@ namespace Testv3.Controllers
                     .Take(intPageSize)
                     .ToList();
 
+                int noAnswer = 0;
+                List<TestViewModel> StudentInventorylist3 = new List<TestViewModel>();
+                
                 foreach (var item in datalist)
                 {
                     TestViewModel pvm = new TestViewModel();
@@ -598,8 +618,63 @@ namespace Testv3.Controllers
                     pvm.StudentMiddleName = item.StudentMiddleName;
                     pvm.StudentLastName = item.StudentLastName;
                     pvm.UserID = item.UserID;
+                    pvm.StudentID = item.StudentID;
                     StudentInventorylist.Add(pvm);
+
+                    //see how many students have no psych test
+                    var dlist =
+                        (from ans in db.Answers
+                         where ans.UserID == pvm.UserID
+                         select new {Answer = ans.Answer});
+
+                    int countOfTotalStudents = datalist.Count();
+
+                    if (dlist.Count() == 0)
+                    {
+                        noAnswer++;
+
+                            ViewBag.ListOfStudents = "List of students who haven't taken the Psychological Test";
+
+                            //write yung names ng student where nag dlist.count == 0
+                            TestViewModel tvm = new TestViewModel();
+                            tvm.StudentFirstName = pvm.StudentFirstName;
+                            tvm.StudentMiddleName = pvm.StudentMiddleName;
+                            tvm.StudentLastName = pvm.StudentLastName;
+                            tvm.UserID = pvm.UserID;
+                            tvm.StudentID = pvm.StudentID;
+                            StudentInventorylist3.Add(tvm);
+
+                            ViewBag.studentlist = StudentInventorylist3;
+
+                            int countOfStudentsWithNoPsychTest = noAnswer;
+                            ViewBag.CountOfTotalStudents = countOfTotalStudents;
+                            ViewBag.CountOfStudentsWithNoPsychTest = countOfTotalStudents - countOfStudentsWithNoPsychTest;
+
+                    }
+                    else
+                    {
+                        int countOfStudentsWithNoPsychTest = noAnswer;
+
+                        ViewBag.CountOfTotalStudents = countOfTotalStudents;
+                        ViewBag.CountOfStudentsWithNoPsychTest = countOfTotalStudents - countOfStudentsWithNoPsychTest;
+                    }
+
                 }
+
+                //display questions sa table
+                var datalistQuestions = db.Questions.ToList();
+                List<PsychTestViewModel> questionlist = new List<PsychTestViewModel>();
+
+                foreach (var question in datalistQuestions)
+                {
+                    PsychTestViewModel ptvm = new PsychTestViewModel();
+                    ptvm.QuestionID = question.QuestionID;
+                    ptvm.Question = question.Question;                    
+
+                    questionlist.Add(ptvm);
+                }
+
+                ViewBag.questionlist = questionlist;
 
                 // Set the number of pages
                 var _UserAsIPagedList =
@@ -620,7 +695,6 @@ namespace Testv3.Controllers
             }
 
         }
-
 
         private IEnumerable<string> GetAllQuestionTags()
         {

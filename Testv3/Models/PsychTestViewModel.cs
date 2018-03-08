@@ -24,10 +24,5 @@ namespace Testv3.Models
         public int Answer { get; set; }
 
         public bool IsQuestionPositive { get; set; }
-
-        public int countAgree { get; set; }
-        public int countSomewhatAgree { get; set; }
-        public int countDisagree { get; set; }
-
     }
 }

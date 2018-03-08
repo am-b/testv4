@@ -140,8 +140,8 @@
 
         $.getJSON("/PsychTest/GetData/", function (data) {
             $.each(data, function (i, item) {
-                linechart.labels.push(item.QuestionID);
-                linechart.datasets[0].data.push(item.Answer); //individual student
+                linechart.labels.push(item.QuestionID); //eto yung nasa x-axis
+                linechart.datasets[0].data.push(item.Answer); //individual student  
                 //linechart.datasets[1].data.push();  //overall population
             })
             var ctx = document.getElementById("line-chart").getContext("2d");
