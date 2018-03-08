@@ -54,7 +54,7 @@ namespace Testv3.Controllers
                     .Count();
 
                 var datalist = db.Students
-                    .Where(x => x.StudentLastName.Contains(searchStringName) || x.StudentFirstName.Contains(searchStringName))
+                    .Where(x => x.StudentLastName.Contains(searchStringName) || x.StudentFirstName.Contains(searchStringName) || x.StudentID.Contains(searchStringName))
                     .OrderBy(x => x.StudentLastName)
                     .Skip(intSkip)
                     .Take(intPageSize)
