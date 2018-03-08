@@ -4,12 +4,16 @@
 
 @{
     ViewBag.Title = "Index";
+    <div class="alert alert-success alert-dismissable">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close"></a>
+        <strong>To view a student's Exit Interview Record, search using student name or student number.</strong>
+    </div>
 }
 @using (Html.BeginForm("Index", "StudentInventory", FormMethod.Get))
 {
     <br />
     <div class="controls form-inline">
-        @Html.TextBox("searchStringName", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search by student's name", @style = "min-width:50%" })
+        @Html.TextBox("searchStringName", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search by student's name or student number", @style = "min-width:50%" })
         <input type="submit" value="Search" class="btn btn-default" />
     </div>
 

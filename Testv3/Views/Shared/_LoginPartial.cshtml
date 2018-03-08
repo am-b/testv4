@@ -1,22 +1,15 @@
-﻿
-
-@if (Request.IsAuthenticated)
+﻿@if (Request.IsAuthenticated)
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
     @Html.AntiForgeryToken()
-
         <ul class="nav navbar-nav">
             <li class="dropdown user user-menu">
-                <!-- Menu Toggle Button -->
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <!-- The user image in the navbar-->
                     <img src="~/admin-lte/dist/img/avatar2.png" class="user-image" alt="User Image">
-                    <!-- hidden-xs hides the username on small devices so only the image appears. -->
                     <span class="hidden-xs">@ViewBag.CurrentUser</span>
                 </a>
                 <ul class="dropdown-menu">
-                    <!-- The user image in the menu -->
                     <li class="user-header">
                         <img src="~/admin-lte/dist/img/avatar2.png" class="img-circle" alt="User Image">
                         <p>
@@ -35,12 +28,11 @@
                 </ul>
             </li>
             <li>
-                <a href="#" data-toggle="control-sidebar"></a>
+                <a href="#"></a>
             </li>
-            </ul>
-
-            }
-            }
+        </ul>
+    }
+}
             @section Scripts {
                 @Scripts.Render("~/bundles/jqueryval")
                 @Scripts.Render("~/bundles/jquery")

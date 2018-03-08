@@ -4,6 +4,10 @@
 
 @{
     ViewBag.Title = "Index";
+    <div class="alert alert-success alert-dismissable">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close"></a>
+        <strong>To see the test results of the students, select "View Test Responses"</strong>
+    </div>
 }
 @if (TempData["Message"] != null)
 {
@@ -26,7 +30,7 @@
 {
     <br />
     <div class="controls form-inline">
-        @Html.TextBox("searchStringQuestion", ViewBag.CurrentFilter as string, new { @class = "form-control"})
+        @Html.TextBox("searchStringQuestion", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search question", @style = "min-width:50%" })
         <input type="submit" value="Search" class="btn btn-default" />
         <div style="float:right;">
             @Html.ActionLink("Add New Question", "CreateTest", null, new { @class = "btn btn-default" })

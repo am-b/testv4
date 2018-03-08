@@ -28,50 +28,50 @@
                     @*href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">*@
                     <span class="sr-only">Toggle navigation</span>
                     @*<span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>*@
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>*@
                 </a>
-                
                 <br />
-                
-                    <div class="navbar-custom-menu">
-                        @Html.Partial("_LoginPartial")
-                    </div>
-                
+
+                <div class="navbar-custom-menu">
+                    @Html.Partial("_LoginPartial")
+                </div>
+
             </nav>
         </header>
-        @if (User.IsInRole("Administrator") || (User.IsInRole("Counselor")))
+        @if (User.IsInRole("Counselor") )
         {
             <div class="navbar-collapse collapse" id="#.navbar-collapse">
                 <aside class="main-sidebar">
                     <section class="sidebar">
                         <ul class="sidebar-menu" data-widget="tree">
-                            <li class="header">You are logged in as </li>
-                            <li>@Html.ActionLink("Create Announcements", "Index", "Announcements")</li>
+                            <li class="header"></li>
+
+                            <li><a href='@Url.Action("Index", "Announcements")'><i class="fa fa-th"></i>Create Announcements</a></li>
                             <li>
-                                <a data-toggle="collapse" data-target="#records" class="collapsed" href="#">Manage Records<span class="caret"></span></a>
-                                <ul class="treeview-menu collapse" id="records">
-                                    <li>@Html.ActionLink("Student Inventory Records", "Index", "StudentInventory")</li>
-                                    <li>@Html.ActionLink("Counselling Contract", "Index", "CounsellingContracts")</li>
-                                    <li>@Html.ActionLink("Psychological Test", "Index", "PsychTest")</li>
-                                    <li>@Html.ActionLink("Initial Interview", "Index", "InitialInterviews")</li>
-                                    <li>@Html.ActionLink("Routine Interview", "Index", "RoutineInterviews")</li>
-                                    <li>@Html.ActionLink("Individual Counselling", "Index", "CounsellingForms")</li>
-                                    <li>@Html.ActionLink("Group Counselling", "Index", "CounsellingForms")</li>
-                                    <li>@Html.ActionLink("Incident Report", "Index", "IncidentReports")</li>
-                                    <li>@Html.ActionLink("Anecdotal Record", "Index", "AnecdotalRecords")</li>
-                                    <li>@Html.ActionLink("Exit Interview", "Index", "ExitInterviews")</li>
+                                <a data-toggle="collapse" data-target="#records" class="collapsed" href="#"><i class="fa fa-folder"></i>Manage Records<span class="caret"></span></a>
+                                <ul class="treeview-menu collapse" id="records">                                 
+                                    <li><a href='@Url.Action("Index", "StudentInventory")'><i class="fa fa-dot-circle-o"></i>Student Inventory Records</a></li>
+                                    <li><a href='@Url.Action("Index", "CounsellingContracts")'><i class="fa fa-dot-circle-o"></i>Counselling Contract</a></li>
+                                    <li><a href='@Url.Action("Index", "PsychTest")'><i class="fa fa-dot-circle-o"></i>Psychological Test</a></li>
+                                    <li><a href='@Url.Action("Index", "InitialInterviews")'><i class="fa fa-dot-circle-o"></i>Initial Interview</a></li>
+                                    <li><a href='@Url.Action("Index", "RoutineInterviews")'><i class="fa fa-dot-circle-o"></i>Routine Interview</a></li>
+                                    <li><a href='@Url.Action("Index", "CounsellingForms")'><i class="fa fa-dot-circle-o"></i>Individual Counselling</a></li>
+                                    <li><a href='@Url.Action("Index", "CounsellingForms")'><i class="fa fa-dot-circle-o"></i>Group Counselling</a></li>
+                                    <li><a href='@Url.Action("Index", "IncidentReports")'><i class="fa fa-dot-circle-o"></i>Incident Report</a></li>
+                                    <li><a href='@Url.Action("Index", "AnecdotalRecords")'><i class="fa fa-dot-circle-o"></i>Anecdotal Record</a></li>
+                                    <li><a href='@Url.Action("Index", "ExitInterviews")'><i class="fa fa-dot-circle-o"></i>Exit Interview</a></li>
                                 </ul>
                             </li>
                             <li>
-                                <a data-toggle="collapse" data-target="#Appointments" class="collapsed" href="#">Appointments<span class="caret"></span></a>
+                                <a data-toggle="collapse" data-target="#Appointments" class="collapsed" href="#"><i class="fa fa-calendar"></i>Appointments<span class="caret"></span></a>
                                 <ul class="treeview-menu collapse" id="Appointments">
                                     <li>@Html.ActionLink("Manage Appointments", "Appointments", "Home")</li>
                                     <li>@Html.ActionLink("Pending Appointments", "Appointments", "Home")</li>
                                 </ul>
                             </li>
-                            <li>@Html.ActionLink("Reports", "Reports", "Home")</li>
-                            <li>@Html.ActionLink("Manage User Accounts", "Index", "Admin")</li>
+                            <li><a href='@Url.Action("Reports", "Home")'><i class="fa fa-print"></i>Reports</a></li>
+                            <li><a href='@Url.Action("Index", "Admin")'><i class="fa fa-users"></i>Manage User Accounts</a></li>
 
                         </ul>
 
@@ -79,25 +79,33 @@
                 </aside>
             </div>
         }
-                <div class="content-wrapper">
-                    <section class="content container-fluid">
-                        @RenderBody()
+        else if (User.IsInRole("Administrator")){
+            <div class="navbar-collapse collapse" id="#.navbar-collapse">
+                <aside class="main-sidebar">
+                    <section class="sidebar">
+                        <ul class="sidebar-menu" data-widget="tree">
+                            <li class="header"> <br /></li>
+                            <li><a href='@Url.Action("Index", "Announcements")'><i class="fa fa-th"></i>Create Announcements</a></li>
+                            <li><a href='@Url.Action("Index", "Admin")'><i class="fa fa-users"></i>Manage User Accounts</a></li>
+                        </ul>
                     </section>
-                </div>
-                <footer class="main-footer">
-                    <div class="pull-right hidden-xs">
-                        Makati Medical Center College Guidance Office
-                    </div>
-                    <p>&copy; @DateTime.Now.Year TEAM BBL</p>
-                </footer>
-                <aside class="control-sidebar control-sidebar-dark">
-                    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-                        <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-                        <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-                    </ul>
                 </aside>
-                <div class="control-sidebar-bg"></div>
             </div>
+        }
+        <div class="content-wrapper">
+            <section class="content container-fluid">
+                @RenderBody()
+            </section>
+        </div>
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                Makati Medical Center College Guidance Office
+            </div>
+            <p>&copy; @DateTime.Now.Year TEAM BBL</p>
+        </footer>
+    </div>
+
+
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="dist/js/adminlte.min.js"></script>

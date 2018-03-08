@@ -3,54 +3,45 @@
 @{
     ViewBag.Title = "Edit announcements";
 }
-
-<h2>Edit</h2>
-
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.AnnouncementID)
 
-        <div class="form-group">
-            @Html.Label("Announcement Date", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+        <div class="controls form-inline">
+                @Html.Label("Announcement Date", htmlAttributes: new { @class = "control-label" })<br />
                 @Html.EditorFor(model => model.AnnouncementDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                 @Html.ValidationMessageFor(model => model.AnnouncementDate, "", new { @class = "text-danger" })
-            </div>
         </div>
+        <br />
+
+        <div class="controls form-inline">
+            @Html.Label("Announcement Title", htmlAttributes: new { @class = "control-label" })<br />
+            @Html.EditorFor(model => model.AnnouncementTitle, new { htmlAttributes = new { @class = "form-control" , @style = "min-width: 70%;" } })
+            @Html.ValidationMessageFor(model => model.AnnouncementTitle, "", new { @class = "text-danger" })
+        </div>
+        <br />
+
+        <div class="controls form-inline">
+            @Html.Label("Body", htmlAttributes: new { @class = "control-label" })<br />
+            @Html.TextAreaFor(model => model.AnnouncementBody, 10, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+            @Html.ValidationMessageFor(model => model.AnnouncementBody, "", new { @class = "text-danger" })        </div>
+        <br />
 
         <div class="form-group">
-            @Html.Label("Announcement Title", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.AnnouncementTitle, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.AnnouncementTitle, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("Announcement Body", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextAreaFor(model => model.AnnouncementBody,10,55, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.AnnouncementBody, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <div class="col-md-4 col-md-offset-5">
                 <input type="submit" value="Save" class="btn btn-default" />
+                @Html.ActionLink("Back", "Index", "Announcements", null, new { @class = "btn btn-default" })
             </div>
         </div>
+
+
+
     </div>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
