@@ -1,7 +1,7 @@
 USE [Testv3]
 GO
 
-/****** Object:  Table [dbo].[ExitInterview]    Script Date: 2/2/2018 1:39:01 AM ******/
+/****** Object:  Table [dbo].[ExitInterview]    Script Date: 3/9/2018 9:34:30 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -27,15 +27,8 @@ PRIMARY KEY CLUSTERED
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[ExitInterview]  WITH CHECK ADD FOREIGN KEY([UserID])
-REFERENCES [dbo].[Counsellor] ([UserID])
-ON DELETE CASCADE
-GO
-
 ALTER TABLE [dbo].[ExitInterview]  WITH CHECK ADD FOREIGN KEY([StudentUserID])
 REFERENCES [dbo].[Student] ([UserID])
+ON DELETE CASCADE
 GO
-
-
-
 

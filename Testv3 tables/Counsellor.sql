@@ -1,7 +1,7 @@
 USE [Testv3]
 GO
 
-/****** Object:  Table [dbo].[Counsellor]    Script Date: 12/23/2017 12:05:51 AM ******/
+/****** Object:  Table [dbo].[Counsellor]    Script Date: 3/9/2018 9:34:02 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -17,11 +17,10 @@ CREATE TABLE [dbo].[Counsellor](
 	[CounsellorEmail] [nvarchar](256) NULL,
 PRIMARY KEY CLUSTERED 
 (
-	[CounsellorID] ASC
+	[UserID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-
 
 ALTER TABLE [dbo].[Counsellor]  WITH CHECK ADD FOREIGN KEY([UserID])
 REFERENCES [dbo].[AspNetUsers] ([Id])

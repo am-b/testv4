@@ -1,7 +1,7 @@
 USE [Testv3]
 GO
 
-/****** Object:  Table [dbo].[CounsellingContract]    Script Date: 2/15/2018 8:54:01 PM ******/
+/****** Object:  Table [dbo].[CounsellingContract]    Script Date: 3/9/2018 9:33:09 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -12,7 +12,7 @@ CREATE TABLE [dbo].[CounsellingContract](
 	[CounsellingContractID] [int] IDENTITY(1,1) NOT NULL,
 	[StudentUserID] [nvarchar](128) NOT NULL,
 	[CompletionDate] [datetime] NULL,
-
+	[StudentAgrees] [bit] NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[CounsellingContractID] ASC
@@ -20,12 +20,8 @@ PRIMARY KEY CLUSTERED
 ) ON [PRIMARY]
 GO
 
-
 ALTER TABLE [dbo].[CounsellingContract]  WITH CHECK ADD FOREIGN KEY([StudentUserID])
 REFERENCES [dbo].[Student] ([UserID])
 ON DELETE CASCADE
 GO
-
-ALTER TABLE [dbo].[CounsellingContract]
-  ADD StudentAgrees [bit] NULL
 
