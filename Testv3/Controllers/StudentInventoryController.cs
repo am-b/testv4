@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using PagedList;
+using Rotativa;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -93,13 +94,17 @@ namespace Testv3.Controllers
         }
 
         // GET: /Details
-        [Authorize(Roles = "Counselor")]
+        //[Authorize(Roles = "Counselor")]
+        [AllowAnonymous]
         public ActionResult View(string UserID)
         {
             GetCurrentUserInViewBag();
+
+
             if (UserID == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                TempData["Error"] = "This user has no record yet!";
+                return RedirectToAction("Index", "StudentInventory");
             }
             Student student = db.Students.Find(UserID);
             if (student == null)
@@ -111,12 +116,10 @@ namespace Testv3.Controllers
 
             if (inventory == null)
             {
-                return HttpNotFound();
+                TempData["Error"] = "This user has no record yet!";
+                return RedirectToAction("Index", "StudentInventory");
             }
-            if (inventory == null)
-            {
-                return HttpNotFound();
-            }
+
             TestViewModel vm = new TestViewModel();
 
             vm.UserID = student.UserID;
@@ -321,16 +324,28 @@ namespace Testv3.Controllers
         }
 
 
-        // POST: /Details
-        [Authorize(Roles = "Counselor")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Details(RoleDTO paramRoleDTO)
+        public ActionResult Print(string UserID)
         {
+            var name = db.Students.Find(UserID);
+            var student = name.StudentLastName + ", " + name.StudentFirstName;
 
-            return View();
+            IndividualInventoryRecord check = db.IndividualInventoryRecords.FirstOrDefault(x => x.UserID == UserID);
+            if (check == null)
+            {
+                TempData["Error"] = "This user has no record yet!";
+                return RedirectToAction("Index", "StudentInventory");
+            }
+
+
+            return new ActionAsPdf (
+                           "View",
+                           new { UserID = UserID })
+            {
+                FileName = string.Format("Individual_Record_{0}.pdf", student)
+            };
+
+
         }
-
 
 
         [Authorize(Roles = "Student")]

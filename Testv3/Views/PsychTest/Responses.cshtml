@@ -2,11 +2,10 @@
 @{
     ViewBag.Title = "Student responses";
 }
-
-@using (Html.BeginForm())
+@*@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
 
     <div class="box">
         <div class="box-header with-border">
@@ -118,7 +117,7 @@
             }
         </table>
     </div>
-}
+@*}*@
 @Scripts.Render("~/bundles/jquery")
 @section Scripts {
     <script type="text/javascript">
@@ -138,7 +137,7 @@
             ]
         };
 
-        $.getJSON("/PsychTest/GetData/", function (data) {
+        $.getJSON("/PsychTest/GetData1/", function (data) {
             $.each(data, function (i, item) {
                 linechart.labels.push(item.QuestionID); //eto yung nasa x-axis
                 linechart.datasets[0].data.push(item.Answer); //individual student  

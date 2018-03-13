@@ -3,7 +3,6 @@
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @if (TempData["Message"] != null)
 {
-    <br />
     <div class="alert alert-success alert-dismissable">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         <strong>@TempData["Message"]</strong>
@@ -12,7 +11,6 @@
 
 @if (TempData["Error"] != null)
 {
-    <br />
     <div class="alert alert-danger alert-dismissable">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         <strong>@TempData["Error"]</strong>
@@ -118,15 +116,13 @@
                                         <b>@question.Question</b>
                                         <br />
                                         <div class="col-xs-4">
-                                            <canvas id="myCharts"></canvas>
+                                            <div id="myCharts"></div>
                                         </div>
                                     </td>
                                     
                                 </tr>
                             }
                         </table>
-                        @*<canvas id="myCharts"></canvas>
-                        <canvas class="chart"></canvas>*@
                     </div>
                 </div>
         </div>
@@ -164,6 +160,7 @@
             <td>
 
                 @Html.ActionLink("View test result", "Responses", new { UserID = item.UserID }) |
+                @Html.ActionLink("Save as PDF", "", new { UserID = item.UserID }) |
                 @Html.ActionLink("Delete", "Delete", new { UserID = item.UserID })
             </td>
         </tr>
@@ -188,6 +185,7 @@
         @Scripts.Render("~/bundles/jquery")
         @section Scripts {
             <script type="text/javascript">
+                @*<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js">*@
 
                 //var aLabels = ["Agree", "Somewhat Agree", "Disagree"];
                 //var aDatasets1 = [];
@@ -211,7 +209,7 @@
                 //    })
 
 
-                //    var ctx = document.getElementById("pie-chart").getContext("2d");
+                //    var ctx = document.getElementById("myCharts").getContext("2d");
                 //    var myNewChart = new Chart(ctx, {
                 //        type: 'pie',
                 //        data: pieChart,
@@ -301,13 +299,17 @@
                 //    });
                 //});
 
+
+
                 var canvasArray = [];
                 var dataArray = [];
+
                 var jsonData =
                     [
                         { "A": 1, "B": 1, "C": 3, "ID": 93396 },
                         { "A": 0, "B": 2, "C": 1, "ID": 93397 }
                     ]
+
                 for (var i = 0; i < jsonData.length; i++) {
                     var pieChart =
                         [

@@ -1,14 +1,6 @@
 ﻿@model PagedList.IPagedList<Testv3.Models.TestViewModel>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
-
-@{
-    ViewBag.Title = "Index";
-    <div class="alert alert-success alert-dismissable">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close"></a>
-        <strong>To add an Anecdotal Record, select the name of the student involved.</strong>
-    </div>
-}
 @if (TempData["Error"] != null)
 {
     <div class="alert alert-danger alert-dismissable">
@@ -16,6 +8,14 @@
         <strong>@TempData["Error"]</strong>
     </div>
 }
+@{
+    ViewBag.Title = "Index";
+    <div class="alert alert-success alert-dismissable">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close"></a>
+        <strong>To add an Anecdotal Record, select the name of the student involved.</strong>
+    </div>
+}
+
 
 
 @using (Html.BeginForm("Index", "StudentInventory", FormMethod.Get))

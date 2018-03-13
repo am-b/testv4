@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using PagedList;
+using Rotativa;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -245,6 +246,7 @@ namespace Testv3.Controllers
         }
 
         // GET: CounsellingForms/Student/5
+        [AllowAnonymous]
         public ActionResult Details(int CounsellingFormID)
         {
             GetCurrentUserInViewBag();
@@ -257,14 +259,16 @@ namespace Testv3.Controllers
 
             if (student == null)
             {
-                return HttpNotFound();
+                TempData["Error"] = "No record found!";
+                return RedirectToAction("Student", "CounsellingForms");
             }
 
             var form = db.CounsellingForm.FirstOrDefault(x => x.StudentUserID == StudentUserID);
 
             if (form == null)
             {
-                return HttpNotFound();
+                TempData["Error"] = "No record found!";
+                return RedirectToAction("Student", "CounsellingForms");
             }
 
             StudentCounsellingViewModel vm = new StudentCounsellingViewModel();
@@ -293,6 +297,36 @@ namespace Testv3.Controllers
 
             return View(vm);
         }
+
+        public ActionResult Print(int CounsellingFormID)
+        {            
+
+            CounsellingForm check = db.CounsellingForm.FirstOrDefault(x => x.CounsellingFormID == CounsellingFormID);
+            var student = db.Students.FirstOrDefault(x => x.UserID == check.StudentUserID);
+            var name = student.StudentLastName + ", " + student.StudentFirstName + " ";
+           
+
+            if (check == null)
+            {
+                TempData["Error"] = "No record found!";
+                return RedirectToAction("Student", "CounsellingForms");
+            }
+            else if (check.CompletionDate == null)
+            {
+                TempData["Error"] = "No record found!";
+                return RedirectToAction("Student", "CounsellingForms");
+
+            }
+
+
+            return new ActionAsPdf(
+                           "Details",
+                           new { CounsellingFormID = CounsellingFormID })
+            {
+                FileName = string.Format("Counselling_Form_{0}.pdf", name + check.CompletionDate)
+            };
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

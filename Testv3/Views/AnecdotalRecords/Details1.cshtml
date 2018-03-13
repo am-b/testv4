@@ -1,0 +1,94 @@
+﻿@model Testv3.Models.StudentCounsellingViewModel
+
+@{
+    ViewBag.Title = "Student's Anecdotal Record";
+}
+@section Scripts{
+    <script>
+        $(function () {
+            $('#studentSection textarea').attr('disabled', 'disabled');
+            $('#studentSection input').attr('disabled', 'disabled');
+        });
+    </script>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="body-content">
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="pull-right">
+                            @Html.Label("Date Reported: ")
+                            @Html.DisplayFor(model => model.CompletionDate)
+                            <br />
+                            @Html.Label("Observed by: ")
+                            @Html.DisplayFor(model => model.Observer)
+                        </div>
+                        <br /><br />
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="controls form-inline">
+                                <br />
+                                @Html.Label("Student Name: ")
+                                @Html.DisplayFor(model => model.StudentLastName), @Html.DisplayFor(model => model.StudentFirstName) @Html.DisplayFor(model => model.StudentMiddleName)
+                                <br />
+                                @Html.Label("Student Number: ")
+                                @Html.DisplayFor(model => model.StudentID)
+                                <br />
+                                @Html.Label("Program and Year Level: ")
+                                @Html.DisplayFor(model => model.Program) - @Html.DisplayFor(model => model.YearLevel)
+                            </div>
+                        </div>
+
+                        <div id="studentSection">
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.DateTimeObserved, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.EditorFor(model => model.DateTimeObserved, new { htmlAttributes = new { @placeholder = "MM/DD/YYYY 12:00:00 PM", @style = "min-width:25%;", @class = "form-control" } })
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.Place, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextAreaFor(model => model.Place, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.BehaviorObserved, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextAreaFor(model => model.BehaviorObserved, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.Action, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextAreaFor(model => model.Action, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                            </div>
+                            <br />
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="controls form-inline">
+                                    @Html.Label("Guidance Counsellor: ")
+                                    @Html.DisplayFor(model => model.CounsellorLastName), @Html.DisplayFor(model => model.CounsellorFirstName) @Html.DisplayFor(model => model.CounsellorMiddleName)
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="controls form-inline">
+                                    @Html.LabelFor(model => model.Summary, htmlAttributes: new { @class = "control-label" })<br />
+                                    @Html.TextAreaFor(model => model.Summary, 5, 100, new { @class = "form-control", @style = "min-width: 90%;" })
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

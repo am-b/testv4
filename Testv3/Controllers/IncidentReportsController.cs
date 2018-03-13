@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using PagedList;
+using Rotativa;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -293,10 +294,12 @@ namespace Testv3.Controllers
         }
 
         // GET: IncidentReports/Details/5
-        [Authorize(Roles = "Counselor")]
+        //[Authorize(Roles = "Counselor")]
+        [AllowAnonymous]
         public ActionResult Details(int IncidentReportID)
         {
             GetCurrentUserInViewBag();
+
             var currentUserId = User.Identity.GetUserId();
 
             var FormID = db.IncidentReport.FirstOrDefault(x => x.IncidentReportID == IncidentReportID);
@@ -340,9 +343,13 @@ namespace Testv3.Controllers
             }
 
             var counselloR = db.Counsellor.FirstOrDefault(x=>x.UserID == currentUserId);
-            vm.CounsellorLastName = counselloR.CounsellorLastName;
-            vm.CounsellorFirstName = counselloR.CounsellorFirstName;
-            vm.CounsellorMiddleName = counselloR.CounsellorMiddleName;
+            if (counselloR != null)
+            {
+                vm.CounsellorLastName = counselloR.CounsellorLastName;
+                vm.CounsellorFirstName = counselloR.CounsellorFirstName;
+                vm.CounsellorMiddleName = counselloR.CounsellorMiddleName;
+            }
+            
 
             vm.CompletionDate = form.CompletionDate;
             vm.TypeOfIncident = form.TypeOfIncident;
@@ -387,6 +394,34 @@ namespace Testv3.Controllers
 
         }
 
+        public ActionResult Print(int IncidentReportID)
+        {
+
+            IncidentReport check = db.IncidentReport.FirstOrDefault(x => x.IncidentReportID == IncidentReportID);
+            var student = db.Students.FirstOrDefault(x => x.UserID == check.StudentUserID);
+            var name = student.StudentLastName + ", " + student.StudentFirstName + " ";
+
+
+            if (check == null)
+            {
+                TempData["Error"] = "No record found!";
+                return RedirectToAction("Student", "IncidentReports");
+            }
+            else if (check.CompletionDate == null)
+            {
+                TempData["Error"] = "No record found!";
+                return RedirectToAction("Student", "IncidentReports");
+
+            }
+
+
+            return new ActionAsPdf(
+                           "Details",
+                           new { IncidentReportID = IncidentReportID })
+            {
+                FileName = string.Format("Incident_Report_{0}.pdf", name + check.CompletionDate)
+            };
+        }
 
         protected override void Dispose(bool disposing)
         {

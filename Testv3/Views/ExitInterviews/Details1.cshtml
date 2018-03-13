@@ -1,7 +1,7 @@
 ﻿@model Testv3.Models.StudentInterviewViewModel
 
 @{
-    ViewBag.Title = "Student's Routine Interview";
+    ViewBag.Title = "Student's Exit Interview";
 }
 @section Scripts{
     <script>
@@ -45,45 +45,50 @@
                         <div id="studentSection">
                             <br />
                             <div class="controls form-inline">
-                                @Html.LabelFor(model => model.Q1, htmlAttributes: new { @class = "control-label" })<br />
-                                @Html.TextAreaFor(model => model.Q1, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                                @Html.LabelFor(model => model.MMCCLikes, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextAreaFor(model => model.MMCCLikes, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
                             </div>
                             <br />
                             <div class="controls form-inline">
-                                @Html.LabelFor(model => model.Q2, htmlAttributes: new { @class = "control-label" })<br />
-                                @Html.TextAreaFor(model => model.Q2, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                                @Html.LabelFor(model => model.MMCCDislikes, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextAreaFor(model => model.MMCCDislikes, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
                             </div>
                             <br />
                             <div class="controls form-inline">
-                                @Html.LabelFor(model => model.Q3, htmlAttributes: new { @class = "control-label" })<br />
-                                @Html.TextAreaFor(model => model.Q3, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                                @Html.LabelFor(model => model.MMCCMoments, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextAreaFor(model => model.MMCCMoments, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
                             </div>
                             <br />
                             <div class="controls form-inline">
-                                @Html.LabelFor(model => model.Q4, htmlAttributes: new { @class = "control-label" })<br />
-                                @Html.TextAreaFor(model => model.Q4, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                                @Html.LabelFor(model => model.Professors, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextAreaFor(model => model.Professors, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
                             </div>
                             <br />
                             <div class="controls form-inline">
-                                @Html.LabelFor(model => model.Q5, htmlAttributes: new { @class = "control-label" })<br />
-                                @Html.TextAreaFor(model => model.Q5, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                                @Html.LabelFor(model => model.Staff, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextAreaFor(model => model.Staff, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
                             </div>
                             <br />
                             <div class="controls form-inline">
-                                @Html.LabelFor(model => model.OtherMatters, htmlAttributes: new { @class = "control-label" })<br />
-                                @Html.TextAreaFor(model => model.OtherMatters, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                                @Html.LabelFor(model => model.Future, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextAreaFor(model => model.Future, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.Others, htmlAttributes: new { @class = "control-label" })<br />
+                                @Html.TextAreaFor(model => model.Others, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
                             </div>
                         </div>
-                        @*<br />
+                        <br />
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <div class="controls form-inline">
-                                    @Html.LabelFor(model => model.CounselorNotes, htmlAttributes: new { @class = "control-label" })<br />
-                                    @Html.TextAreaFor(model => model.CounselorNotes, 5, 100, new { @class = "form-control", @style = "min-width: 90%;" })
-                                    @Html.ValidationMessageFor(model => model.CounselorNotes, "", new { @class = "text-danger" })
+                                    @Html.LabelFor(model => model.GuidanceNotes, htmlAttributes: new { @class = "control-label" })<br />
+                                    @Html.TextAreaFor(model => model.GuidanceNotes, 5, 100, new { @class = "form-control", @style = "min-width: 90%;" })
+                                    @Html.ValidationMessageFor(model => model.GuidanceNotes, "", new { @class = "text-danger" })
                                 </div>
                             </div>
-                        </div>*@
+                        </div>
 
                     </div>
                 </div>

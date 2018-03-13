@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using PagedList;
+using Rotativa;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -254,6 +255,79 @@ namespace Testv3.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        // GET: CounsellingContracts/Create
+        //[Authorize(Roles = "Counselor")]
+        [AllowAnonymous]
+        public ActionResult Details(string UserID)
+        {
+
+            GetCurrentUserInViewBag();
+
+            CounsellingContract contract = db.CounsellingContract.FirstOrDefault(x => x.StudentUserID == UserID);
+            if (contract == null)
+            {
+                TempData["Error"] = "This user has not agreed to the Counselling Terms!";
+                return RedirectToAction("Index", "CounsellingContracts");
+            }
+            else if (contract.CompletionDate == null)
+            {
+                TempData["Error"] = "This user has not agreed to the Counselling Terms!";
+                return RedirectToAction("Index", "CounsellingContracts");
+
+            }
+
+            Student student = db.Students.Find(UserID);
+            if (student == null)
+            {
+                return HttpNotFound();
+            }
+
+            StudentCounsellingViewModel vm = new StudentCounsellingViewModel();
+
+            vm.StudentID = student.StudentID;
+            vm.Program = student.Program;
+            vm.StudentFirstName = student.StudentFirstName;
+            vm.StudentMiddleName = student.StudentMiddleName;
+            vm.StudentLastName = student.StudentLastName;
+            vm.Program = student.Program;
+            vm.YearLevel = student.YearLevel;
+
+            if (contract.StudentAgrees != null)
+            {
+                vm.StudentAgrees = (bool)contract.StudentAgrees;
+            }
+
+
+            return View(vm);
+        }
+
+        public ActionResult Print(string UserID)
+        {
+            var name = db.Students.Find(UserID);
+            var student = name.StudentLastName + ", " + name.StudentFirstName;
+
+            CounsellingContract check = db.CounsellingContract.FirstOrDefault(x => x.StudentUserID == UserID);
+            if (check == null)
+            {
+                TempData["Error"] = "This user has not agreed to the Counselling Terms!";
+                return RedirectToAction("Index", "CounsellingContracts");
+            }
+            else if (check.CompletionDate == null)
+            {
+                TempData["Error"] = "This user has not agreed to the Counselling Terms!";
+                return RedirectToAction("Index", "CounsellingContracts");
+
+            }
+
+            return new ActionAsPdf(
+                           "Details",
+                           new { UserID = UserID })
+            {
+                FileName = string.Format("Counselling_Contract_{0}.pdf", student),
+                PageHeight = 105,
+                PageWidth = 210
+            };
+        }
 
         protected override void Dispose(bool disposing)
         {

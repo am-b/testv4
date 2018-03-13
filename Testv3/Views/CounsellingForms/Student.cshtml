@@ -21,6 +21,7 @@
             <td>
 
                 @Html.ActionLink("View", "Details", new { CounsellingFormID = item.CounsellingFormID}) |
+                @Html.ActionLink("Save as PDF", "Print", new { CounsellingFormID = item.CounsellingFormID }) |
                 @Html.DisplayFor(modelItem => item.CompletionDate)
             </td>
         </tr>

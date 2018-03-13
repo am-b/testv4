@@ -21,6 +21,7 @@
             <td>
 
                 @Html.ActionLink("View", "Details", new { IncidentReportID = item.IncidentReportID }) |
+                @Html.ActionLink("Save as PDF", "Print", new { IncidentReportID = item.IncidentReportID }) |
                 @Html.DisplayFor(modelItem => item.CompletionDate)
             </td>
         </tr>

@@ -9,6 +9,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Testv3.Models;
+using Rotativa;
+using System.IO;
 
 namespace Testv3.Controllers
 {
@@ -82,7 +84,6 @@ namespace Testv3.Controllers
                         pvm.CompletionDate = initial.CompletionDate;
                     }
 
-
                     StudentInventorylist.Add(pvm);
                 }
 
@@ -106,15 +107,31 @@ namespace Testv3.Controllers
         }
 
         // GET: InitialInterviews/Details
-        [Authorize(Roles = "Counselor")]
+        //[Authorize(Roles = "Counselor")]
+        [AllowAnonymous]
         public ActionResult Details(string UserID)
         {
             GetCurrentUserInViewBag();
+
+            InitialInterview check = db.InitialInterview.FirstOrDefault(x => x.UserID == UserID);
+            if (check == null)
+            {
+                TempData["Error"] = "This user has not completed the test yet!";
+                return RedirectToAction("Index", "InitialInterviews");
+            }
+            else if (check.CompletionDate == null)
+            {
+                TempData["Error"] = "This user has not completed the test yet!";
+                return RedirectToAction("Index", "InitialInterviews");
+
+            }
+
             if (UserID == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Student student = db.Students.Find(UserID);
+
             if (student == null)
             {
                 return HttpNotFound();
@@ -201,6 +218,80 @@ namespace Testv3.Controllers
 
             return RedirectToAction("Index", "Home");
 
+        }
+
+
+        public ActionResult Print(string UserID)
+        {
+            ////var a = new ActionAsPdf("Details", new { UserID = UserID }) { FileName = "Details.pdf" };
+            ////a.Cookies = Request.Cookies.AllKeys.ToDictionary(k => k, k => Request.Cookies[k].Value);
+            ////a.FormsAuthenticationCookieName = System.Web.Security.FormsAuthentication.FormsCookieName;
+            ////a.CustomSwitches = "--load-error-handling ignore";
+            ////return a;
+
+            //////Dictionary<string, string> cookieCollection = new Dictionary<string, string>();
+
+            //////foreach (var key in Request.Cookies.AllKeys)
+            //////{
+            //////    cookieCollection.Add(key, Request.Cookies.Get(key).Value);
+            //////}
+
+            //////return new ActionAsPdf("Details", new { UserID = UserID })
+            //////{
+            //////    FileName = "Details.pdf",
+            //////    Cookies = cookieCollection
+            //////};
+
+            var name = db.Students.Find(UserID);
+            var student = name.StudentLastName + ", " + name.StudentFirstName;
+
+            InitialInterview check = db.InitialInterview.FirstOrDefault(x => x.UserID == UserID);
+            if (check == null)
+            {
+                TempData["Error"] = "This user has not completed the test yet!";
+                return RedirectToAction("Index", "InitialInterviews");
+            }
+            else if (check.CompletionDate == null)
+            {
+                TempData["Error"] = "This user has not completed the test yet!";
+                return RedirectToAction("Index", "InitialInterviews");
+
+            }
+            //var datalist =
+            //            (from ans in db.InitialInterview
+            //             where ans.UserID == UserID
+            //             select new { CompletionDate = ans.CompletionDate });
+
+            //if (datalist.Count() == 0)
+            //{
+
+            //    TempData["Error"] = "This user has not completed the test yet!";
+            //    return RedirectToAction("Index", "InitialInterviews");
+            //}
+
+            return new ActionAsPdf(
+                           "Details",
+                           new { UserID = UserID })
+            {
+                FileName = string.Format("Initial_Interview_{0}.pdf", student)
+            };
+
+
+            //var a = new ViewAsPdf();
+            //a.ViewName = "Details";
+
+            //Student student = db.Students.Find(UserID);
+            //StudentInterviewViewModel vm = new StudentInterviewViewModel();
+            //vm.UserID = student.UserID;
+            //a.Model = vm;
+            //var pdfBytes = a.BuildFile(ControllerContext);
+
+            //var fileName = string.Format("my_file_{0}.pdf", vm.UserID);
+            //var path = Server.MapPath("~/App_Data/" + fileName);
+            //System.IO.File.WriteAllBytes(path, pdfBytes);
+
+            //MemoryStream ms = new MemoryStream(pdfBytes);
+            //return new FileStreamResult(ms, "application/pdf");
         }
 
         // GET: InitialInterviews/Student

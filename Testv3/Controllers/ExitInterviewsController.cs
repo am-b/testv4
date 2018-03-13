@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using PagedList;
+using Rotativa;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -113,6 +114,60 @@ namespace Testv3.Controllers
 
             if (UserID == null)
             {
+                TempData["Error"] = "No record found!";
+                return RedirectToAction("Index", "ExitInterviews");
+            }
+
+            Student student = db.Students.Find(UserID);
+
+            if (student == null)
+            {
+                TempData["Error"] = "No record found!";
+                return RedirectToAction("Index", "ExitInterviews");
+            }
+
+            ExitInterview exit = db.ExitInterview.FirstOrDefault(user => user.StudentUserID == UserID);
+
+            if (exit == null)
+            {
+                TempData["Error"] = "This student has no exit interview record!";
+                return RedirectToAction("Index", "ExitInterviews");
+            }
+
+
+            StudentInterviewViewModel vm = new StudentInterviewViewModel();
+
+            vm.UserID = student.UserID;
+            vm.StudentID = student.StudentID;
+            vm.Program = student.Program;
+            vm.StudentFirstName = student.StudentFirstName;
+            vm.StudentMiddleName = student.StudentMiddleName;
+            vm.StudentLastName = student.StudentLastName;
+
+            vm.CompletionDate = exit.CompletionDate;
+            vm.MMCCLikes = exit.MMCCLikes;
+            vm.MMCCDislikes = exit.MMCCDislikes;
+            vm.MMCCMoments = exit.MMCCMoments;
+            vm.Professors = exit.Professors;
+            vm.Staff = exit.Staff;
+            vm.Future = exit.Future;
+            vm.Others = exit.Others;
+            vm.GuidanceNotes = exit.GuidanceNotes;
+
+            ViewBag.DateCompleted = vm.CompletionDate;
+
+            return View(vm);
+        }
+
+        // GET: ExitInterviews/Details/5
+        //[Authorize(Roles = "Counselor")]
+        [AllowAnonymous]
+        public ActionResult Details1(string UserID)
+        {
+            GetCurrentUserInViewBag();
+
+            if (UserID == null)
+            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
@@ -153,6 +208,42 @@ namespace Testv3.Controllers
             ViewBag.DateCompleted = vm.CompletionDate;
 
             return View(vm);
+        }
+
+        public ActionResult Print(string UserID)
+        {
+
+            var name = db.Students.Find(UserID);
+            var student = name.StudentLastName + ", " + name.StudentFirstName;
+
+            ExitInterview check = db.ExitInterview.FirstOrDefault(x => x.StudentUserID == UserID);
+            if (check == null)
+            {
+                TempData["Error"] = "This student has no exit interview record!";
+                return RedirectToAction("Index", "ExitInterviews");
+            }
+            else if (check.CompletionDate == null)
+            {
+                TempData["Error"] = "This student has no exit interview record!";
+                return RedirectToAction("Index", "ExitInterviews");
+
+            }
+
+            return new ActionAsPdf(
+                           "Details1",
+                           new { UserID = UserID })
+            {
+                FileName = string.Format("Exit_Interview_{0}.pdf", student)
+            };
+
+
+
+
+
+            
+
+
+            
         }
 
         // POST: ExitInterviews/Details

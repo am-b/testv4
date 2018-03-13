@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using PagedList;
+using Rotativa;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -211,7 +212,8 @@ namespace Testv3.Controllers
         }
 
         // GET: AnecdotalRecords/Details/5
-        [Authorize(Roles = "Counselor")]
+        //[Authorize(Roles = "Counselor")]
+        [AllowAnonymous]
         public ActionResult Details(int AnecdotalRecordID)
         {
             GetCurrentUserInViewBag();
@@ -246,10 +248,68 @@ namespace Testv3.Controllers
             vm.StudentLastName = student.StudentLastName;
 
             var counselloR = db.Counsellor.FirstOrDefault(x => x.UserID == currentUserId);
+            if(counselloR != null)
+            {
+                vm.CounsellorLastName = counselloR.CounsellorLastName;
+                vm.CounsellorFirstName = counselloR.CounsellorFirstName;
+                vm.CounsellorMiddleName = counselloR.CounsellorMiddleName;
+            }
+            
 
-            vm.CounsellorLastName = counselloR.CounsellorLastName;
-            vm.CounsellorFirstName = counselloR.CounsellorFirstName;
-            vm.CounsellorMiddleName = counselloR.CounsellorMiddleName;
+            vm.CompletionDate = record.CompletionDate;
+            vm.Place = record.Place;
+            vm.Observer = record.Observer;
+            vm.BehaviorObserved = record.BehaviorObserved;
+            vm.Action = record.Action;
+            vm.Summary = record.Summary;
+
+            return View(vm);
+        }
+
+        // GET: AnecdotalRecords/Details/5
+        //[Authorize(Roles = "Counselor")]
+        [AllowAnonymous]
+        public ActionResult Details1(int AnecdotalRecordID)
+        {
+            GetCurrentUserInViewBag();
+            var currentUserId = User.Identity.GetUserId();
+
+            var FormID = db.AnecdotalRecord.FirstOrDefault(x => x.AnecdotalRecordID == AnecdotalRecordID);
+
+            var StudentUserID = FormID.StudentUserID;
+
+            Student student = db.Students.Find(StudentUserID);
+
+            if (student == null)
+            {
+                return HttpNotFound();
+            }
+
+            var record = db.AnecdotalRecord.FirstOrDefault(x => x.StudentUserID == StudentUserID);
+
+            if (record == null)
+            {
+                return HttpNotFound();
+            }
+
+            StudentCounsellingViewModel vm = new StudentCounsellingViewModel();
+
+            vm.StudentUserID = student.UserID;
+            vm.StudentID = student.StudentID;
+            vm.Program = student.Program;
+            vm.YearLevel = student.YearLevel;
+            vm.StudentFirstName = student.StudentFirstName;
+            vm.StudentMiddleName = student.StudentMiddleName;
+            vm.StudentLastName = student.StudentLastName;
+
+            var counselloR = db.Counsellor.FirstOrDefault(x => x.UserID == currentUserId);
+            if (counselloR != null)
+            {
+                vm.CounsellorLastName = counselloR.CounsellorLastName;
+                vm.CounsellorFirstName = counselloR.CounsellorFirstName;
+                vm.CounsellorMiddleName = counselloR.CounsellorMiddleName;
+            }
+
 
             vm.CompletionDate = record.CompletionDate;
             vm.Place = record.Place;
@@ -291,6 +351,35 @@ namespace Testv3.Controllers
 
             return RedirectToAction("Index", "Home");
 
+        }
+
+        public ActionResult Print(int AnecdotalRecordID)
+        {
+
+            AnecdotalRecord check = db.AnecdotalRecord.FirstOrDefault(x => x.AnecdotalRecordID == AnecdotalRecordID);
+            var student = db.Students.FirstOrDefault(x => x.UserID == check.StudentUserID);
+            var name = student.StudentLastName + ", " + student.StudentFirstName + " ";
+
+
+            if (check == null)
+            {
+                TempData["Error"] = "No record found!";
+                return RedirectToAction("Student", "AnecdotalRecords");
+            }
+            else if (check.CompletionDate == null)
+            {
+                TempData["Error"] = "No record found!";
+                return RedirectToAction("Student", "AnecdotalRecords");
+
+            }
+
+
+            return new ActionAsPdf(
+                           "Details1",
+                           new { AnecdotalRecordID = AnecdotalRecordID })
+            {
+                FileName = string.Format("Anecdotal_Record_{0}.pdf", name + check.CompletionDate)
+            };
         }
 
         protected override void Dispose(bool disposing)

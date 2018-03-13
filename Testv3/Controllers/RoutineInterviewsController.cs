@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using PagedList;
+using Rotativa;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -106,15 +107,13 @@ namespace Testv3.Controllers
 
         }
 
+        [AllowAnonymous]
         // GET: RoutineInterviews/Details/5
-        [Authorize(Roles = "Counselor")]
+        //[Authorize(Roles = "Counselor")]
         public ActionResult Details(string UserID)
         {
             GetCurrentUserInViewBag();
-            if (UserID == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+
             Student student = db.Students.Find(UserID);
             if (student == null)
             {
@@ -125,11 +124,14 @@ namespace Testv3.Controllers
 
             if (routine == null)
             {
-                return HttpNotFound();
+                TempData["Error"] = "This user has not completed the test yet!";
+                return RedirectToAction("Index", "RoutineInterviews");
             }
-            if (routine == null)
+            else if (routine.CompletionDate == null)
             {
-                return HttpNotFound();
+                TempData["Error"] = "This user has not completed the test yet!";
+                return RedirectToAction("Index", "RoutineInterviews");
+
             }
 
             StudentInterviewViewModel vm = new StudentInterviewViewModel();
@@ -153,6 +155,33 @@ namespace Testv3.Controllers
             ViewBag.DateCompleted = vm.CompletionDate;
 
             return View(vm);
+        }
+
+        public ActionResult Print(string UserID)
+        {
+            var name = db.Students.Find(UserID);
+            var student = name.StudentLastName + ", " + name.StudentFirstName;
+
+            RoutineInterview check = db.RoutineInterview.FirstOrDefault(x => x.UserID == UserID);
+            if (check == null)
+            {
+                TempData["Error"] = "This user has not completed the test yet!";
+                return RedirectToAction("Index", "RoutineInterviews");
+            }
+            else if (check.CompletionDate == null)
+            {
+                TempData["Error"] = "This user has not completed the test yet!";
+                return RedirectToAction("Index", "RoutineInterviews");
+
+            }
+
+
+            return new ActionAsPdf(
+                           "Details",
+                           new { UserID = UserID })
+            {
+                FileName = string.Format("Routine_Interview_{0}.pdf", student)
+            };
         }
 
         // GET: RoutineInterviews/Create

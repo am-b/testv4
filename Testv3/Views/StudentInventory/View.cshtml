@@ -20,7 +20,13 @@
             }
 
             $("#btnPrint").click(function () {
-                window.print();
+                try {
+                    window.print();
+                }
+                catch (err) {
+                    console.log("cannot print");
+                }   
+                
             });
 
 
@@ -68,15 +74,15 @@
                                                     <br />
                                                     <div class="col-sm-4">
                                                         <label for="Studentname">First Name</label><br />
-                                                        @Html.EditorFor(model => model.StudentFirstName, new { htmlAttributes = new { @placeholder = "First name", @style = "min-width:100%;text-align:center", @class = "form-control", @type = "text", @readonly = "readonly" } })
+                                                        @Html.EditorFor(model => model.StudentFirstName, new { htmlAttributes = new { @placeholder = "First name", @style = "max-width:100%", @class = "form-control", @type = "text", @readonly = "readonly" } })
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <label for="Studentname">Middle Name</label><br />
-                                                        @Html.EditorFor(model => model.StudentMiddleName, new { htmlAttributes = new { @placeholder = "Middle name", style = "min-width:100%;text-align:center", @class = "form-control", @type = "text", @readonly = "readonly" } })
+                                                        @Html.EditorFor(model => model.StudentMiddleName, new { htmlAttributes = new { @placeholder = "Middle name", @style = "max-width:100%", @class = "form-control", @type = "text", @readonly = "readonly" } })
                                                     </div>
                                                     <div class="col-sm-4">
                                                         <label for="Studentname">Last Name</label><br />
-                                                        @Html.EditorFor(model => model.StudentLastName, new { htmlAttributes = new { @placeholder = "Last name", style = "min-width:100%;text-align:center", @class = "form-control", @type = "text", @readonly = "readonly" } })
+                                                        @Html.EditorFor(model => model.StudentLastName, new { htmlAttributes = new { @placeholder = "Last name", @style = "max-width:100%", @class = "form-control", @type = "text", @readonly = "readonly" } })
                                                     </div>
                                                 </div>
                                             </div>
@@ -736,16 +742,6 @@
 
                 </div>
             </div>
-            @*Print button*@
-            <div id="PrintSavebuttons">
-                <div class="form-group">
-                    <div class="col-md-4 col-md-offset-5">
-                        <input type="button" id="btnPrint" value="Print this page" />
-                        @Html.ActionLink("Back to List", "Index", "StudentInventory", null, new { @class = "btn btn-default" })
-                    </div>
-                </div>
-            </div>
-            @*End Print button*@
         </div>
     </div>
 }

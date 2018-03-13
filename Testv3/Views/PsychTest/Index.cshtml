@@ -1,17 +1,8 @@
 ﻿@model PagedList.IPagedList<Testv3.Models.PsychTestViewModel>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
-
-@{
-    ViewBag.Title = "Index";
-    <div class="alert alert-success alert-dismissable">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close"></a>
-        <strong>To see the test results of the students, select "View Test Responses"</strong>
-    </div>
-}
 @if (TempData["Message"] != null)
 {
-    <br />
     <div class="alert alert-success alert-dismissable">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         <strong>@TempData["Message"]</strong>
@@ -20,12 +11,19 @@
 
 @if (TempData["Error"] != null)
 {
-    <br />
     <div class="alert alert-danger alert-dismissable">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         <strong>@TempData["Error"]</strong>
     </div>
 }
+@{
+    ViewBag.Title = "Index";
+    <div class="alert alert-success alert-dismissable">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close"></a>
+        <strong>To see the test results of the students, select "View Test Responses"</strong>
+    </div>
+}
+
 @using (Html.BeginForm("Index", "PsychTest", FormMethod.Get))
 {
     <br />

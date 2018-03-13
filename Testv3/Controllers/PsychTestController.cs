@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using PagedList;
+using Rotativa;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -360,7 +361,6 @@ namespace Testv3.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-
         public ContentResult GetData()
         {
             var datalistQuestions = db.Questions.ToList();
@@ -397,8 +397,9 @@ namespace Testv3.Controllers
 
         }
 
+        [AllowAnonymous]
         // GET: PsychologicalTest/Responses
-        [Authorize(Roles = "Counselor")]
+        //[Authorize(Roles = "Counselor")]
         public ActionResult Responses(string UserID)
         {
             GetCurrentUserInViewBag();
@@ -563,6 +564,54 @@ namespace Testv3.Controllers
             return RedirectToAction("StudentList", "PsychTest");
         }
 
+        public ContentResult GetData1()
+        {
+            var currentUserId = User.Identity.GetUserId();
+            List<PsychTestViewModel> pvm = new List<PsychTestViewModel>();
+            var results = db.Answers.ToList();
+
+            foreach (Answers answers in results)
+            {
+                PsychTestViewModel viewmodel = new PsychTestViewModel();
+                viewmodel.QuestionID = answers.QuestionID;
+                viewmodel.Answer = answers.Answer;
+
+                pvm.Add(viewmodel);
+            }
+
+            return Content(JsonConvert.SerializeObject(pvm), "application/json");
+        }
+
+        //public ActionResult Print(string UserID)
+        //{
+        //    var name = db.Students.Find(UserID);
+        //    var student = name.StudentLastName + ", " + name.StudentFirstName;
+
+        //    var datalist =
+        //                (from ans in db.Answers
+        //                 join question in db.Questions
+        //                 on ans.QuestionID equals question.QuestionID
+        //                 where ans.UserID == UserID
+        //                 select new { Answer = ans.Answer, QuestionID = question.QuestionID, Question = question.Question });
+
+        //    if (datalist.Count() == 0)
+        //    {
+
+        //        TempData["Error"] = "This user has not completed the test yet!";
+        //        return RedirectToAction("StudentList", "PsychTest");
+        //    }
+
+
+        //    //return new ActionAsPdf(
+        //    //               "Responses",
+        //    //               new { UserID = UserID })
+        //    //{
+        //    //    FileName = string.Format("Psych_Test_{0}.pdf", student),
+        //    //    CustomSwitches = "--load-media-error-handling ignore --load-error-handling ignore"
+
+        //    //};
+
+        //}
 
         [Authorize(Roles = "Counselor")]
         // GET: PsychologicalTest/StudentList
