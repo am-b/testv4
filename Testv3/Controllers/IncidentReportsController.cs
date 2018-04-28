@@ -362,6 +362,75 @@ namespace Testv3.Controllers
             return View(vm);
         }
 
+        // GET: IncidentReports/Report/5
+        //[Authorize(Roles = "Counselor")]
+        [AllowAnonymous]
+        public ActionResult Report(int IncidentReportID)
+        {
+            GetCurrentUserInViewBag();
+
+            var currentUserId = User.Identity.GetUserId();
+
+            var FormID = db.IncidentReport.FirstOrDefault(x => x.IncidentReportID == IncidentReportID);
+
+            var StudentUserID = FormID.StudentUserID;
+
+            Student student = db.Students.Find(StudentUserID);
+
+            if (student == null)
+            {
+                return HttpNotFound();
+            }
+
+            var form = db.IncidentReport.FirstOrDefault(x => x.StudentUserID == StudentUserID);
+
+            if (form == null)
+            {
+                return HttpNotFound();
+            }
+
+            StudentInterviewViewModel vm = new StudentInterviewViewModel();
+
+            vm.StudentUserID = student.UserID;
+            vm.StudentID = student.StudentID;
+            vm.Program = student.Program;
+            vm.YearLevel = student.YearLevel;
+            vm.StudentFirstName = student.StudentFirstName;
+            vm.StudentMiddleName = student.StudentMiddleName;
+            vm.StudentLastName = student.StudentLastName;
+
+            var UserIDReporter = form.EeportedBy;
+            Counsellor counsellor = db.Counsellor.Find(UserIDReporter);
+            if (counsellor != null)
+            {
+                vm.ReportedByName = counsellor.CounsellorLastName + ", " + counsellor.CounsellorFirstName;
+            }
+            else
+            {
+                Student studentReporter = db.Students.Find(UserIDReporter);
+                vm.ReportedByName = studentReporter.StudentLastName + ", " + studentReporter.StudentFirstName;
+            }
+
+            var counselloR = db.Counsellor.FirstOrDefault(x => x.UserID == currentUserId);
+            if (counselloR != null)
+            {
+                vm.CounsellorLastName = counselloR.CounsellorLastName;
+                vm.CounsellorFirstName = counselloR.CounsellorFirstName;
+                vm.CounsellorMiddleName = counselloR.CounsellorMiddleName;
+            }
+
+
+            vm.CompletionDate = form.CompletionDate;
+            vm.TypeOfIncident = form.TypeOfIncident;
+            vm.PlaceOfIncident = form.PlaceOfIncident;
+            vm.DateTimeOfIncident = form.DateTimeOfIncident;
+            vm.Witness = form.Witness;
+            vm.Details = form.Details;
+            vm.CounselorNotes = form.CounsellorNotes;
+
+            return View(vm);
+        }
+
         // POST: IncidentReports/Details/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -416,7 +485,7 @@ namespace Testv3.Controllers
 
 
             return new ActionAsPdf(
-                           "Details",
+                           "Report",
                            new { IncidentReportID = IncidentReportID })
             {
                 FileName = string.Format("Incident_Report_{0}.pdf", name + check.CompletionDate)

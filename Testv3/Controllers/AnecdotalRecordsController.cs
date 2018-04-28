@@ -266,10 +266,9 @@ namespace Testv3.Controllers
             return View(vm);
         }
 
-        // GET: AnecdotalRecords/Details/5
         //[Authorize(Roles = "Counselor")]
         [AllowAnonymous]
-        public ActionResult Details1(int AnecdotalRecordID)
+        public ActionResult Report(int AnecdotalRecordID)
         {
             GetCurrentUserInViewBag();
             var currentUserId = User.Identity.GetUserId();
@@ -375,7 +374,7 @@ namespace Testv3.Controllers
 
 
             return new ActionAsPdf(
-                           "Details1",
+                           "Report",
                            new { AnecdotalRecordID = AnecdotalRecordID })
             {
                 FileName = string.Format("Anecdotal_Record_{0}.pdf", name + check.CompletionDate)

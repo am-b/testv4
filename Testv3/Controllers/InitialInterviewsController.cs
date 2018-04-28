@@ -173,6 +173,73 @@ namespace Testv3.Controllers
         }
 
 
+        // GET: InitialInterviews/Details
+        //[Authorize(Roles = "Counselor")]
+        [AllowAnonymous]
+        public ActionResult Report(string UserID)
+        {
+            GetCurrentUserInViewBag();
+
+            InitialInterview check = db.InitialInterview.FirstOrDefault(x => x.UserID == UserID);
+            if (check == null)
+            {
+                TempData["Error"] = "This user has not completed the test yet!";
+                return RedirectToAction("Index", "InitialInterviews");
+            }
+            else if (check.CompletionDate == null)
+            {
+                TempData["Error"] = "This user has not completed the test yet!";
+                return RedirectToAction("Index", "InitialInterviews");
+
+            }
+
+            if (UserID == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Student student = db.Students.Find(UserID);
+
+            if (student == null)
+            {
+                return HttpNotFound();
+            }
+
+            InitialInterview initial = db.InitialInterview.FirstOrDefault(user => user.UserID == UserID);
+
+            if (initial == null)
+            {
+                return HttpNotFound();
+            }
+            if (initial == null)
+            {
+                return HttpNotFound();
+            }
+
+            StudentInterviewViewModel vm = new StudentInterviewViewModel();
+
+            vm.UserID = student.UserID;
+            vm.StudentID = student.StudentID;
+            vm.Program = student.Program;
+            vm.StudentFirstName = student.StudentFirstName;
+            vm.StudentMiddleName = student.StudentMiddleName;
+            vm.StudentLastName = student.StudentLastName;
+
+            vm.CompletionDate = initial.CompletionDate;
+            vm.ReasonForProgram = initial.ReasonForProgram;
+            vm.ReasonForMMCC = initial.ReasonForMMCC;
+            vm.CollegeLifeAdjustments = initial.CollegeLifeAdjustments;
+            vm.ChoiceOfProgramAdjustments = initial.ChoiceOfProgramAdjustments;
+            vm.PeersAdjustments = initial.PeersAdjustments;
+            vm.MMCCStaffAdjustments = initial.MMCCStaffAdjustments;
+            vm.FamilyAdjustments = initial.FamilyAdjustments;
+            vm.CounselorNotes = initial.CounselorNotes;
+
+            ViewBag.DateCompleted = vm.CompletionDate;
+
+            return View(vm);
+        }
+
+
         // POST: InitialInterviews/Details
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -270,7 +337,7 @@ namespace Testv3.Controllers
             //}
 
             return new ActionAsPdf(
-                           "Details",
+                           "Report",
                            new { UserID = UserID })
             {
                 FileName = string.Format("Initial_Interview_{0}.pdf", student)

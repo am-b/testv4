@@ -1,0 +1,106 @@
+﻿@model Testv3.Models.StudentInterviewViewModel
+
+@{
+    ViewBag.Title = "Student's Initial Interview";
+}
+@section Scripts{
+    <script>
+        $(function () {
+                $('#studentSection textarea').attr('disabled', 'disabled');
+        });
+    </script>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="body-content">
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                            <div class="controls form-inline">
+                                @Html.Label("Student Name: ")
+                                @Html.DisplayFor(model => model.StudentLastName), @Html.DisplayFor(model => model.StudentFirstName) @Html.DisplayFor(model => model.StudentMiddleName)
+                                <div style="float:right;">
+                                    @Html.Label("Completion Date: ")
+                                    @Html.DisplayFor(model => model.CompletionDate)
+                                </div>
+                                <br />
+                                @Html.Label("Student Number: ")
+                                @Html.DisplayFor(model => model.StudentID)
+                                <br />
+                                @Html.Label("Program: ")
+                                @Html.DisplayFor(model => model.Program)
+                            </div>
+                    </div>
+                    <div class="panel-body">
+                        <div id="studentSection">
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.ReasonForProgram, htmlAttributes: new { @class = "control-label" })<br />
+                                <p style="width: 70%; display: table;">
+                                    <span style="display: table-cell; border-bottom: 1px solid black;">@Html.DisplayFor(model => model.ReasonForProgram)<br /></span>
+                                </p>
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.ReasonForMMCC, htmlAttributes: new { @class = "control-label" })<br />
+                                <p style="width: 70%; display: table;">
+                                    <span style="display: table-cell; border-bottom: 1px solid black;">@Html.DisplayFor(model => model.ReasonForMMCC)<br /></span>
+                                </p>
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.CollegeLifeAdjustments, htmlAttributes: new { @class = "control-label" })<br />
+                                <p style="width: 70%; display: table;">
+                                    <span style="display: table-cell; border-bottom: 1px solid black;">@Html.DisplayFor(model => model.CollegeLifeAdjustments)<br /></span>
+                                </p>
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.ChoiceOfProgramAdjustments, htmlAttributes: new { @class = "control-label" })<br />
+                                <p style="width: 70%; display: table;">
+                                    <span style="display: table-cell; border-bottom: 1px solid black;">@Html.DisplayFor(model => model.ChoiceOfProgramAdjustments)<br /></span>
+                                </p>
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.PeersAdjustments, htmlAttributes: new { @class = "control-label" })<br />
+                                <p style="width: 70%; display: table;">
+                                    <span style="display: table-cell; border-bottom: 1px solid black;">@Html.DisplayFor(model => model.PeersAdjustments)<br /></span>
+                                </p>
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.MMCCStaffAdjustments, htmlAttributes: new { @class = "control-label" })<br />
+                                <p style="width: 70%; display: table;">
+                                    <span style="display: table-cell; border-bottom: 1px solid black;">@Html.DisplayFor(model => model.MMCCStaffAdjustments)<br /></span>
+                                </p>
+                            </div>
+                            <br />
+                            <div class="controls form-inline">
+                                @Html.LabelFor(model => model.FamilyAdjustments, htmlAttributes: new { @class = "control-label" })<br />
+                                <p style="width: 70%; display: table;">
+                                    <span style="display: table-cell; border-bottom: 1px solid black;">@Html.DisplayFor(model => model.FamilyAdjustments)<br /></span>
+                                </p>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Counsellor Notes</div>
+                                <div class="panel-body">
+                                    <div class="controls form-inline">
+                                        @Html.DisplayFor(model => model.CounselorNotes)
+                                    </div>
+                                </div>
+                            </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}

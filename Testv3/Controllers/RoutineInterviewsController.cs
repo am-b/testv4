@@ -157,6 +157,55 @@ namespace Testv3.Controllers
             return View(vm);
         }
 
+        [AllowAnonymous]
+        //[Authorize(Roles = "Counselor")]
+        public ActionResult Report(string UserID)
+        {
+            GetCurrentUserInViewBag();
+
+            Student student = db.Students.Find(UserID);
+            if (student == null)
+            {
+                return HttpNotFound();
+            }
+
+            RoutineInterview routine = db.RoutineInterview.FirstOrDefault(user => user.UserID == UserID);
+
+            if (routine == null)
+            {
+                TempData["Error"] = "This user has not completed the test yet!";
+                return RedirectToAction("Index", "RoutineInterviews");
+            }
+            else if (routine.CompletionDate == null)
+            {
+                TempData["Error"] = "This user has not completed the test yet!";
+                return RedirectToAction("Index", "RoutineInterviews");
+
+            }
+
+            StudentInterviewViewModel vm = new StudentInterviewViewModel();
+
+            vm.UserID = student.UserID;
+            vm.StudentID = student.StudentID;
+            vm.Program = student.Program;
+            vm.StudentFirstName = student.StudentFirstName;
+            vm.StudentMiddleName = student.StudentMiddleName;
+            vm.StudentLastName = student.StudentLastName;
+
+            vm.CompletionDate = routine.CompletionDate;
+            vm.Q1 = routine.Q1;
+            vm.Q2 = routine.Q2;
+            vm.Q3 = routine.Q3;
+            vm.Q4 = routine.Q4;
+            vm.Q5 = routine.Q5;
+            vm.OtherMatters = routine.OtherMatters;
+
+
+            ViewBag.DateCompleted = vm.CompletionDate;
+
+            return View(vm);
+        }
+
         public ActionResult Print(string UserID)
         {
             var name = db.Students.Find(UserID);
@@ -177,7 +226,7 @@ namespace Testv3.Controllers
 
 
             return new ActionAsPdf(
-                           "Details",
+                           "Report",
                            new { UserID = UserID })
             {
                 FileName = string.Format("Routine_Interview_{0}.pdf", student)
