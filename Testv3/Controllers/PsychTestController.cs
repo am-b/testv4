@@ -361,7 +361,8 @@ namespace Testv3.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public ContentResult GetData()
+        //public ContentResult GetData()
+        public JsonResult GetData()
         {
             var datalistQuestions = db.Questions.ToList();
             List<ResultViewModel> questionlist = new List<ResultViewModel>();
@@ -369,6 +370,16 @@ namespace Testv3.Controllers
             foreach (var question in datalistQuestions)
             {
                 ResultViewModel ptvm = new ResultViewModel();
+
+                var questionItem = (from qs in db.Questions
+                                   where qs.QuestionID == question.QuestionID
+                                   select new { Question = qs.Question }).Single();
+                string str = questionItem.ToString();
+                char[] MyChar = { '{', 'Q', 'u', 'e', 's','t','i','o','n','=', ' ' };
+                string NewString = str.TrimStart(MyChar);
+
+                char[] MyChar1 = { '}', ' '};
+                string NewString1 = NewString.TrimEnd(MyChar1);
 
                 var agree = from ans in db.Answers
                             where ans.Answer == 1 && ans.QuestionID == question.QuestionID
@@ -384,6 +395,7 @@ namespace Testv3.Controllers
                                where ans.Answer == 3 && ans.QuestionID == question.QuestionID
                                select new { Answer = ans.Answer };
 
+                ptvm.questionItem = NewString1;
                 ptvm.countAgree = agree.Count();
                 ptvm.countSomewhatAgree = somewhatAgree.Count();
                 ptvm.countDisagree = disagree.Count();
@@ -392,8 +404,9 @@ namespace Testv3.Controllers
                 
             }
 
-            
-            return Content(JsonConvert.SerializeObject(questionlist), "application/json");
+
+            //return Content(JsonConvert.SerializeObject(questionlist), "application/json");
+            return Json(questionlist, JsonRequestBehavior.AllowGet);
 
         }
 
@@ -582,36 +595,36 @@ namespace Testv3.Controllers
             return Content(JsonConvert.SerializeObject(pvm), "application/json");
         }
 
-        //public ActionResult Print(string UserID)
-        //{
-        //    var name = db.Students.Find(UserID);
-        //    var student = name.StudentLastName + ", " + name.StudentFirstName;
+        public ActionResult Print(string UserID)
+        {
+            var name = db.Students.Find(UserID);
+            var student = name.StudentLastName + ", " + name.StudentFirstName;
 
-        //    var datalist =
-        //                (from ans in db.Answers
-        //                 join question in db.Questions
-        //                 on ans.QuestionID equals question.QuestionID
-        //                 where ans.UserID == UserID
-        //                 select new { Answer = ans.Answer, QuestionID = question.QuestionID, Question = question.Question });
+            var datalist =
+                        (from ans in db.Answers
+                         join question in db.Questions
+                         on ans.QuestionID equals question.QuestionID
+                         where ans.UserID == UserID
+                         select new { Answer = ans.Answer, QuestionID = question.QuestionID, Question = question.Question });
 
-        //    if (datalist.Count() == 0)
-        //    {
+            if (datalist.Count() == 0)
+            {
 
-        //        TempData["Error"] = "This user has not completed the test yet!";
-        //        return RedirectToAction("StudentList", "PsychTest");
-        //    }
+                TempData["Error"] = "This user has not completed the test yet!";
+                return RedirectToAction("StudentList", "PsychTest");
+            }
 
 
-        //    //return new ActionAsPdf(
-        //    //               "Responses",
-        //    //               new { UserID = UserID })
-        //    //{
-        //    //    FileName = string.Format("Psych_Test_{0}.pdf", student),
-        //    //    CustomSwitches = "--load-media-error-handling ignore --load-error-handling ignore"
+            return new ActionAsPdf(
+                           "Responses",
+                           new { UserID = UserID })
+            {
+                FileName = string.Format("Psych_Test_{0}.pdf", student),
+                CustomSwitches = "--load-media-error-handling ignore --load-error-handling ignore"
 
-        //    //};
+            };
 
-        //}
+        }
 
         [Authorize(Roles = "Counselor")]
         // GET: PsychologicalTest/StudentList

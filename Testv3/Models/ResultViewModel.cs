@@ -10,5 +10,6 @@ namespace Testv3.Models
         public int countAgree { get; set; }
         public int countSomewhatAgree { get; set; }
         public int countDisagree { get; set; }
+        public string questionItem { get; set; }
     }
 }

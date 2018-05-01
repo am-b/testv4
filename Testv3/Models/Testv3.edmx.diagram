@@ -4,12 +4,12 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="50596063c5654cf8a11e78d66d41388b" Name="Diagram1" ZoomLevel="72" >
-        <EntityTypeShape EntityType="Testv3Model.Announcement" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="Testv3Model.AspNetRole" Width="1.5" PointX="0.75" PointY="13" />
-        <EntityTypeShape EntityType="Testv3Model.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="28.25" />
+      <Diagram DiagramId="50596063c5654cf8a11e78d66d41388b" Name="Diagram1" ZoomLevel="40" >
+        <EntityTypeShape EntityType="Testv3Model.Announcement" Width="1.5" PointX="2.75" PointY="1.5" />
+        <EntityTypeShape EntityType="Testv3Model.AspNetRole" Width="1.5" PointX="3" PointY="11" />
+        <EntityTypeShape EntityType="Testv3Model.AspNetUserClaim" Width="1.5" PointX="3" PointY="13.375" />
         <EntityTypeShape EntityType="Testv3Model.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="9.875" />
-        <EntityTypeShape EntityType="Testv3Model.AspNetUser" Width="1.5" PointX="3" PointY="11.625" />
+        <EntityTypeShape EntityType="Testv3Model.AspNetUser" Width="1.5" PointX="2.875" PointY="5.375" />
         <EntityTypeShape EntityType="Testv3Model.IndividualInventoryRecord" Width="1.5" PointX="7.5" PointY="9.25" />
         <EntityTypeShape EntityType="Testv3Model.Student" Width="1.5" PointX="5.25" PointY="13.375" />
         <AssociationConnector Association="Testv3Model.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
@@ -17,27 +17,27 @@
         <AssociationConnector Association="Testv3Model.FK__Student__UserID__3C69FB99" />
         <AssociationConnector Association="Testv3Model.FK__Individua__UserI__4316F928" />
         <AssociationConnector Association="Testv3Model.AspNetUserRoles" />
-        <EntityTypeShape EntityType="Testv3Model.sysdiagram" Width="1.5" PointX="3.375" PointY="0.75" />
-        <EntityTypeShape EntityType="Testv3Model.Questions" Width="1.5" PointX="8.25" PointY="25.625" />
-        <EntityTypeShape EntityType="Testv3Model.Answers" Width="1.5" PointX="10.5" PointY="21.375" />
+        <EntityTypeShape EntityType="Testv3Model.sysdiagram" Width="1.5" PointX="4.875" PointY="1.5" />
+        <EntityTypeShape EntityType="Testv3Model.Questions" Width="1.5" PointX="10.375" PointY="16.125" />
+        <EntityTypeShape EntityType="Testv3Model.Answers" Width="1.5" PointX="10.25" PointY="13.125" />
         <AssociationConnector Association="Testv3Model.FK__Answers__Questio__45BE5BA9" />
         <AssociationConnector Association="Testv3Model.FK__Answers__UserID__46B27FE2" />
         <EntityTypeShape EntityType="Testv3Model.InitialInterview" Width="1.5" PointX="7.5" PointY="4.5" />
         <AssociationConnector Association="Testv3Model.FK__InitialIn__UserI__0D44F85C" />
-        <EntityTypeShape EntityType="Testv3Model.RoutineInterview" Width="1.5" PointX="7.5" PointY="28.75" />
+        <EntityTypeShape EntityType="Testv3Model.RoutineInterview" Width="1.5" PointX="3" PointY="20.25" />
         <AssociationConnector Association="Testv3Model.FK__RoutineIn__UserI__10216507" />
-        <EntityTypeShape EntityType="Testv3Model.CounsellingForm" Width="1.5" PointX="10.5" PointY="11.375" />
+        <EntityTypeShape EntityType="Testv3Model.CounsellingForm" Width="1.5" PointX="10.125" PointY="4.625" />
         <EntityTypeShape EntityType="Testv3Model.Counsellor" Width="1.5" PointX="5.25" PointY="6.5" />
         <AssociationConnector Association="Testv3Model.FK__Counsello__UserI__16CE6296" />
         <AssociationConnector Association="Testv3Model.FK__Counselli__Stude__2704CA5F" />
         <AssociationConnector Association="Testv3Model.FK__Counselli__UserI__2610A626" />
         <EntityTypeShape EntityType="Testv3Model.CounsellingContract" Width="1.5" PointX="7.5" PointY="1.5" />
         <AssociationConnector Association="Testv3Model.FK__Counselli__Stude__2EA5EC27" />
-        <EntityTypeShape EntityType="Testv3Model.ExitInterview" Width="1.5" PointX="7.5" PointY="33" />
+        <EntityTypeShape EntityType="Testv3Model.ExitInterview" Width="1.5" PointX="3" PointY="16" />
         <AssociationConnector Association="Testv3Model.FK__ExitInter__Stude__40C49C62" />
-        <EntityTypeShape EntityType="Testv3Model.IncidentReport" Width="1.5" PointX="7.5" PointY="38.125" />
+        <EntityTypeShape EntityType="Testv3Model.IncidentReport" Width="1.5" PointX="10.375" PointY="18.375" />
         <AssociationConnector Association="Testv3Model.FK__IncidentR__Stude__54CB950F" />
-        <EntityTypeShape EntityType="Testv3Model.AnecdotalRecord" Width="1.5" PointX="10.5" PointY="15.625" />
+        <EntityTypeShape EntityType="Testv3Model.AnecdotalRecord" Width="1.5" PointX="10.25" PointY="8.875" />
         <AssociationConnector Association="Testv3Model.FK__Anecdotal__Stude__5B78929E" />
         <AssociationConnector Association="Testv3Model.FK__Anecdotal__UserI__5C6CB6D7" />
         </Diagram>

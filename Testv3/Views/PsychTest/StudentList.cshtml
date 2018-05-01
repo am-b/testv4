@@ -25,8 +25,8 @@
     <div class="box-header">
         <h3 class="box-title">Overall report of student's test results</h3>
         <div class="box-tools pull-right">
-            <button class="btn btn-box-tool" type="button" data-toggle="collapse" data-target="#LOL">
-                <i class="fa fa-minus"></i>
+            <button class="btn btn-box-tool" type="button" data-toggle="collapse" data-target="#LOL"  id="minMaxBtn">
+                <span class="fa fa-minus" id="minMaxIcon"></span>
             </button>
         </div>
         <hr />
@@ -100,31 +100,10 @@
         </div>
     </div>
     <div id="LOL" class="collapse in">
+        <hr />
         <div class="box-body">
             <br />
-            <div class="row">
-                <div class="col-md-12">
-                        <table class="table">
-                            <tr>
-                                <th></th>
-                                
-                            </tr>
-                            @foreach (var question in (List<Testv3.Models.PsychTestViewModel>)ViewData["questionlist"])
-                            {
-                                <tr>
-                                    <td>
-                                        <b>@question.Question</b>
-                                        <br />
-                                        <div class="col-xs-4">
-                                            <div id="myCharts"></div>
-                                        </div>
-                                    </td>
-                                    
-                                </tr>
-                            }
-                        </table>
-                    </div>
-                </div>
+            <div id="myCharts"></div>
         </div>
     </div>
 </div>
@@ -160,15 +139,13 @@
             <td>
 
                 @Html.ActionLink("View test result", "Responses", new { UserID = item.UserID }) |
-                @Html.ActionLink("Save as PDF", "", new { UserID = item.UserID }) |
+                @Html.ActionLink("Save as PDF", "Print", new { UserID = item.UserID }) |
                 @Html.ActionLink("Delete", "Delete", new { UserID = item.UserID })
             </td>
         </tr>
         }
 
 </table>
-
-
 
         <br />
         Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
@@ -183,174 +160,174 @@
     }))
         <hr />
         @Scripts.Render("~/bundles/jquery")
-        @section Scripts {
-            <script type="text/javascript">
-                @*<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js">*@
 
-                //var aLabels = ["Agree", "Somewhat Agree", "Disagree"];
-                //var aDatasets1 = [];
+@section Scripts {
+    <script>
 
-                //var pieChart = {
-                //    labels: aLabels,
-                //    datasets: [{
-                //        label: "",
-                //        data: aDatasets1,
-                //        fill: false,
-                //        backgroundColor: ["rgba(54, 162, 235, 0.2)", "rgba(255, 99, 132, 0.2)", "rgba(255, 159, 64, 0.2)", "rgba(255, 205, 86, 0.2)", "rgba(75, 192, 192, 0.2)", "rgba(153, 102, 255, 0.2)", "rgba(201, 203, 207, 0.2)"],
-                //        borderColor: ["rgb(54, 162, 235)", "rgb(255, 99, 132)", "rgb(255, 159, 64)", "rgb(255, 205, 86)", "rgb(75, 192, 192)", "rgb(153, 102, 255)", "rgb(201, 203, 207)"],
-                //        borderWidth: 1
-                //    }]
-                //};
+        $("#minMaxBtn").click(function () {
+            $("span", this).toggleClass("fa-minus fa-plus");
+            
+        });
 
+        var charts = "myCharts";
+        var jsonData = [];
 
-                //$.get("/PsychTest/GetData", function (questionlist) {
-                //    $.each(questionlist, function (i, item) { //bawat item from array: [0], [1], [2], etc
-                //        aDatasets1.push(item); //push bawat item from array: push agree then loop, sa, loop, disagree
-                //    })
+        $.ajax({
+            url: '/PsychTest/GetData',
+            success: function (response) {
 
+                for (var i = 0; i < response.length; i++) {
+                    // jsonData.push({ data: [{"Agree":response[i].countAgree}, {"Somewhat Agree": response[i].countSomewhatAgree}, {"Disagree": response[i].countDisagree}] });
+                    jsonData.push({ data: [response[i].countAgree, response[i].countSomewhatAgree, response[i].countDisagree, response[i].questionItem] });
+                }
+                console.log(jsonData);
 
-                //    var ctx = document.getElementById("myCharts").getContext("2d");
-                //    var myNewChart = new Chart(ctx, {
-                //        type: 'pie',
-                //        data: pieChart,
-                //        options: {
+                //pie chart
+                var chart$ = (function () {
+                    var charts = [];
 
-                //            responsive: true,
-                //            maintainAspectRatio: true,
-                //            legend: {
-                //                position: 'right'
-                //            }
-
-                //        }
-                //    });
-                //});
-
-
-
-                //
-                //var canvasArray = [];
-                //var dataArray = [];
-
-                //var jsonData =
-                //    [
-                //        { "A": 1, "B": 1, "C": 3, "ID": 93396 },
-                //        { "A": 0, "B": 2, "C": 1, "ID": 93397 }
-                //    ]
-
-
-                //for (var i = 0; i < jsonData.length; i++) {
-                //    var pieChart =
-                //        [
-                //            {
-                //                value: jsonData[i].A,
-                //                color: "#000000",
-                //                highlight: "#000000",
-                //                label: "A"
-
-                //            },
-                //            {
-                //                value: jsonData[i].B,
-                //                color: "#1C9915",
-                //                highlight: "#1C9915",
-                //                label: "B"
-
-                //            },
-                //            {
-                //                value: jsonData[i].C,
-                //                color: "#F7464A",
-                //                highlight: "#FF5A5E",
-                //                label: "C"
-
-                //            },
-
-                //        ]
-
-
-                //    //document.getElementById("myCharts").innerHTML += "<canvas id=\"" + jsonData[i].ID + "\"></canvas>"
-                //    //var ctxPrep = "#" + jsonData[i].ID;
-                //    //canvasArray.push(ctxPrep);
-                //    //dataArray.push(pieChart);
-
-                //};
-
-                ////$.each(canvasArray, function (index, value) {
-                ////    var ctx = $(value).get(0).getContext("2d");
-
-                ////    var myNewChart = new Chart(ctx, {
-                ////        type: 'pie',
-                ////        data: dataArray[index],
-                ////        options: {
-                ////            animation: false
-                ////        }
-
-                ////    });
-
-
-                ////});
-
-                //$('.chart').each(function (index, element) {
-                //    var ctx = element.getContext("2d");
-                //    var myNewChart = new Chart(ctx, {
-                //        type: 'pie',
-                //        data: dataArray[index],
-                //        options: {
-                //            animation: false
-                //        }
-                //    });
-                //});
-
-
-
-                var canvasArray = [];
-                var dataArray = [];
-
-                var jsonData =
-                    [
-                        { "A": 1, "B": 1, "C": 3, "ID": 93396 },
-                        { "A": 0, "B": 2, "C": 1, "ID": 93397 }
-                    ]
-
-                for (var i = 0; i < jsonData.length; i++) {
-                    var pieChart =
-                        [
-                            {
-                                value: jsonData[i].A,
-                                color: "#000000",
-                                highlight: "#000000",
-                                label: "A"
-                            },
-                            {
-                                value: jsonData[i].B,
-                                color: "#1C9915",
-                                highlight: "#1C9915",
-                                label: "B"
-                            },
-                            {
-                                value: jsonData[i].C,
-                                color: "#F7464A",
-                                highlight: "#FF5A5E",
-                                label: "C"
-                            },
-                        ]
-
-                    document.getElementById("myCharts").innerHTML += "<canvas id=\"" + jsonData[i].ID + "\"></canvas>"
-                    var ctxPrep = "#" + jsonData[i].ID;
-                    canvasArray.push(ctxPrep);
-                    dataArray.push(pieChart);
-
-                };
-
-                $.each(canvasArray, function (index, value) {
-                    var ctx = $(value).get(0).getContext("2d");
-                    var myNewChart = new Chart(ctx, {
-                        type: 'pie',
-                        data: dataArray[index],
-                        options: {
-                            animation: false
+                    var MakePie = function (canvasId, inputData, title) {
+                        if (canvasId !== null && canvasId !== undefined && canvasId.length > 0) {
+                            if (inputData && inputData.length > 0) {
+                                if (title && title.length >= 0) {
+                                    return drawChart(canvasId, "pie", ["Agree", "Somewhat Agree", "Disagree"], inputData, title);
+                                } else {
+                                    console.error("MakePie - invalid chart Title");
+                                    return;
+                                }
+                            } else {
+                                console.error("MakePie - invalid chart data");
+                                return;
+                            }
+                        } else {
+                            console.error("MakePie - invalid canvas id");
+                            return;
                         }
-                    });
-                });
+                    };
+
+                    function drawChart(canvasId, type, labels, inputData, title) {
+                        console.log("inputdata: " + inputData);
+                        charts[canvasId] = new Chart(document.getElementById(canvasId), {
+                            type: type,
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    backgroundColor: [
+                                        "rgba(54, 162, 235, 0.2)",
+                                        "rgba(255, 99, 132, 0.2)",
+                                        "rgba(255, 159, 64, 0.2)",
+                                        "rgba(255, 205, 86, 0.2)",
+                                        "rgba(75, 192, 192, 0.2)",
+                                        "rgba(153, 102, 255, 0.2)",
+                                        "rgba(201, 203, 207, 0.2)"
+                                    ],
+                                    borderColor: [
+                                        "rgb(54, 162, 235)",
+                                        "rgb(255, 99, 132)",
+                                        "rgb(255, 159, 64)",
+                                        "rgb(255, 205, 86)",
+                                        "rgb(75, 192, 192)",
+                                        "rgb(153, 102, 255)",
+                                        "rgb(201, 203, 207)"
+                                    ],
+                                    borderWidth: 1,
+                                    data: inputData
+                                }]
+                            },
+                            options: {
+                                title: {
+                                    display: true,
+                                    text: title,
+                                    fontSize: 15,
+                                },
+                                legend: { position: 'right' },
+                                responsive: false
+                            }
+                        });
+                        return charts[canvasId] !== null;
+                    }
+
+                    return {
+                        MakePie: MakePie
+                    };
+                })();
+
+                var ui$ = (function () {
+                    var BuildChartCont = function (parentId, inputData) {
+                        if (parentId == null || parentId.length <= 0) {
+                            console.error("BuildChartCont : Root container id is invalid!");
+                            return false;
+                        }
+
+                        if (inputData == null || inputData.length <= 0) {
+                            console.error(
+                                "BuildChartCont : Input data is null/undefined or has no items in it!"
+                            );
+                            return false;
+                        }
+
+                        var elementDom = document.getElementById(parentId);
+                        for (var index = 0; index < inputData.length; index++) {
+
+                            var element = inputData[index];
+                            var canvasId = "CanvasId" + index;
+
+                            var canvasDiv = document.createElement("div");
+                            canvasDiv.setAttribute("style", "width:600px; height:200px;");
+
+                            var canvasElem = document.createElement("canvas");
+                            canvasElem.setAttribute("id", canvasId);
+                            canvasElem.setAttribute("style", "width:600px; height:200px;");
+
+                            var lineBreak = document.createElement("br");
 
 
-</script>
-        }
+                            canvasDiv.appendChild(canvasElem);
+                            elementDom.appendChild(canvasDiv);
+
+                            elementDom.appendChild(lineBreak);
+
+                            if (!chart$.MakePie(canvasId, [parseInt(element.data[0]), parseInt(element.data[1]), parseInt(element.data[2])], element.data[3])) {
+                                console.error("BuildChartCont : Error While building Chart!");
+                                continue;
+                            }
+                        }
+                        return true;
+                    };
+                    var showElement = function (elements, display) {
+                        if (display) {
+                            for (var i = 0; i < elements.length; i++) {
+                                document.getElementById(elements[i]).style.display = display;
+                            }
+                        } else {
+                            for (var i = 0; i < elements.length; i++) {
+                                document.getElementById(elements[i]).style.display = "block";
+                            }
+                        }
+                    };
+                    return {
+                        BuildChartCont: BuildChartCont,
+                        showElement: showElement
+                    };
+                })();
+
+                if (ui$.BuildChartCont(charts, jsonData)) {
+                    ui$.showElement([charts], "block");
+                }
+
+
+
+
+
+            }
+        });
+
+
+
+
+
+
+    </script>
+}
+
+

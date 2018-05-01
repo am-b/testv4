@@ -19,10 +19,9 @@
                         <strong>Psychological Test Results</strong>
                     </p>
 
-                    <div class="chart">
+                    <div class="chart" style="width: 657px; height: 150px;">
                         <canvas id="line-chart" width="657" height="150" style="width: 657px; height: 150px;"></canvas>
                     </div>
-
                 </div>
 
                 <div class="col-md-4">
@@ -88,7 +87,6 @@
                 </div>
             </div>
         </div>
-        @*</div>*@
 
 
         <br />
@@ -117,6 +115,8 @@
             }
         </table>
     </div>
+
+
 @*}*@
 @Scripts.Render("~/bundles/jquery")
 @section Scripts {
@@ -142,6 +142,7 @@
                 linechart.labels.push(item.QuestionID); //eto yung nasa x-axis
                 linechart.datasets[0].data.push(item.Answer); //individual student  
                 //linechart.datasets[1].data.push();  //overall population
+                //console.log(linechart);
             })
             var ctx = document.getElementById("line-chart").getContext("2d");
 
@@ -152,5 +153,7 @@
                     options: {}
                 });
         });
+
     </script>
 }
+
