@@ -13,8 +13,12 @@ namespace Testv3
              "~/admin-lte/plugins/fastclick/fastclick.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/jquery-ui-{version}.js"
+                        ));
 
+            bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
+                        "~/Scripts/jquery.validate*"));
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 
@@ -32,7 +36,9 @@ namespace Testv3
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
                       "~/admin-lte/css/AdminLTE.css",
-                      "~/admin-lte/css/skins/skin-blue.css"));
+                      "~/admin-lte/css/skins/skin-blue.css",
+                      "~/Content/themes/base/jquery-ui.css",
+                      "~/Content/themes/base/jquery-ui.min.css"));
         }
     }
 }
