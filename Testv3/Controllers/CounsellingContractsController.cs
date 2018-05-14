@@ -107,6 +107,7 @@ namespace Testv3.Controllers
         }
 
 
+
         // GET: CounsellingContracts/Create
         [Authorize(Roles = "Student")]
         public ActionResult Student()
@@ -327,6 +328,58 @@ namespace Testv3.Controllers
                 PageHeight = 105,
                 PageWidth = 210
             };
+        }
+
+
+        public JsonResult GetSummary()
+        {
+
+            List<ResultViewModel> list = new List<ResultViewModel>();
+
+            ResultViewModel vm = new ResultViewModel();
+
+                //--% of students agree/ disagree
+                //SELECT COUNT(*) AS Total
+                //FROM CounsellingContract A
+                //INNER JOIN Student S ON S.UserID = A.StudentUserID
+                //WHERE A.StudentAgrees = 'True'
+                //GROUP BY A.StudentAgrees
+                //ORDER BY Total DESC;
+
+                //--total students
+                //SELECT COUNT(*) AS Total
+                //FROM STUDENT
+
+
+            var agreerCount = (from A in db.CounsellingContract
+                               join B in db.Students on A.StudentUserID equals B.UserID
+                               where A.StudentAgrees == true
+                               group A by new { A.StudentAgrees } into g
+                                   orderby g.Count() descending
+                                   select g.Count()
+                                     ).FirstOrDefault();
+
+            var total = (from A in db.Students
+                         where A.IsActive == true
+                         group A by new { A.IsActive } into g
+                         select g.Count()
+                             ).FirstOrDefault();
+
+
+            vm.countAgree = agreerCount;
+            vm.total = total - agreerCount;
+
+            list.Add(vm);
+
+            return Json(list, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public ActionResult Charts()
+        {
+            GetCurrentUserInViewBag();
+
+            return View();
         }
 
         protected override void Dispose(bool disposing)

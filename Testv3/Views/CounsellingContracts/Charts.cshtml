@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "Charts";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="body-content">
+        <div class="form-horizontal">
+
+            <canvas id="contract-pie-chart" width="657" height="150" style="width: 657px; height: 150px;"></canvas>           
+     
+        </div>
+    </div>
+}
+@section Scripts{
+    <script type="text/javascript">
+
+        //pie chart
+        var pieChart = {
+                labels: ["Agree","Doesn't Agree"],
+                datasets: [{
+                            backgroundColor:
+                            [
+                                "rgba(153, 102, 255, 0.2)",
+                                "rgba(255, 205, 86, 0.2)"
+                            ],
+                            borderColor:
+                            [
+                                "rgb(153, 102, 255)",
+                                "rgba(255, 205, 86, 0.2)"
+                            ],
+                            borderWidth: 1,
+                            data: []
+                }]
+
+        }
+
+        var optionPieChart = {
+            legend: { position: 'top' },
+            title: {
+                display: true,
+                text: 'Counselling Terms and Agreement'
+            }
+        };
+
+ 
+
+            $.ajax({
+                url: '/CounsellingContracts/GetSummary/',
+                success: function (responsePie) {
+
+                    $.each(responsePie, function (i, item) {
+
+                        pieChart.datasets[0].data.push(parseInt(item.countAgree), parseInt(item.total));
+                    })
+
+                    var ctx2 = document.getElementById("contract-pie-chart").getContext("2d");
+
+                    var myPieChart = new Chart(ctx2,
+                        {
+                            type: 'pie',
+                            data: pieChart,
+                            options: optionPieChart
+                        });
+                }
+
+            });
+
+
+
+
+
+    </script>
+}
