@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="50596063c5654cf8a11e78d66d41388b" Name="Diagram1" ZoomLevel="40" >
+      <Diagram DiagramId="50596063c5654cf8a11e78d66d41388b" Name="Diagram1" ZoomLevel="77" >
         <EntityTypeShape EntityType="Testv3Model.Announcement" Width="1.5" PointX="2.75" PointY="1.5" />
         <EntityTypeShape EntityType="Testv3Model.AspNetRole" Width="1.5" PointX="3" PointY="11" />
         <EntityTypeShape EntityType="Testv3Model.AspNetUserClaim" Width="1.5" PointX="3" PointY="13.375" />
@@ -26,20 +26,29 @@
         <AssociationConnector Association="Testv3Model.FK__InitialIn__UserI__0D44F85C" />
         <EntityTypeShape EntityType="Testv3Model.RoutineInterview" Width="1.5" PointX="3" PointY="20.25" />
         <AssociationConnector Association="Testv3Model.FK__RoutineIn__UserI__10216507" />
-        <EntityTypeShape EntityType="Testv3Model.CounsellingForm" Width="1.5" PointX="10.125" PointY="4.625" />
         <EntityTypeShape EntityType="Testv3Model.Counsellor" Width="1.5" PointX="5.25" PointY="6.5" />
         <AssociationConnector Association="Testv3Model.FK__Counsello__UserI__16CE6296" />
-        <AssociationConnector Association="Testv3Model.FK__Counselli__Stude__2704CA5F" />
-        <AssociationConnector Association="Testv3Model.FK__Counselli__UserI__2610A626" />
         <EntityTypeShape EntityType="Testv3Model.CounsellingContract" Width="1.5" PointX="7.5" PointY="1.5" />
         <AssociationConnector Association="Testv3Model.FK__Counselli__Stude__2EA5EC27" />
         <EntityTypeShape EntityType="Testv3Model.ExitInterview" Width="1.5" PointX="3" PointY="16" />
         <AssociationConnector Association="Testv3Model.FK__ExitInter__Stude__40C49C62" />
-        <EntityTypeShape EntityType="Testv3Model.IncidentReport" Width="1.5" PointX="10.375" PointY="18.375" />
-        <AssociationConnector Association="Testv3Model.FK__IncidentR__Stude__54CB950F" />
         <EntityTypeShape EntityType="Testv3Model.AnecdotalRecord" Width="1.5" PointX="10.25" PointY="8.875" />
         <AssociationConnector Association="Testv3Model.FK__Anecdotal__Stude__5B78929E" />
         <AssociationConnector Association="Testv3Model.FK__Anecdotal__UserI__5C6CB6D7" />
+        <EntityTypeShape EntityType="Testv3Model.IncidentReport" Width="1.5" PointX="7.5" PointY="25.125" />
+        <EntityTypeShape EntityType="Testv3Model.IncidentReportIncidents" Width="1.5" PointX="7.5" PointY="29.875" />
+        <EntityTypeShape EntityType="Testv3Model.IncidentReportTags" Width="1.5" PointX="9.75" PointY="25.75" />
+        <AssociationConnector Association="Testv3Model.FK__IncidentR__Incid__69C6B1F5" />
+        <AssociationConnector Association="Testv3Model.FK__IncidentR__Stude__54CB950F" />
+        <AssociationConnector Association="Testv3Model.FK__IncidentR__TypeI__6ABAD62E" />
+        <EntityTypeShape EntityType="Testv3Model.CounsellingFormCases" Width="1.5" PointX="13.375" PointY="17.125" />
+        <EntityTypeShape EntityType="Testv3Model.CounsellingFormCasesList" Width="1.5" PointX="10.375" PointY="0.75" />
+        <AssociationConnector Association="Testv3Model.FK__Counselli__TypeI__7DCDAAA2" />
+        <EntityTypeShape EntityType="Testv3Model.CounsellingForm" Width="1.5" PointX="12.5" PointY="11.75" />
+        <AssociationConnector Association="Testv3Model.FK__Counselli__Couns__7CD98669" />
+        <AssociationConnector Association="Testv3Model.FK__Counselli__Stude__2704CA5F" />
+        <AssociationConnector Association="Testv3Model.FK__Counselli__UserI__2610A626" />
+        <AssociationConnector Association="Testv3Model.FK__Counselli__TypeI__019E3B86" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

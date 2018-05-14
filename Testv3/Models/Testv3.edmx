@@ -108,11 +108,25 @@
           <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="StudentUserID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="CompletionDate" Type="datetime" />
-          <Property Name="Case" Type="nvarchar(max)" />
           <Property Name="Session" Type="nvarchar(max)" />
           <Property Name="PctionPlan" Type="nvarchar(max)" />
           <Property Name="Recommendation" Type="nvarchar(max)" />
           <Property Name="Followup" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="CounsellingFormCases">
+          <Key>
+            <PropertyRef Name="TagID" />
+          </Key>
+          <Property Name="TagID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CounsellingFormID" Type="int" Nullable="false" />
+          <Property Name="TypeID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CounsellingFormCasesList">
+          <Key>
+            <PropertyRef Name="TypeID" />
+          </Key>
+          <Property Name="TypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Counsellor">
           <Key>
@@ -149,12 +163,26 @@
           <Property Name="EeportedBy" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="StudentUserID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="CompletionDate" Type="datetime" />
-          <Property Name="TypeOfIncident" Type="nvarchar(max)" />
           <Property Name="PlaceOfIncident" Type="nvarchar(max)" />
           <Property Name="DateTimeOfIncident" Type="datetime" />
           <Property Name="Witness" Type="nvarchar(max)" />
           <Property Name="Details" Type="nvarchar(max)" />
           <Property Name="CounsellorNotes" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="IncidentReportIncidents">
+          <Key>
+            <PropertyRef Name="TypeID" />
+          </Key>
+          <Property Name="TypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="IncidentReportTags">
+          <Key>
+            <PropertyRef Name="TagID" />
+          </Key>
+          <Property Name="TagID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IncidentReportID" Type="int" Nullable="false" />
+          <Property Name="TypeID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="IndividualInventoryRecord">
           <Key>
@@ -305,6 +333,7 @@
           <Property Name="NumberOfChildren" Type="nvarchar" MaxLength="3" />
           <Property Name="Program" Type="nvarchar" MaxLength="50" />
           <Property Name="YearLevel" Type="int" />
+          <Property Name="IsActive" Type="bit" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -370,6 +399,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Counselli__Couns__00AA174D">
+          <End Role="CounsellingForm" Type="Self.CounsellingForm" Multiplicity="1" />
+          <End Role="CounsellingFormCases" Type="Self.CounsellingFormCases" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CounsellingForm">
+              <PropertyRef Name="CounsellingFormID" />
+            </Principal>
+            <Dependent Role="CounsellingFormCases">
+              <PropertyRef Name="CounsellingFormID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Counselli__Stude__2704CA5F">
           <End Role="Student" Type="Self.Student" Multiplicity="1" />
           <End Role="CounsellingForm" Type="Self.CounsellingForm" Multiplicity="*" />
@@ -393,6 +434,18 @@
             </Principal>
             <Dependent Role="CounsellingContract">
               <PropertyRef Name="StudentUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Counselli__TypeI__019E3B86">
+          <End Role="CounsellingFormCasesList" Type="Self.CounsellingFormCasesList" Multiplicity="1" />
+          <End Role="CounsellingFormCases" Type="Self.CounsellingFormCases" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CounsellingFormCasesList">
+              <PropertyRef Name="TypeID" />
+            </Principal>
+            <Dependent Role="CounsellingFormCases">
+              <PropertyRef Name="TypeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -438,6 +491,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__IncidentR__Incid__69C6B1F5">
+          <End Role="IncidentReport" Type="Self.IncidentReport" Multiplicity="1" />
+          <End Role="IncidentReportTags" Type="Self.IncidentReportTags" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IncidentReport">
+              <PropertyRef Name="IncidentReportID" />
+            </Principal>
+            <Dependent Role="IncidentReportTags">
+              <PropertyRef Name="IncidentReportID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__IncidentR__Stude__54CB950F">
           <End Role="Student" Type="Self.Student" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -449,6 +514,18 @@
             </Principal>
             <Dependent Role="IncidentReport">
               <PropertyRef Name="StudentUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__IncidentR__TypeI__6ABAD62E">
+          <End Role="IncidentReportIncidents" Type="Self.IncidentReportIncidents" Multiplicity="1" />
+          <End Role="IncidentReportTags" Type="Self.IncidentReportTags" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IncidentReportIncidents">
+              <PropertyRef Name="TypeID" />
+            </Principal>
+            <Dependent Role="IncidentReportTags">
+              <PropertyRef Name="TypeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -561,9 +638,13 @@
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CounsellingContract" EntityType="Self.CounsellingContract" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CounsellingForm" EntityType="Self.CounsellingForm" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CounsellingFormCases" EntityType="Self.CounsellingFormCases" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CounsellingFormCasesList" EntityType="Self.CounsellingFormCasesList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Counsellor" EntityType="Self.Counsellor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ExitInterview" EntityType="Self.ExitInterview" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="IncidentReport" EntityType="Self.IncidentReport" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IncidentReportIncidents" EntityType="Self.IncidentReportIncidents" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IncidentReportTags" EntityType="Self.IncidentReportTags" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="IndividualInventoryRecord" EntityType="Self.IndividualInventoryRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InitialInterview" EntityType="Self.InitialInterview" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Questions" EntityType="Self.Questions" Schema="dbo" store:Type="Tables" />
@@ -586,6 +667,10 @@
             <End Role="Student" EntitySet="Student" />
             <End Role="Answers" EntitySet="Answers" />
           </AssociationSet>
+          <AssociationSet Name="FK__Counselli__Couns__00AA174D" Association="Self.FK__Counselli__Couns__00AA174D">
+            <End Role="CounsellingForm" EntitySet="CounsellingForm" />
+            <End Role="CounsellingFormCases" EntitySet="CounsellingFormCases" />
+          </AssociationSet>
           <AssociationSet Name="FK__Counselli__Stude__2704CA5F" Association="Self.FK__Counselli__Stude__2704CA5F">
             <End Role="Student" EntitySet="Student" />
             <End Role="CounsellingForm" EntitySet="CounsellingForm" />
@@ -593,6 +678,10 @@
           <AssociationSet Name="FK__Counselli__Stude__2EA5EC27" Association="Self.FK__Counselli__Stude__2EA5EC27">
             <End Role="Student" EntitySet="Student" />
             <End Role="CounsellingContract" EntitySet="CounsellingContract" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Counselli__TypeI__019E3B86" Association="Self.FK__Counselli__TypeI__019E3B86">
+            <End Role="CounsellingFormCasesList" EntitySet="CounsellingFormCasesList" />
+            <End Role="CounsellingFormCases" EntitySet="CounsellingFormCases" />
           </AssociationSet>
           <AssociationSet Name="FK__Counselli__UserI__2610A626" Association="Self.FK__Counselli__UserI__2610A626">
             <End Role="Counsellor" EntitySet="Counsellor" />
@@ -606,9 +695,17 @@
             <End Role="Student" EntitySet="Student" />
             <End Role="ExitInterview" EntitySet="ExitInterview" />
           </AssociationSet>
+          <AssociationSet Name="FK__IncidentR__Incid__69C6B1F5" Association="Self.FK__IncidentR__Incid__69C6B1F5">
+            <End Role="IncidentReport" EntitySet="IncidentReport" />
+            <End Role="IncidentReportTags" EntitySet="IncidentReportTags" />
+          </AssociationSet>
           <AssociationSet Name="FK__IncidentR__Stude__54CB950F" Association="Self.FK__IncidentR__Stude__54CB950F">
             <End Role="Student" EntitySet="Student" />
             <End Role="IncidentReport" EntitySet="IncidentReport" />
+          </AssociationSet>
+          <AssociationSet Name="FK__IncidentR__TypeI__6ABAD62E" Association="Self.FK__IncidentR__TypeI__6ABAD62E">
+            <End Role="IncidentReportIncidents" EntitySet="IncidentReportIncidents" />
+            <End Role="IncidentReportTags" EntitySet="IncidentReportTags" />
           </AssociationSet>
           <AssociationSet Name="FK__InitialIn__UserI__0D44F85C" Association="Self.FK__InitialIn__UserI__0D44F85C">
             <End Role="Student" EntitySet="Student" />
@@ -692,19 +789,10 @@
             <End Role="Student" EntitySet="Students" />
             <End Role="RoutineInterview" EntitySet="RoutineInterview" />
           </AssociationSet>
-          <EntitySet Name="CounsellingForm" EntityType="Testv3Model.CounsellingForm" />
           <EntitySet Name="Counsellor" EntityType="Testv3Model.Counsellor" />
           <AssociationSet Name="FK__Counsello__UserI__16CE6296" Association="Testv3Model.FK__Counsello__UserI__16CE6296">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="Counsellor" EntitySet="Counsellor" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Counselli__Stude__2704CA5F" Association="Testv3Model.FK__Counselli__Stude__2704CA5F">
-            <End Role="Student" EntitySet="Students" />
-            <End Role="CounsellingForm" EntitySet="CounsellingForm" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Counselli__UserI__2610A626" Association="Testv3Model.FK__Counselli__UserI__2610A626">
-            <End Role="Counsellor" EntitySet="Counsellor" />
-            <End Role="CounsellingForm" EntitySet="CounsellingForm" />
           </AssociationSet>
           <EntitySet Name="CounsellingContract" EntityType="Testv3Model.CounsellingContract" />
           <AssociationSet Name="FK__Counselli__Stude__2EA5EC27" Association="Testv3Model.FK__Counselli__Stude__2EA5EC27">
@@ -716,11 +804,6 @@
             <End Role="Student" EntitySet="Students" />
             <End Role="ExitInterview" EntitySet="ExitInterview" />
           </AssociationSet>
-          <EntitySet Name="IncidentReport" EntityType="Testv3Model.IncidentReport" />
-          <AssociationSet Name="FK__IncidentR__Stude__54CB950F" Association="Testv3Model.FK__IncidentR__Stude__54CB950F">
-            <End Role="Student" EntitySet="Students" />
-            <End Role="IncidentReport" EntitySet="IncidentReport" />
-          </AssociationSet>
           <EntitySet Name="AnecdotalRecord" EntityType="Testv3Model.AnecdotalRecord" />
           <AssociationSet Name="FK__Anecdotal__Stude__5B78929E" Association="Testv3Model.FK__Anecdotal__Stude__5B78929E">
             <End Role="Student" EntitySet="Students" />
@@ -729,6 +812,44 @@
           <AssociationSet Name="FK__Anecdotal__UserI__5C6CB6D7" Association="Testv3Model.FK__Anecdotal__UserI__5C6CB6D7">
             <End Role="Counsellor" EntitySet="Counsellor" />
             <End Role="AnecdotalRecord" EntitySet="AnecdotalRecord" />
+          </AssociationSet>
+          <EntitySet Name="IncidentReport" EntityType="Testv3Model.IncidentReport" />
+          <EntitySet Name="IncidentReportIncidents" EntityType="Testv3Model.IncidentReportIncidents" />
+          <EntitySet Name="IncidentReportTags" EntityType="Testv3Model.IncidentReportTags" />
+          <AssociationSet Name="FK__IncidentR__Incid__69C6B1F5" Association="Testv3Model.FK__IncidentR__Incid__69C6B1F5">
+            <End Role="IncidentReport" EntitySet="IncidentReport" />
+            <End Role="IncidentReportTags" EntitySet="IncidentReportTags" />
+          </AssociationSet>
+          <AssociationSet Name="FK__IncidentR__Stude__54CB950F" Association="Testv3Model.FK__IncidentR__Stude__54CB950F">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="IncidentReport" EntitySet="IncidentReport" />
+          </AssociationSet>
+          <AssociationSet Name="FK__IncidentR__TypeI__6ABAD62E" Association="Testv3Model.FK__IncidentR__TypeI__6ABAD62E">
+            <End Role="IncidentReportIncidents" EntitySet="IncidentReportIncidents" />
+            <End Role="IncidentReportTags" EntitySet="IncidentReportTags" />
+          </AssociationSet>
+          <EntitySet Name="CounsellingFormCases" EntityType="Testv3Model.CounsellingFormCases" />
+          <EntitySet Name="CounsellingFormCasesList" EntityType="Testv3Model.CounsellingFormCasesList" />
+          <AssociationSet Name="FK__Counselli__TypeI__7DCDAAA2" Association="Testv3Model.FK__Counselli__TypeI__7DCDAAA2">
+            <End Role="IncidentReportIncidents" EntitySet="IncidentReportIncidents" />
+            <End Role="CounsellingFormCases" EntitySet="CounsellingFormCases" />
+          </AssociationSet>
+          <EntitySet Name="CounsellingForm" EntityType="Testv3Model.CounsellingForm" />
+          <AssociationSet Name="FK__Counselli__Couns__7CD98669" Association="Testv3Model.FK__Counselli__Couns__7CD98669">
+            <End Role="CounsellingForm" EntitySet="CounsellingForm" />
+            <End Role="CounsellingFormCases" EntitySet="CounsellingFormCases" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Counselli__Stude__2704CA5F" Association="Testv3Model.FK__Counselli__Stude__2704CA5F">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="CounsellingForm" EntitySet="CounsellingForm" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Counselli__UserI__2610A626" Association="Testv3Model.FK__Counselli__UserI__2610A626">
+            <End Role="Counsellor" EntitySet="Counsellor" />
+            <End Role="CounsellingForm" EntitySet="CounsellingForm" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Counselli__TypeI__019E3B86" Association="Testv3Model.FK__Counselli__TypeI__019E3B86">
+            <End Role="CounsellingFormCasesList" EntitySet="CounsellingFormCasesList" />
+            <End Role="CounsellingFormCases" EntitySet="CounsellingFormCases" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="Announcement">
@@ -908,11 +1029,12 @@
           <Property Name="YearLevel" Type="Int32" />
           <NavigationProperty Name="InitialInterview" Relationship="Testv3Model.FK__InitialIn__UserI__0D44F85C" FromRole="Student" ToRole="InitialInterview" />
           <NavigationProperty Name="RoutineInterview" Relationship="Testv3Model.FK__RoutineIn__UserI__10216507" FromRole="Student" ToRole="RoutineInterview" />
-          <NavigationProperty Name="CounsellingForm" Relationship="Testv3Model.FK__Counselli__Stude__2704CA5F" FromRole="Student" ToRole="CounsellingForm" />
           <NavigationProperty Name="CounsellingContract" Relationship="Testv3Model.FK__Counselli__Stude__2EA5EC27" FromRole="Student" ToRole="CounsellingContract" />
           <NavigationProperty Name="ExitInterview" Relationship="Testv3Model.FK__ExitInter__Stude__40C49C62" FromRole="Student" ToRole="ExitInterview" />
-          <NavigationProperty Name="IncidentReport" Relationship="Testv3Model.FK__IncidentR__Stude__54CB950F" FromRole="Student" ToRole="IncidentReport" />
           <NavigationProperty Name="AnecdotalRecord" Relationship="Testv3Model.FK__Anecdotal__Stude__5B78929E" FromRole="Student" ToRole="AnecdotalRecord" />
+          <NavigationProperty Name="IncidentReport" Relationship="Testv3Model.FK__IncidentR__Stude__54CB950F" FromRole="Student" ToRole="IncidentReport" />
+          <NavigationProperty Name="CounsellingForm" Relationship="Testv3Model.FK__Counselli__Stude__2704CA5F" FromRole="Student" ToRole="CounsellingForm" />
+          <Property Name="IsActive" Type="Boolean" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Type="Testv3Model.AspNetUser" Role="AspNetUser" Multiplicity="1">
@@ -1094,22 +1216,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="CounsellingForm">
-          <Key>
-            <PropertyRef Name="CounsellingFormID" />
-          </Key>
-          <Property Name="CounsellingFormID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="StudentUserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="CompletionDate" Type="DateTime" Precision="3" />
-          <Property Name="Case" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Session" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PctionPlan" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Recommendation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Followup" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Student" Relationship="Testv3Model.FK__Counselli__Stude__2704CA5F" FromRole="CounsellingForm" ToRole="Student" />
-          <NavigationProperty Name="Counsellor" Relationship="Testv3Model.FK__Counselli__UserI__2610A626" FromRole="CounsellingForm" ToRole="Counsellor" />
-        </EntityType>
         <EntityType Name="Counsellor">
           <Key>
             <PropertyRef Name="UserID" />
@@ -1121,8 +1227,8 @@
           <Property Name="CounsellorMiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CounsellorEmail" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUsers" Relationship="Testv3Model.FK__Counsello__UserI__16CE6296" FromRole="Counsellor" ToRole="AspNetUser" />
-          <NavigationProperty Name="CounsellingForm" Relationship="Testv3Model.FK__Counselli__UserI__2610A626" FromRole="Counsellor" ToRole="CounsellingForm" />
           <NavigationProperty Name="AnecdotalRecord" Relationship="Testv3Model.FK__Anecdotal__UserI__5C6CB6D7" FromRole="Counsellor" ToRole="AnecdotalRecord" />
+          <NavigationProperty Name="CounsellingForm" Relationship="Testv3Model.FK__Counselli__UserI__2610A626" FromRole="Counsellor" ToRole="CounsellingForm" />
         </EntityType>
         <Association Name="FK__Counsello__UserI__16CE6296">
           <End Type="Testv3Model.AspNetUser" Role="AspNetUser" Multiplicity="1">
@@ -1134,32 +1240,6 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Counsellor">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Counselli__Stude__2704CA5F">
-          <End Type="Testv3Model.Student" Role="Student" Multiplicity="1" />
-          <End Type="Testv3Model.CounsellingForm" Role="CounsellingForm" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Student">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="CounsellingForm">
-              <PropertyRef Name="StudentUserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Counselli__UserI__2610A626">
-          <End Type="Testv3Model.Counsellor" Role="Counsellor" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="Testv3Model.CounsellingForm" Role="CounsellingForm" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Counsellor">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="CounsellingForm">
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -1219,36 +1299,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="IncidentReport">
-          <Key>
-            <PropertyRef Name="IncidentReportID" />
-          </Key>
-          <Property Name="IncidentReportID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EeportedBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="StudentUserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="CompletionDate" Type="DateTime" Precision="3" />
-          <Property Name="TypeOfIncident" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PlaceOfIncident" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="DateTimeOfIncident" Type="DateTime" Precision="3" />
-          <Property Name="Witness" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Details" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CounsellorNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Student" Relationship="Testv3Model.FK__IncidentR__Stude__54CB950F" FromRole="IncidentReport" ToRole="Student" />
-        </EntityType>
-        <Association Name="FK__IncidentR__Stude__54CB950F">
-          <End Type="Testv3Model.Student" Role="Student" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="Testv3Model.IncidentReport" Role="IncidentReport" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Student">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="IncidentReport">
-              <PropertyRef Name="StudentUserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="AnecdotalRecord">
           <Key>
             <PropertyRef Name="AnecdotalRecordID" />
@@ -1289,6 +1339,176 @@
             </Principal>
             <Dependent Role="AnecdotalRecord">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="IncidentReport">
+          <Key>
+            <PropertyRef Name="IncidentReportID" />
+          </Key>
+          <Property Name="IncidentReportID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EeportedBy" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="StudentUserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CompletionDate" Type="DateTime" Precision="3" />
+          <Property Name="PlaceOfIncident" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateTimeOfIncident" Type="DateTime" Precision="3" />
+          <Property Name="Witness" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Details" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CounsellorNotes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="IncidentReportTags" Relationship="Testv3Model.FK__IncidentR__Incid__69C6B1F5" FromRole="IncidentReport" ToRole="IncidentReportTags" />
+          <NavigationProperty Name="Student" Relationship="Testv3Model.FK__IncidentR__Stude__54CB950F" FromRole="IncidentReport" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="IncidentReportIncidents">
+          <Key>
+            <PropertyRef Name="TypeID" />
+          </Key>
+          <Property Name="TypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="IncidentReportTags" Relationship="Testv3Model.FK__IncidentR__TypeI__6ABAD62E" FromRole="IncidentReportIncidents" ToRole="IncidentReportTags" />
+          <NavigationProperty Name="CounsellingFormCases" Relationship="Testv3Model.FK__Counselli__TypeI__7DCDAAA2" FromRole="IncidentReportIncidents" ToRole="CounsellingFormCases" />
+        </EntityType>
+        <EntityType Name="IncidentReportTags">
+          <Key>
+            <PropertyRef Name="TagID" />
+          </Key>
+          <Property Name="TagID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IncidentReportID" Type="Int32" Nullable="false" />
+          <Property Name="TypeID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="IncidentReport" Relationship="Testv3Model.FK__IncidentR__Incid__69C6B1F5" FromRole="IncidentReportTags" ToRole="IncidentReport" />
+          <NavigationProperty Name="IncidentReportIncidents" Relationship="Testv3Model.FK__IncidentR__TypeI__6ABAD62E" FromRole="IncidentReportTags" ToRole="IncidentReportIncidents" />
+        </EntityType>
+        <Association Name="FK__IncidentR__Incid__69C6B1F5">
+          <End Type="Testv3Model.IncidentReport" Role="IncidentReport" Multiplicity="1" />
+          <End Type="Testv3Model.IncidentReportTags" Role="IncidentReportTags" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IncidentReport">
+              <PropertyRef Name="IncidentReportID" />
+            </Principal>
+            <Dependent Role="IncidentReportTags">
+              <PropertyRef Name="IncidentReportID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__IncidentR__Stude__54CB950F">
+          <End Type="Testv3Model.Student" Role="Student" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Testv3Model.IncidentReport" Role="IncidentReport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="IncidentReport">
+              <PropertyRef Name="StudentUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__IncidentR__TypeI__6ABAD62E">
+          <End Type="Testv3Model.IncidentReportIncidents" Role="IncidentReportIncidents" Multiplicity="1" />
+          <End Type="Testv3Model.IncidentReportTags" Role="IncidentReportTags" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IncidentReportIncidents">
+              <PropertyRef Name="TypeID" />
+            </Principal>
+            <Dependent Role="IncidentReportTags">
+              <PropertyRef Name="TypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CounsellingFormCases">
+          <Key>
+            <PropertyRef Name="TagID" />
+          </Key>
+          <Property Name="TagID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CounsellingFormID" Type="Int32" Nullable="false" />
+          <Property Name="TypeID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="IncidentReportIncidents" Relationship="Testv3Model.FK__Counselli__TypeI__7DCDAAA2" FromRole="CounsellingFormCases" ToRole="IncidentReportIncidents" />
+          <NavigationProperty Name="CounsellingForm" Relationship="Testv3Model.FK__Counselli__Couns__7CD98669" FromRole="CounsellingFormCases" ToRole="CounsellingForm" />
+          <NavigationProperty Name="CounsellingFormCasesList" Relationship="Testv3Model.FK__Counselli__TypeI__019E3B86" FromRole="CounsellingFormCases" ToRole="CounsellingFormCasesList" />
+        </EntityType>
+        <EntityType Name="CounsellingFormCasesList">
+          <Key>
+            <PropertyRef Name="TypeID" />
+          </Key>
+          <Property Name="TypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CounsellingFormCases" Relationship="Testv3Model.FK__Counselli__TypeI__019E3B86" FromRole="CounsellingFormCasesList" ToRole="CounsellingFormCases" />
+        </EntityType>
+        <Association Name="FK__Counselli__TypeI__7DCDAAA2">
+          <End Type="Testv3Model.IncidentReportIncidents" Role="IncidentReportIncidents" Multiplicity="1" />
+          <End Type="Testv3Model.CounsellingFormCases" Role="CounsellingFormCases" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IncidentReportIncidents">
+              <PropertyRef Name="TypeID" />
+            </Principal>
+            <Dependent Role="CounsellingFormCases">
+              <PropertyRef Name="TypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CounsellingForm">
+          <Key>
+            <PropertyRef Name="CounsellingFormID" />
+          </Key>
+          <Property Name="CounsellingFormID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="StudentUserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CompletionDate" Type="DateTime" Precision="3" />
+          <Property Name="Session" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PctionPlan" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Recommendation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Followup" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CounsellingFormCases" Relationship="Testv3Model.FK__Counselli__Couns__7CD98669" FromRole="CounsellingForm" ToRole="CounsellingFormCases" />
+          <NavigationProperty Name="Student" Relationship="Testv3Model.FK__Counselli__Stude__2704CA5F" FromRole="CounsellingForm" ToRole="Student" />
+          <NavigationProperty Name="Counsellor" Relationship="Testv3Model.FK__Counselli__UserI__2610A626" FromRole="CounsellingForm" ToRole="Counsellor" />
+        </EntityType>
+        <Association Name="FK__Counselli__Couns__7CD98669">
+          <End Type="Testv3Model.CounsellingForm" Role="CounsellingForm" Multiplicity="1" />
+          <End Type="Testv3Model.CounsellingFormCases" Role="CounsellingFormCases" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CounsellingForm">
+              <PropertyRef Name="CounsellingFormID" />
+            </Principal>
+            <Dependent Role="CounsellingFormCases">
+              <PropertyRef Name="CounsellingFormID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Counselli__Stude__2704CA5F">
+          <End Type="Testv3Model.Student" Role="Student" Multiplicity="1" />
+          <End Type="Testv3Model.CounsellingForm" Role="CounsellingForm" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="CounsellingForm">
+              <PropertyRef Name="StudentUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Counselli__UserI__2610A626">
+          <End Type="Testv3Model.Counsellor" Role="Counsellor" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Testv3Model.CounsellingForm" Role="CounsellingForm" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Counsellor">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="CounsellingForm">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Counselli__TypeI__019E3B86">
+          <End Type="Testv3Model.CounsellingFormCasesList" Role="CounsellingFormCasesList" Multiplicity="1" />
+          <End Type="Testv3Model.CounsellingFormCases" Role="CounsellingFormCases" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CounsellingFormCasesList">
+              <PropertyRef Name="TypeID" />
+            </Principal>
+            <Dependent Role="CounsellingFormCases">
+              <PropertyRef Name="TypeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1434,6 +1654,7 @@
           <EntitySetMapping Name="Students">
             <EntityTypeMapping TypeName="Testv3Model.Student">
               <MappingFragment StoreEntitySet="Student">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="YearLevel" ColumnName="YearLevel" />
                 <ScalarProperty Name="Program" ColumnName="Program" />
                 <ScalarProperty Name="IsScholar" ColumnName="IsScholar" />
@@ -1539,21 +1760,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CounsellingForm">
-            <EntityTypeMapping TypeName="Testv3Model.CounsellingForm">
-              <MappingFragment StoreEntitySet="CounsellingForm">
-                <ScalarProperty Name="Followup" ColumnName="Followup" />
-                <ScalarProperty Name="Recommendation" ColumnName="Recommendation" />
-                <ScalarProperty Name="PctionPlan" ColumnName="PctionPlan" />
-                <ScalarProperty Name="Session" ColumnName="Session" />
-                <ScalarProperty Name="Case" ColumnName="Case" />
-                <ScalarProperty Name="CompletionDate" ColumnName="CompletionDate" />
-                <ScalarProperty Name="StudentUserID" ColumnName="StudentUserID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="CounsellingFormID" ColumnName="CounsellingFormID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Counsellor">
             <EntityTypeMapping TypeName="Testv3Model.Counsellor">
               <MappingFragment StoreEntitySet="Counsellor">
@@ -1593,22 +1799,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="IncidentReport">
-            <EntityTypeMapping TypeName="Testv3Model.IncidentReport">
-              <MappingFragment StoreEntitySet="IncidentReport">
-                <ScalarProperty Name="CounsellorNotes" ColumnName="CounsellorNotes" />
-                <ScalarProperty Name="Details" ColumnName="Details" />
-                <ScalarProperty Name="Witness" ColumnName="Witness" />
-                <ScalarProperty Name="DateTimeOfIncident" ColumnName="DateTimeOfIncident" />
-                <ScalarProperty Name="PlaceOfIncident" ColumnName="PlaceOfIncident" />
-                <ScalarProperty Name="TypeOfIncident" ColumnName="TypeOfIncident" />
-                <ScalarProperty Name="CompletionDate" ColumnName="CompletionDate" />
-                <ScalarProperty Name="StudentUserID" ColumnName="StudentUserID" />
-                <ScalarProperty Name="EeportedBy" ColumnName="EeportedBy" />
-                <ScalarProperty Name="IncidentReportID" ColumnName="IncidentReportID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="AnecdotalRecord">
             <EntityTypeMapping TypeName="Testv3Model.AnecdotalRecord">
               <MappingFragment StoreEntitySet="AnecdotalRecord">
@@ -1622,6 +1812,69 @@
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="StudentUserID" ColumnName="StudentUserID" />
                 <ScalarProperty Name="AnecdotalRecordID" ColumnName="AnecdotalRecordID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IncidentReport">
+            <EntityTypeMapping TypeName="Testv3Model.IncidentReport">
+              <MappingFragment StoreEntitySet="IncidentReport">
+                <ScalarProperty Name="CounsellorNotes" ColumnName="CounsellorNotes" />
+                <ScalarProperty Name="Details" ColumnName="Details" />
+                <ScalarProperty Name="Witness" ColumnName="Witness" />
+                <ScalarProperty Name="DateTimeOfIncident" ColumnName="DateTimeOfIncident" />
+                <ScalarProperty Name="PlaceOfIncident" ColumnName="PlaceOfIncident" />
+                <ScalarProperty Name="CompletionDate" ColumnName="CompletionDate" />
+                <ScalarProperty Name="StudentUserID" ColumnName="StudentUserID" />
+                <ScalarProperty Name="EeportedBy" ColumnName="EeportedBy" />
+                <ScalarProperty Name="IncidentReportID" ColumnName="IncidentReportID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IncidentReportIncidents">
+            <EntityTypeMapping TypeName="Testv3Model.IncidentReportIncidents">
+              <MappingFragment StoreEntitySet="IncidentReportIncidents">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="TypeID" ColumnName="TypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IncidentReportTags">
+            <EntityTypeMapping TypeName="Testv3Model.IncidentReportTags">
+              <MappingFragment StoreEntitySet="IncidentReportTags">
+                <ScalarProperty Name="TypeID" ColumnName="TypeID" />
+                <ScalarProperty Name="IncidentReportID" ColumnName="IncidentReportID" />
+                <ScalarProperty Name="TagID" ColumnName="TagID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CounsellingFormCases">
+            <EntityTypeMapping TypeName="Testv3Model.CounsellingFormCases">
+              <MappingFragment StoreEntitySet="CounsellingFormCases">
+                <ScalarProperty Name="TypeID" ColumnName="TypeID" />
+                <ScalarProperty Name="CounsellingFormID" ColumnName="CounsellingFormID" />
+                <ScalarProperty Name="TagID" ColumnName="TagID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CounsellingFormCasesList">
+            <EntityTypeMapping TypeName="Testv3Model.CounsellingFormCasesList">
+              <MappingFragment StoreEntitySet="CounsellingFormCasesList">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="TypeID" ColumnName="TypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CounsellingForm">
+            <EntityTypeMapping TypeName="Testv3Model.CounsellingForm">
+              <MappingFragment StoreEntitySet="CounsellingForm">
+                <ScalarProperty Name="Followup" ColumnName="Followup" />
+                <ScalarProperty Name="Recommendation" ColumnName="Recommendation" />
+                <ScalarProperty Name="PctionPlan" ColumnName="PctionPlan" />
+                <ScalarProperty Name="Session" ColumnName="Session" />
+                <ScalarProperty Name="CompletionDate" ColumnName="CompletionDate" />
+                <ScalarProperty Name="StudentUserID" ColumnName="StudentUserID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="CounsellingFormID" ColumnName="CounsellingFormID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

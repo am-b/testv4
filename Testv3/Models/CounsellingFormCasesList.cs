@@ -12,26 +12,18 @@ namespace Testv3.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class CounsellingForm
+    public partial class CounsellingFormCasesList
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CounsellingForm()
+        public CounsellingFormCasesList()
         {
             this.CounsellingFormCases = new HashSet<CounsellingFormCases>();
         }
     
-        public int CounsellingFormID { get; set; }
-        public string UserID { get; set; }
-        public string StudentUserID { get; set; }
-        public Nullable<System.DateTime> CompletionDate { get; set; }
-        public string Session { get; set; }
-        public string PctionPlan { get; set; }
-        public string Recommendation { get; set; }
-        public string Followup { get; set; }
+        public int TypeID { get; set; }
+        public string Type { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CounsellingFormCases> CounsellingFormCases { get; set; }
-        public virtual Student Student { get; set; }
-        public virtual Counsellor Counsellor { get; set; }
     }
 }

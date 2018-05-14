@@ -14,17 +14,24 @@ namespace Testv3.Models
     
     public partial class IncidentReport
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public IncidentReport()
+        {
+            this.IncidentReportTags = new HashSet<IncidentReportTags>();
+        }
+    
         public int IncidentReportID { get; set; }
         public string EeportedBy { get; set; }
         public string StudentUserID { get; set; }
         public Nullable<System.DateTime> CompletionDate { get; set; }
-        public string TypeOfIncident { get; set; }
         public string PlaceOfIncident { get; set; }
         public Nullable<System.DateTime> DateTimeOfIncident { get; set; }
         public string Witness { get; set; }
         public string Details { get; set; }
         public string CounsellorNotes { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<IncidentReportTags> IncidentReportTags { get; set; }
         public virtual Student Student { get; set; }
     }
 }

@@ -116,7 +116,7 @@ namespace Testv3.Models
         public string GuidanceNotes { get; set; }
 
 
-
+        //Incident Reports
         [Required(ErrorMessage = "Write your answer")]
         [Display(Name = "Type of Incident:")]
         public string TypeOfIncident { get; set; }
@@ -145,5 +145,17 @@ namespace Testv3.Models
         public string CounsellorFirstName { get; set; }
         public string CounsellorMiddleName { get; set; }
         public string CounsellorEmail { get; set; }
+
+
+        //IncidentReportIncidents list of incidents
+        public string Type { get; set; }
+
+        //IncidentReportTags yung mga selected tags
+        public int TagID { get; set; }
+        public int IncidentReportID { get; set; }
+        public int TypeID { get; set; }
+
+        
+        //public int count { get; set; }
     }
 }

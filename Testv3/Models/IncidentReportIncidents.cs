@@ -12,26 +12,21 @@ namespace Testv3.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Counsellor
+    public partial class IncidentReportIncidents
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Counsellor()
+        public IncidentReportIncidents()
         {
-            this.AnecdotalRecord = new HashSet<AnecdotalRecord>();
-            this.CounsellingForm = new HashSet<CounsellingForm>();
+            this.IncidentReportTags = new HashSet<IncidentReportTags>();
+            this.CounsellingFormCases = new HashSet<CounsellingFormCases>();
         }
     
-        public string UserID { get; set; }
-        public string CounsellorID { get; set; }
-        public string CounsellorLastName { get; set; }
-        public string CounsellorFirstName { get; set; }
-        public string CounsellorMiddleName { get; set; }
-        public string CounsellorEmail { get; set; }
+        public int TypeID { get; set; }
+        public string Type { get; set; }
     
-        public virtual AspNetUser AspNetUsers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AnecdotalRecord> AnecdotalRecord { get; set; }
+        public virtual ICollection<IncidentReportTags> IncidentReportTags { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CounsellingForm> CounsellingForm { get; set; }
+        public virtual ICollection<CounsellingFormCases> CounsellingFormCases { get; set; }
     }
 }

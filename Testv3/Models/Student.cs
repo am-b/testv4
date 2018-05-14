@@ -21,11 +21,11 @@ namespace Testv3.Models
             this.Answers = new HashSet<Answers>();
             this.InitialInterview = new HashSet<InitialInterview>();
             this.RoutineInterview = new HashSet<RoutineInterview>();
-            this.CounsellingForm = new HashSet<CounsellingForm>();
             this.CounsellingContract = new HashSet<CounsellingContract>();
             this.ExitInterview = new HashSet<ExitInterview>();
-            this.IncidentReport = new HashSet<IncidentReport>();
             this.AnecdotalRecord = new HashSet<AnecdotalRecord>();
+            this.IncidentReport = new HashSet<IncidentReport>();
+            this.CounsellingForm = new HashSet<CounsellingForm>();
         }
     
         public string UserID { get; set; }
@@ -58,6 +58,7 @@ namespace Testv3.Models
         public Nullable<bool> IsScholar { get; set; }
         public string Program { get; set; }
         public Nullable<int> YearLevel { get; set; }
+        public Nullable<bool> IsActive { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -69,14 +70,14 @@ namespace Testv3.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RoutineInterview> RoutineInterview { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CounsellingForm> CounsellingForm { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CounsellingContract> CounsellingContract { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ExitInterview> ExitInterview { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AnecdotalRecord> AnecdotalRecord { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<IncidentReport> IncidentReport { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AnecdotalRecord> AnecdotalRecord { get; set; }
+        public virtual ICollection<CounsellingForm> CounsellingForm { get; set; }
     }
 }
