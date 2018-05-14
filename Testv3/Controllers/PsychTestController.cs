@@ -352,7 +352,7 @@ namespace Testv3.Controllers
                         newTestId.Answer = item.Answer;
                         newTestId.TestCompletionDate = DateTime.Now;
 
-                    db.Answers.Add(newTestId);
+                        db.Answers.Add(newTestId);
                         db.SaveChanges();
                         TempData["Message"] = "Survey successfully completed!";
                     }
@@ -361,11 +361,115 @@ namespace Testv3.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize(Roles = "Counselor")]
+        public ActionResult Charts()
+        {
+            GetCurrentUserInViewBag();
+
+            List<TestViewModel> StudentInventorylist = new List<TestViewModel>();
+
+            var datalist = db.Students.ToList();
+
+            int noAnswer = 0;
+            List<TestViewModel> StudentInventorylist3 = new List<TestViewModel>();
+
+            foreach (var item in datalist)
+            {
+                TestViewModel pvm = new TestViewModel();
+                pvm.StudentFirstName = item.StudentFirstName;
+                pvm.StudentMiddleName = item.StudentMiddleName;
+                pvm.StudentLastName = item.StudentLastName;
+                pvm.UserID = item.UserID;
+                pvm.StudentID = item.StudentID;
+                StudentInventorylist.Add(pvm);
+
+                //see how many students have no psych test
+                var dlist =
+                    (from ans in db.Answers
+                     where ans.UserID == pvm.UserID
+                     select new { Answer = ans.Answer });
+
+                int countOfTotalStudents = datalist.Count();
+
+                if (dlist.Count() == 0)
+                {
+                    noAnswer++;
+
+                    ViewBag.ListOfStudents = "List of students who haven't taken the Psychological Test";
+
+                    //write yung names ng student where nag dlist.count == 0
+                    TestViewModel tvm = new TestViewModel();
+                    tvm.StudentFirstName = pvm.StudentFirstName;
+                    tvm.StudentMiddleName = pvm.StudentMiddleName;
+                    tvm.StudentLastName = pvm.StudentLastName;
+                    tvm.UserID = pvm.UserID;
+                    tvm.StudentID = pvm.StudentID;
+                    StudentInventorylist3.Add(tvm);
+
+                    ViewBag.studentlist = StudentInventorylist3;
+
+                    int countOfStudentsWithNoPsychTest = noAnswer;
+                    ViewBag.CountOfTotalStudents = countOfTotalStudents;
+                    ViewBag.CountOfStudentsWithNoPsychTest = countOfTotalStudents - countOfStudentsWithNoPsychTest;
+
+                }
+                else
+                {
+                    int countOfStudentsWithNoPsychTest = noAnswer;
+
+                    ViewBag.CountOfTotalStudents = countOfTotalStudents;
+                    ViewBag.CountOfStudentsWithNoPsychTest = countOfTotalStudents - countOfStudentsWithNoPsychTest;
+                }
+
+            }
+
+            return View();
+        }
+
         //public ContentResult GetData()
         public JsonResult GetData()
         {
             var datalistQuestions = db.Questions.ToList();
             List<ResultViewModel> questionlist = new List<ResultViewModel>();
+
+            var datalist = db.Students.ToList();
+
+            int noAnswer = 0;
+            int countOfTotalStudents = 0;
+            int countOfStudentsWithNoPsychTest = 0;
+            int CountOfTotalStudents = 0;
+            int CountOfStudentsWithNoPsychTest = 0;
+
+            foreach (var item in datalist)
+            {
+                TestViewModel pvm = new TestViewModel();
+                pvm.UserID = item.UserID;
+
+                //see how many students have no psych test
+                var dlist =
+                    (from ans in db.Answers
+                     where ans.UserID == pvm.UserID
+                     select new { Answer = ans.Answer });
+
+                 countOfTotalStudents = datalist.Count();
+
+                if (dlist.Count() == 0)
+                {
+                    noAnswer++;
+
+                     countOfStudentsWithNoPsychTest = noAnswer;
+                     CountOfTotalStudents = countOfTotalStudents;
+                     CountOfStudentsWithNoPsychTest = countOfTotalStudents - countOfStudentsWithNoPsychTest;
+
+                }
+                else
+                {
+                    countOfStudentsWithNoPsychTest = noAnswer;
+                    CountOfTotalStudents = countOfTotalStudents;
+                    CountOfStudentsWithNoPsychTest = countOfTotalStudents - countOfStudentsWithNoPsychTest;
+                }
+
+            }
 
             foreach (var question in datalistQuestions)
             {
@@ -384,31 +488,128 @@ namespace Testv3.Controllers
                 var agree = from ans in db.Answers
                             where ans.Answer == 1 && ans.QuestionID == question.QuestionID
                             select new { Answer = ans.Answer };
+                int agreeCount = agree.Count();
+                int agreePercentage = (int)((double)agreeCount / CountOfStudentsWithNoPsychTest * 100);
 
 
                 var somewhatAgree = from ans in db.Answers
                                     where ans.Answer == 2 && ans.QuestionID == question.QuestionID
                                     select new { Answer = ans.Answer };
+                int somewhatAgreeCount = somewhatAgree.Count();
+                int somewhatAgreePercentage = (int)((double)somewhatAgreeCount / CountOfStudentsWithNoPsychTest * 100);
 
 
                 var disagree = from ans in db.Answers
                                where ans.Answer == 3 && ans.QuestionID == question.QuestionID
                                select new { Answer = ans.Answer };
+                int disagreeCount = disagree.Count();
+                int disagreePercentage = (int)((double)disagreeCount / CountOfStudentsWithNoPsychTest * 100);
 
                 ptvm.questionItem = NewString1;
-                ptvm.countAgree = agree.Count();
-                ptvm.countSomewhatAgree = somewhatAgree.Count();
-                ptvm.countDisagree = disagree.Count();
+                ptvm.countAgree = agreePercentage;
+                ptvm.countSomewhatAgree = somewhatAgreePercentage;
+                ptvm.countDisagree = disagreePercentage;
 
                 questionlist.Add(ptvm);
                 
             }
 
-
-            //return Content(JsonConvert.SerializeObject(questionlist), "application/json");
             return Json(questionlist, JsonRequestBehavior.AllowGet);
 
         }
+
+        public JsonResult GetDataAgree()
+        {
+            var datalistQuestions = db.Questions.ToList();
+            List<ResultViewModel> questionlist = new List<ResultViewModel>();
+
+            var datalist = db.Students.ToList();
+
+            int noAnswer = 0;
+            int countOfTotalStudents = 0;
+            int countOfStudentsWithNoPsychTest = 0;
+            int CountOfTotalStudents = 0;
+            int CountOfStudentsWithNoPsychTest = 0;
+
+            foreach (var item in datalist)
+            {
+                TestViewModel pvm = new TestViewModel();
+                pvm.UserID = item.UserID;
+
+                //see how many students have no psych test
+                var dlist =
+                    (from ans in db.Answers
+                     where ans.UserID == pvm.UserID
+                     select new { Answer = ans.Answer });
+
+                countOfTotalStudents = datalist.Count();
+
+                if (dlist.Count() == 0)
+                {
+                    noAnswer++;
+
+                    countOfStudentsWithNoPsychTest = noAnswer;
+                    CountOfTotalStudents = countOfTotalStudents;
+                    CountOfStudentsWithNoPsychTest = countOfTotalStudents - countOfStudentsWithNoPsychTest;
+
+                }
+                else
+                {
+                    countOfStudentsWithNoPsychTest = noAnswer;
+                    CountOfTotalStudents = countOfTotalStudents;
+                    CountOfStudentsWithNoPsychTest = countOfTotalStudents - countOfStudentsWithNoPsychTest;
+                }
+
+            }
+
+            foreach (var question in datalistQuestions)
+            {
+                ResultViewModel ptvm = new ResultViewModel();
+
+                var questionItem = (from qs in db.Questions
+                                    where qs.QuestionID == question.QuestionID
+                                    select new { Question = qs.Question }).Single();
+                string str = questionItem.ToString();
+                char[] MyChar = { '{', 'Q', 'u', 'e', 's', 't', 'i', 'o', 'n', '=', ' ' };
+                string NewString = str.TrimStart(MyChar);
+
+                char[] MyChar1 = { '}', ' ' };
+                string NewString1 = NewString.TrimEnd(MyChar1);
+
+                var agree = from ans in db.Answers
+                            where ans.Answer == 1 && ans.QuestionID == question.QuestionID
+                            select new { Answer = ans.Answer };
+                int agreeCount = agree.Count();
+                int agreePercentage = (int)((double)agreeCount / CountOfStudentsWithNoPsychTest * 100);
+
+
+                var somewhatAgree = from ans in db.Answers
+                                    where ans.Answer == 2 && ans.QuestionID == question.QuestionID
+                                    select new { Answer = ans.Answer };
+                int somewhatAgreeCount = somewhatAgree.Count();
+                int somewhatAgreePercentage = (int)((double)somewhatAgreeCount / CountOfStudentsWithNoPsychTest * 100);
+
+
+                var disagree = from ans in db.Answers
+                               where ans.Answer == 3 && ans.QuestionID == question.QuestionID
+                               select new { Answer = ans.Answer };
+                int disagreeCount = disagree.Count();
+                int disagreePercentage = (int)((double)disagreeCount / CountOfStudentsWithNoPsychTest * 100);
+
+                ptvm.questionItem = NewString1;
+                ptvm.countAgree = agreePercentage;
+                ptvm.countSomewhatAgree = somewhatAgreePercentage;
+                ptvm.countDisagree = disagreePercentage;
+
+                questionlist.Add(ptvm);
+
+            }
+
+            return Json(questionlist, JsonRequestBehavior.AllowGet);
+
+        }
+
+
 
         [AllowAnonymous]
         // GET: PsychologicalTest/Responses
