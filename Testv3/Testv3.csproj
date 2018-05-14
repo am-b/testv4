@@ -48,6 +48,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Json, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c6752e45808247c2, processorArchitecture=MSIL">
+      <HintPath>..\packages\JSON.1.0.1\lib\net40\Json.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -242,6 +245,12 @@
     <Compile Include="Models\CounsellingForm.cs">
       <DependentUpon>Testv3.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CounsellingFormCases.cs">
+      <DependentUpon>Testv3.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CounsellingFormCasesList.cs">
+      <DependentUpon>Testv3.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Counsellor.cs">
       <DependentUpon>Testv3.tt</DependentUpon>
     </Compile>
@@ -252,12 +261,20 @@
     <Compile Include="Models\IncidentReport.cs">
       <DependentUpon>Testv3.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\IncidentReportIncidents.cs">
+      <DependentUpon>Testv3.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\IncidentReportTags.cs">
+      <DependentUpon>Testv3.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IndividualInventoryRecord.cs">
       <DependentUpon>Testv3.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\InitialInterview.cs">
       <DependentUpon>Testv3.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\IRChartsViewModel.cs" />
+    <Compile Include="Models\IR2ViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PsychTestViewModel.cs" />
     <Compile Include="Models\Questions.cs">
@@ -271,6 +288,7 @@
       <DependentUpon>Testv3.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\StudentCounsellingViewModel.cs" />
+    <Compile Include="Models\IRViewModel.cs" />
     <Compile Include="Models\StudentInterviewViewModel.cs" />
     <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>Testv3.tt</DependentUpon>
@@ -2079,6 +2097,47 @@
     <Content Include="Content\tether\tether-theme-basic.min.css" />
     <Content Include="Content\tether\tether.css" />
     <Content Include="Content\tether\tether.min.css" />
+    <Content Include="Content\themes\base\accordion.css" />
+    <Content Include="Content\themes\base\all.css" />
+    <Content Include="Content\themes\base\autocomplete.css" />
+    <Content Include="Content\themes\base\base.css" />
+    <Content Include="Content\themes\base\button.css" />
+    <Content Include="Content\themes\base\core.css" />
+    <Content Include="Content\themes\base\datepicker.css" />
+    <Content Include="Content\themes\base\dialog.css" />
+    <Content Include="Content\themes\base\draggable.css" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_444444_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_777620_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_777777_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\themes\base\jquery-ui.css" />
+    <Content Include="Content\themes\base\jquery-ui.min.css" />
+    <Content Include="Content\themes\base\menu.css" />
+    <Content Include="Content\themes\base\progressbar.css" />
+    <Content Include="Content\themes\base\resizable.css" />
+    <Content Include="Content\themes\base\selectable.css" />
+    <Content Include="Content\themes\base\selectmenu.css" />
+    <Content Include="Content\themes\base\slider.css" />
+    <Content Include="Content\themes\base\sortable.css" />
+    <Content Include="Content\themes\base\spinner.css" />
+    <Content Include="Content\themes\base\tabs.css" />
+    <Content Include="Content\themes\base\theme.css" />
+    <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -2305,8 +2364,12 @@
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
@@ -2397,6 +2460,12 @@
     <Content Include="Views\InitialInterviews\Report.cshtml" />
     <Content Include="Views\RoutineInterviews\Report.cshtml" />
     <Content Include="Views\IncidentReports\Report.cshtml" />
+    <Content Include="Views\StudentInventory\Report.cshtml" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.min.js.map" />
+    <Content Include="Views\IncidentReports\Charts.cshtml" />
+    <Content Include="Views\CounsellingForms\Charts.cshtml" />
+    <Content Include="Views\PsychTest\Charts.cshtml" />
+    <Content Include="Views\CounsellingContracts\Charts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
