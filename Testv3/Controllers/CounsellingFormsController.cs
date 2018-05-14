@@ -105,7 +105,7 @@ namespace Testv3.Controllers
                 foreach (var item in datalist)
                 {
                     CounsellingForm pvm = new CounsellingForm();
-                    pvm.Case = item.Case;
+
                     pvm.CounsellingFormID = item.CounsellingFormID;
                     pvm.CompletionDate = item.CompletionDate;
 
@@ -172,7 +172,7 @@ namespace Testv3.Controllers
 
         // GET: CounsellingForms/Counsellor
         [HttpGet]
-        public ActionResult Counsellor()
+        public ActionResult Counsellor(string UserID)
         {
             GetCurrentUserInViewBag();
             var currentUserId = User.Identity.GetUserId();
@@ -180,10 +180,7 @@ namespace Testv3.Controllers
             StudentCounsellingViewModel vm = new StudentCounsellingViewModel();
             CounsellingForm form = new CounsellingForm();
 
-            string StudentUserID = Convert.ToString(TempData["StudentUserID"]);
-
-            var studentUserID = StudentUserID;
-            var Student = db.Students.FirstOrDefault(x => x.UserID == studentUserID);
+            var Student = db.Students.FirstOrDefault(x => x.UserID == UserID);
 
             vm.StudentUserID = Student.UserID;
             vm.StudentFirstName = Student.StudentFirstName;
@@ -201,7 +198,7 @@ namespace Testv3.Controllers
             vm.CounsellorMiddleName = counsellor.CounsellorMiddleName;
 
             vm.CompletionDate = DateTime.Now;
-            vm.Case = form.Case;
+
             vm.Session = form.Session;
             vm.PctionPlan = form.PctionPlan;
             vm.Recommendation = form.Recommendation;
@@ -213,7 +210,7 @@ namespace Testv3.Controllers
         // POST: CounsellingForms/Counsellor
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Counsellor(string searchStringStudentID, StudentCounsellingViewModel vm)
+        public ActionResult Counsellor(StudentCounsellingViewModel vm, string[] name, string StudentUserID)
         {
 
             GetCurrentUserInViewBag();
@@ -223,16 +220,53 @@ namespace Testv3.Controllers
 
             if (ModelState.IsValid)
             {
+                if(StudentUserID == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
                 form.UserID = currentUserId;
-                form.StudentUserID = vm.StudentUserID;
+                form.StudentUserID = StudentUserID;
                 form.CompletionDate = DateTime.Now;
-                form.Case = vm.Case;
+
                 form.Session = vm.Session;
                 form.PctionPlan = vm.PctionPlan;
                 form.Recommendation = vm.Recommendation;
                 form.Followup = vm.Followup;
 
                 db.CounsellingForm.Add(form);
+
+                var selectedTags = name.ToList();
+
+                foreach (var item in selectedTags)
+                {
+                    var dlist =
+                        (from ans in db.CounsellingFormCasesList
+                         where ans.Type == item
+                         select new { TypeID = ans.TypeID }).Single();
+
+
+                    //check if may row na may laman ang CounsellingFormID, TypeID
+                    var check = db.CounsellingFormCases
+                        .Where(x => x.CounsellingFormID == form.CounsellingFormID && x.TypeID == dlist.TypeID)
+                        .ToList();
+
+                    if (check.Count() == 0)
+                    {
+                        //create ng bagong entry and lagyan ng laman the ff:
+                        var newCaseId = db.CounsellingFormCases.Create();
+
+                        newCaseId.CounsellingFormID = form.CounsellingFormID;
+                        newCaseId.TypeID = dlist.TypeID;
+
+
+                        db.CounsellingFormCases.Add(newCaseId);
+                    }
+
+                }
+
+
+
                 db.SaveChanges();
 
                 TempData["Message"] = "Counselling form " + form.CounsellingFormID + " successfully added!";
@@ -245,7 +279,76 @@ namespace Testv3.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        // GET: CounsellingForms/Student/5
+        public JsonResult GetTypeOfCases()
+        {
+            var currentUserId = User.Identity.GetUserId();
+            List<IRViewModel> pvm = new List<IRViewModel>();
+            var results = db.CounsellingFormCasesList.ToList();
+
+            foreach (CounsellingFormCasesList item in results)
+            {
+                IRViewModel viewmodel = new IRViewModel();
+                viewmodel.name = item.Type;
+
+                pvm.Add(viewmodel);
+            }
+
+            return Json(pvm, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetTypeOfCasesSummary()
+        {
+            //--Student w / highest number of records
+
+            //    SELECT TOP 5 Student,COUNT(*) AS TOTAL
+            //    FROM IncidentReport
+            //    GROUP BY Student
+            //    ORDER BY TOTAL DESC;
+
+
+            var datalistIRs = db.CounsellingFormCasesList.ToList();
+            List<IRChartsViewModel> taglist = new List<IRChartsViewModel>();
+            foreach (var item in datalistIRs)
+            {
+                IRChartsViewModel vm = new IRChartsViewModel();
+
+
+                var type = (from tagList in db.CounsellingFormCasesList
+                            join selectedTags in db.CounsellingFormCases on tagList.TypeID equals selectedTags.TypeID
+                            where tagList.TypeID == item.TypeID
+                            group tagList by new { tagList.Type } into g
+                            orderby g.Count() descending
+                            select g.Key.Type
+                            ).Single();
+
+                var typeCount = (from tagList in db.CounsellingFormCasesList
+                                 join selectedTags in db.CounsellingFormCases on tagList.TypeID equals selectedTags.TypeID
+                                 where tagList.TypeID == item.TypeID
+                                 group tagList by new { tagList.Type } into g
+                                 orderby g.Count() descending
+                                 select g.Count()
+                                 ).Single();
+
+                vm.Type = type.ToString();
+                vm.count = typeCount;
+
+                taglist.Add(vm);
+
+            }
+
+            return Json(taglist, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [Authorize(Roles = "Counselor")]
+        public ActionResult Charts()
+        {
+            GetCurrentUserInViewBag();
+
+            return View();
+        }
+
+
+        // GET: CounsellingForms/Details
         [AllowAnonymous]
         public ActionResult Details(int CounsellingFormID)
         {
@@ -289,7 +392,7 @@ namespace Testv3.Controllers
             vm.CounsellorMiddleName = counsellor.CounsellorMiddleName;
 
             vm.CompletionDate = form.CompletionDate;
-            vm.Case = form.Case;
+
             vm.Session = form.Session;
             vm.PctionPlan = form.PctionPlan;
             vm.Recommendation = form.Recommendation;

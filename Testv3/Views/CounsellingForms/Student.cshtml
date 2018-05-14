@@ -5,24 +5,25 @@
 <table class="table">
     <tr>
         <th>
-            Case
+            Date Completed
         </th>
 
-        <th>Date Completed</th>
+        <th>
+
+        </th>
     </tr>
 
     @foreach (var item in Model)
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Case)
+                @Html.DisplayFor(modelItem => item.CompletionDate)
             </td>
 
             <td>
 
                 @Html.ActionLink("View", "Details", new { CounsellingFormID = item.CounsellingFormID}) |
-                @Html.ActionLink("Save as PDF", "Print", new { CounsellingFormID = item.CounsellingFormID }) |
-                @Html.DisplayFor(modelItem => item.CompletionDate)
+                @Html.ActionLink("Save as PDF", "Print", new { CounsellingFormID = item.CounsellingFormID }) 
             </td>
         </tr>
     }

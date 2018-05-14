@@ -15,7 +15,7 @@
         
         <ul>
         <li><b>To see a student's records of Individual Counselling, search using student's name or student number.</b></li>
-        <li><b>To add a new record of Individual Counselling, select "Add New Counselling Form"</b></li>
+        <li><b>To add a new record of Individual Counselling, select the student.</b></li>
         </ul>
     </div>
 }
@@ -26,9 +26,9 @@
     <div class="controls form-inline">
         @Html.TextBox("searchStringName", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search by student's name or student number", @style = "min-width:50%" })
         <input type="submit" value="Search" class="btn btn-default" />
-        <div style="float:right;">
+        @*<div style="float:right;">
             @Html.ActionLink("Add new counselling form", "Search", null, new { @class = "btn btn-default" })
-        </div>
+        </div>*@
     </div>
 
     <br />
@@ -51,7 +51,7 @@
             </td>
 
             <td>
-
+                @Html.ActionLink("Select", "Counsellor", new { UserID = item.UserID }) |
                 @Html.ActionLink("View", "Student", new { UserID = item.UserID })
             </td>
         </tr>

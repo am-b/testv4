@@ -11,78 +11,263 @@
         <strong>@TempData["Error"]</strong>
     </div>
 }
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/jqueryval")
+@section Scripts{
+    <script type="text/javascript">
+        $(".dateLossInput").datepicker({
+            dateFormat: "mm/dd/yy"
+        }).datepicker("setDate", new Date());
+
+        var category = [];
+        var tag = [];
+
+        $.ajax({
+            url: '/IncidentReports/GetTypeOfIncidents',
+            success: function (response) {
+
+                for (var i = 0; i < response.length; i++) {
+                    category.push({ name: [response[i].name] });
+                }
+
+                var $tagTemp = $('#tagTemp').html();
+                $('#tagTemp').remove();
+                $('#IncidentTypeTagCont').delegate('.tag', 'click', clearTag);
+
+                function subjectMatter() {
+                    var $IncidentTypeOptTemp = $('#IncidentTypeOptTemp').html();
+                    $('#IncidentTypeOptTemp').remove();
+                    $('.IncidentTypeSelect').html("");
+                    let html = '';
+                    //populate dropdown
+                    (category || []).forEach(function (item) {
+                        html += $IncidentTypeOptTemp
+                            .replace(/00IncidentTypeOpt/g, item.name)
+                    })
+                    $('.IncidentTypeSelect').html(html);
+
+                    $(".IncidentTypeSelect").on('change', function () {
+                        IncidentTypeIndex = $(this).prop('selectedIndex');
+
+                        //push to tag container
+                        // if (category[IncidentTypeIndex].name != category[0].name) {
+                        if ($.inArray(category[IncidentTypeIndex].name, tag) > -1) {
+                            alert("Tag already exists.");
+                        } else {
+                            tag.push(
+                                category[IncidentTypeIndex].name
+                            );
+                            //console.log(tag);
+                        }
+                        // }
+
+                        render();
+                        $(this).val(0);
+                    })
+                }
+                subjectMatter();
+
+                function clearTag(event) {
+                    var $remove = $(event.target).closest('.tag');
+                    i = $('#IncidentTypeTagCont').find('.tag').index($remove);
+                    tag.splice(i, 1);
+                    //console.log(tag);
+
+                    render();
+                }
+
+                //display to tag container
+                function render() {
+                    $('#IncidentTypeTagCont').html("");
+                    let html1 = '';
+                    (tag || []).forEach(function (item) {
+                        html1 += $tagTemp
+                            .replace(/00tagName/g, item)
+                    })
+                    $('#IncidentTypeTagCont').html(html1);
+                    console.log("tag");
+                    console.log(tag);
+                }
+
+            }
+        });
+
+        //$.validator.unobtrusive.parse($form);
+        //$form.validate();
+        //if ($form.valid()) {
+        //}
+
+        $("form").submit(function (e) {
+        //$("#SubmitBtn").click(function (e) {
+            if ($("form").valid()) {
+
+                e.preventDefault();
+
+                var token = $('input[name=__RequestVerificationToken]').val();
+                console.log(token);
+
+                $.post("@Url.Action("Submit", "IncidentReports")",
+                    {
+                        name: tag, __RequestVerificationToken: $('input[name=__RequestVerificationToken]').val(), UserID: $('input[name=UserID]').val(), date: $('input[name=date]').val(), time: $('input[name=time]').val(),
+                        PlaceOfIncident: $('textarea[name=PlaceOfIncident]').val(), Witness: $('textarea[name=Witness]').val(), Details: $('textarea[name=Details]').val()
+                    },
+                    function (data, textStatus) {
+                        if (textStatus != "success") {
+                            result = "false";
+                        }
+                        else {
+                            $('.modalGo').show();
+                            $("#modOpen").click();
+                            $(function () {
+                                $("#modClose").click(function () {
+                                    $.get('/Home/Index/', function (data) {
+                                        window.location.href = '@Url.Action("Index","Home")'
+                                    });
+                                    $('.modalGo').hide();
+                                });
+                            });
+                        }
+                    //end post
+                    });
+            }
+            return false;
+        //end
+        });
+
+
+    </script>
+    
+}
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <div class="body-content">
-        <div class="form-horizontal">
-            <div class="form-group">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <div class="form-group">
-                            <div class="controls form-inline">
-                                <br />
-                                @Html.Label("Student Name: ")
-                                @Html.DisplayFor(model => model.StudentLastName), @Html.DisplayFor(model => model.StudentFirstName) @Html.DisplayFor(model => model.StudentMiddleName)
-                                <br />
-                                @Html.Label("Student Number: ")
-                                @Html.DisplayFor(model => model.StudentID)
-                                <br />
-                                @Html.Label("Program and Year Level: ")
-                                @Html.DisplayFor(model => model.Program) - @Html.DisplayFor(model => model.YearLevel)
-                            </div>
-                        </div>
+        <div class="body-content">
+            <br />
+            <div class="form-horizontal">
+                
+                    <!-- Trigger the modal with a button -->
+                    <div class="modallol" style="display:none;">
+                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" id="modOpen" data-backdrop="static" data-keyboard="false">Open Modal</button>
+                    </div>
+                    
+                    <div class="modalGo" style="display:none;">
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal" role="dialog">
+                            <div class="modal-dialog">
 
-                        <div id="studentSection">
-                            <br />
-                            <div class="controls form-inline">
-                                @Html.LabelFor(model => model.DateTimeOfIncident, htmlAttributes: new { @class = "control-label" })<br />
-                                @Html.ValidationMessageFor(model => model.DateTimeOfIncident, "", new { @class = "text-danger" })<br />
-                                @Html.EditorFor(model => model.DateTimeOfIncident, new { htmlAttributes = new { @placeholder = "MM/DD/YYYY 12:00:00 PM", @style = "min-width:25%;", @class = "form-control" } })
-                            </div>
-                            <br />
-                            <div class="controls form-inline">
-                                @Html.LabelFor(model => model.TypeOfIncident, htmlAttributes: new { @class = "control-label" })<br />
-                                @Html.ValidationMessageFor(model => model.TypeOfIncident, "", new { @class = "text-danger" })<br />
-                                @Html.TextAreaFor(model => model.TypeOfIncident, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
-                            </div>
-                            <br />
-                            <div class="controls form-inline">
-                                @Html.LabelFor(model => model.PlaceOfIncident, htmlAttributes: new { @class = "control-label" })<br />
-                                @Html.ValidationMessageFor(model => model.PlaceOfIncident, "", new { @class = "text-danger" })<br />
-                                @Html.TextAreaFor(model => model.PlaceOfIncident, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
-                            </div>
-                            <br />
-                            <div class="controls form-inline">
-                                @Html.LabelFor(model => model.Details, htmlAttributes: new { @class = "control-label" })<br />
-                                @Html.ValidationMessageFor(model => model.Details, "", new { @class = "text-danger" })<br />
-                                @Html.TextAreaFor(model => model.Details, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
-                            </div>
-                            <br />
-                            <div class="controls form-inline">
-                                @Html.LabelFor(model => model.Witness, htmlAttributes: new { @class = "control-label" })<br />
-                                @Html.ValidationMessageFor(model => model.Witness, "", new { @class = "text-danger" })<br />
-                                @Html.TextAreaFor(model => model.Witness, 4, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <strong>
+                                            You have successfullly filed an Incident Report for student: <br />
+                                            @Html.DisplayFor(model => model.StudentLastName), @Html.DisplayFor(model => model.StudentFirstName) @Html.DisplayFor(model => model.StudentMiddleName)<br />
+                                            @Html.DisplayFor(model => model.StudentID), @Html.DisplayFor(model => model.Program) - @Html.DisplayFor(model => model.YearLevel)
+                                        </strong> 
+                                        <div class="pull-right">
+                                            <button type="button" class="btn btn-default" id="modClose">Close</button>
+                                            <br />
+                                        </div>
+                                        <br /><br />
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
+
+
+                    <div class="form-group">
+                        <div class="panel panel-default">
+                            <div class=" = panel-heading">
+                                <div class="controls form-inline">
+                                    @Html.Label("Student Name: ")
+                                    @Html.DisplayFor(model => model.StudentLastName), @Html.DisplayFor(model => model.StudentFirstName) @Html.DisplayFor(model => model.StudentMiddleName)
+                                    <br />
+                                    @Html.Label("Student Number: ")
+                                    @Html.DisplayFor(model => model.StudentID)
+                                    <span id="studID">
+                                        @Html.HiddenFor(model => model.UserID)
+                                    </span>
+                                    <br />
+                                    @Html.Label("Program and Year Level: ")
+                                    @Html.DisplayFor(model => model.Program) - @Html.DisplayFor(model => model.YearLevel)
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div id="studentSection">
+                                    <br />
+                                    <div class="controls form-inline">
+                                        <b>Date and Time of Incident:</b><br />
+                                        @Html.ValidationMessageFor(model => model.DateTimeOfIncident, "", new { @class = "text-danger" })<br />
+                                        <div class="inputdate">
+                                            <input type="text" class="dateLossInput" name="date" style="width:8%; text-align:center">
+                                            <input type="text" name="time" placeholder="HH:MM (24hr Format)" style="width:7%; text-align:center" />
+                                            <br />
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="controls form-inline">
+                                        @Html.LabelFor(model => model.TypeOfIncident, htmlAttributes: new { @class = "control-label" })<br />
+                                        @Html.ValidationMessageFor(model => model.TypeOfIncident, "", new { @class = "text-danger" })<br />
+
+                                        <div class="rowItem">
+                                            <div class="selectWrapper">
+                                                <select class="IncidentTypeSelect" id="IncidentTypeSelect">
+                                                    <!-- IncidentTypeOptTemp Template goes here -->
+                                                </select>
+                                                <template id="IncidentTypeOptTemp">
+                                                    <option class="IncidentTypeOpt">00IncidentTypeOpt</option>
+                                                </template>
+                                            </div>
+                                        </div>
+                                        <div class="rowItem">
+                                            <div class="tagContainer" id="IncidentTypeTagCont">
+                                                <!-- tagTemp template goes here -->
+                                            </div>
+                                            <template id="tagTemp">
+                                                <div class="tag">
+                                                    <text>00tagName</text>
+                                                    <div class="tagClose"> <b>X</b></div>
+                                                </div>
+                                            </template>
+                                        </div>
+
+
+
+                                    </div>
+                                    <br />
+                                    <div class="controls form-inline">
+                                        @Html.LabelFor(model => model.PlaceOfIncident, htmlAttributes: new { @class = "control-label" })<br />
+                                        @Html.ValidationMessageFor(model => model.PlaceOfIncident, "", new { @class = "text-danger" })<br />
+                                        @Html.TextAreaFor(model => model.PlaceOfIncident, 2, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                                    </div>
+                                    <br />
+                                    <div class="controls form-inline">
+                                        @Html.LabelFor(model => model.Details, htmlAttributes: new { @class = "control-label" })<br />
+                                        @Html.ValidationMessageFor(model => model.Details, "", new { @class = "text-danger" })<br />
+                                        @Html.TextAreaFor(model => model.Details, 6, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                                    </div>
+                                    <br />
+                                    <div class="controls form-inline">
+                                        @Html.LabelFor(model => model.Witness, htmlAttributes: new { @class = "control-label" })<br />
+                                        @Html.ValidationMessageFor(model => model.Witness, "", new { @class = "text-danger" })<br />
+                                        @Html.TextAreaFor(model => model.Witness, 2, 100, new { @class = "form-control", @style = "min-width: 70%;" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-md-4 col-md-offset-5">
+                            <input type="submit" value="Save" id="SubmitBtn" class="btn btn-default" />
+                            @Html.ActionLink("Back", "Index", "Home", null, new { @class = "btn btn-default" })
+                        </div>
+                    </div>
+
+
                 </div>
-            </div>
-
-
-            <div class="form-group">
-                <div class="col-md-4 col-md-offset-5">
-                    <input type="submit" value="Save" class="btn btn-default" />
-                    @Html.ActionLink("Back", "Index", "Home", null, new { @class = "btn btn-default" })
-                </div>
-            </div>
-
-
         </div>
-    </div>
 }
-v
+   

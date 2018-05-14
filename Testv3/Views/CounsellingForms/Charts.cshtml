@@ -1,0 +1,96 @@
+﻿@{
+    ViewBag.Title = "Charts";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="body-content">
+        <div class="form-horizontal">
+
+            <canvas id="counsellingCases-bar-chart" width="800" height="450"></canvas>
+     
+        </div>
+    </div>
+}
+@section Scripts{
+    <script type="text/javascript">
+
+        //bar chart
+        var label1 = [];
+        var barchart = {
+            labels: label1,
+            datasets: [
+                {
+                    label: "Total",
+                    backgroundColor: "rgba(255,99,132,0.2)",
+                    borderColor: "rgba(255,99,132,1)",
+                    borderWidth: 2,
+                    hoverBackgroundColor: "rgba(255,99,132,0.4)",
+                    hoverBorderColor: "rgba(255,99,132,1)",
+                    data: [],
+                }
+            ]
+        };
+        var option = {
+            legend: { display: false },
+            title: {
+                display: true,
+                text: 'Counselling Cases and Issues Summary'
+            },
+
+            scales: {
+                yAxes: [{
+                    stacked: true,
+                    gridLines: {
+                        display: true,
+                        color: "rgba(255,99,132,0.2)"
+                    }
+                }],
+                xAxes: [{
+                    gridLines: {
+                        display: true
+                    },
+                    ticks: {
+                        min: 0,
+                        stepSize: 1,
+                    }
+                }]
+            }
+        };
+
+
+        $.ajax({
+            url: '/CounsellingForms/GetTypeOfCasesSummary/',
+            success: function (response) {
+
+                $.each(response, function (i, item) {
+                    label1.push(item.Type); 
+                    barchart.datasets[0].data.push(item.count);
+                })
+                console.log(label1);
+
+                var ctx = document.getElementById("counsellingCases-bar-chart").getContext("2d");
+
+                var myLineChart = new Chart(ctx,
+                    {
+                        type: 'horizontalBar',
+                        data: barchart,
+                        options: option
+                    });
+            }
+
+            });
+
+
+        //pie chart
+
+
+
+
+
+
+    </script>
+}

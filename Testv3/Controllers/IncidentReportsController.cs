@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using Testv3.Models;
 
 namespace Testv3.Controllers
@@ -127,7 +128,6 @@ namespace Testv3.Controllers
             vm.CounsellorLastName = counsellor.CounsellorLastName;
 
             vm.CompletionDate = incident.CompletionDate;
-            vm.TypeOfIncident = incident.TypeOfIncident;
             vm.PlaceOfIncident = incident.PlaceOfIncident;
             vm.DateTimeOfIncident = incident.DateTimeOfIncident;
             vm.Witness = incident.Witness;
@@ -141,7 +141,7 @@ namespace Testv3.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Counselor")]
-        public ActionResult Add(StudentInterviewViewModel vm, string UserID)
+        public ActionResult Add(string[] name, StudentInterviewViewModel vm, string UserID, string date, string time)
         {
             GetCurrentUserInViewBag();
             var currentUserId = User.Identity.GetUserId();
@@ -154,20 +154,49 @@ namespace Testv3.Controllers
             incident.StudentUserID = student.UserID;
 
             incident.CompletionDate = DateTime.Now;
-            incident.TypeOfIncident = vm.TypeOfIncident;
             incident.PlaceOfIncident = vm.PlaceOfIncident;
-            incident.DateTimeOfIncident = vm.DateTimeOfIncident;
+            incident.DateTimeOfIncident = DateTime.Parse(date + " " + time);
+
             incident.Witness = vm.Witness;
             incident.Details = vm.Details;
             incident.CounsellorNotes = vm.CounselorNotes;
 
             db.IncidentReport.Add(incident);
-            
+
+            var selectedTags = name.ToList();
+
+            foreach (var item in selectedTags)
+            {
+                var dlist =
+                    (from ans in db.IncidentReportIncidents
+                     where ans.Type == item
+                     select new { TypeID = ans.TypeID }).Single();
+
+
+                //check if may row na may laman ang IncidentReportID, TypeID
+                var check = db.IncidentReportTags
+                    .Where(x => x.IncidentReportID == incident.IncidentReportID && x.TypeID == dlist.TypeID)
+                    .ToList();
+
+                if (check.Count() == 0)
+                {
+                    //create ng bagong entry and lagyan ng laman the ff:
+                    var newTagId = db.IncidentReportTags.Create();
+
+                    newTagId.IncidentReportID = incident.IncidentReportID;
+                    newTagId.TypeID = dlist.TypeID;
+
+
+                    db.IncidentReportTags.Add(newTagId);
+                }
+
+            }
+
             int result = db.SaveChanges();
 
             if (result > 0)
             {
-                TempData["Message"] = "You have successfullly filed an Incident Report for student: " + student.StudentID + " !";
+                TempData["Message"] = "You have successfullly filed an Incident Report for student: " + student.StudentID + "!";
             }
             else
             {
@@ -200,66 +229,229 @@ namespace Testv3.Controllers
             IncidentReport incident = new IncidentReport();
             StudentInterviewViewModel vm = new StudentInterviewViewModel();
 
-            vm.UserID = student.UserID;
-            vm.StudentID = student.StudentID;
-            vm.Program = student.Program;
-            vm.YearLevel = student.YearLevel;
-            vm.StudentFirstName = student.StudentFirstName;
-            vm.StudentMiddleName = student.StudentMiddleName;
-            vm.StudentLastName = student.StudentLastName;
+                vm.UserID = student.UserID;
+                vm.StudentID = student.StudentID;
+                vm.Program = student.Program;
+                vm.YearLevel = student.YearLevel;
+                vm.StudentFirstName = student.StudentFirstName;
+                vm.StudentMiddleName = student.StudentMiddleName;
+                vm.StudentLastName = student.StudentLastName;
 
-
-            vm.CompletionDate = incident.CompletionDate;
-            vm.TypeOfIncident = incident.TypeOfIncident;
-            vm.PlaceOfIncident = incident.PlaceOfIncident;
-            vm.DateTimeOfIncident = incident.DateTimeOfIncident;
-            vm.Witness = incident.Witness;
-            vm.Details = incident.Details;
-            vm.CounselorNotes = incident.CounsellorNotes;
+                vm.CompletionDate = incident.CompletionDate;
+                vm.PlaceOfIncident = incident.PlaceOfIncident;
+                vm.DateTimeOfIncident = incident.DateTimeOfIncident;
+                vm.Witness = incident.Witness;
+                vm.Details = incident.Details;
+                vm.CounselorNotes = incident.CounsellorNotes;
 
             return View(vm);
+        }
+
+
+        [HttpPost]
+        public string [][] ProcessData(string name)
+        {
+            string[][] selectedTag;
+            selectedTag = JsonConvert.DeserializeObject<string[][]>(name);
+            return (selectedTag);
+        }
+
+        public ActionResult GetValue(string[] name)
+        {
+            return Json(name);
         }
 
         // POST: IncidentReports/Submit
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Student")]
-        public ActionResult Submit(StudentInterviewViewModel vm, string UserID)
+        public ActionResult Submit(string[] name, StudentInterviewViewModel vm, string UserID, string date, string time)
         {
             GetCurrentUserInViewBag();
             var currentUserId = User.Identity.GetUserId();
 
-            IncidentReport incident = new IncidentReport();
-            var student = db.Students.FirstOrDefault(X => X.UserID == UserID);
-            var reportedBy = db.Students.FirstOrDefault(x => x.UserID == currentUserId);
+            //if (ModelState.IsValid)
+            //{
 
-            incident.EeportedBy = reportedBy.UserID;
-            incident.StudentUserID = student.UserID;
+                IncidentReport incident = new IncidentReport();
+                var student = db.Students.FirstOrDefault(X => X.UserID == UserID); //yung nirereport
+                var reportedBy = db.Students.FirstOrDefault(x => x.UserID == currentUserId); //nagrereport
 
-            incident.CompletionDate = DateTime.Now;
-            incident.TypeOfIncident = vm.TypeOfIncident;
-            incident.PlaceOfIncident = vm.PlaceOfIncident;
-            incident.DateTimeOfIncident = vm.DateTimeOfIncident;
-            incident.Witness = vm.Witness;
-            incident.Details = vm.Details;
-            incident.CounsellorNotes = vm.CounselorNotes;
+                incident.EeportedBy = reportedBy.UserID;
+                incident.StudentUserID = UserID.TrimEnd().TrimStart();
 
-            db.IncidentReport.Add(incident);
+                incident.CompletionDate = DateTime.Now;
+                incident.PlaceOfIncident = vm.PlaceOfIncident;
+                incident.DateTimeOfIncident = DateTime.Parse(date + " " + time);
 
-            int result = db.SaveChanges();
+                incident.Witness = vm.Witness;
+                incident.Details = vm.Details;
+                incident.CounsellorNotes = vm.CounselorNotes;
 
-            if (result > 0)
-            {
-                TempData["Message"] = "You have successfullly filed an Incident Report for student: " + student.StudentID + " !";
-            }
-            else
-            {
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
-                TempData["Error"] = errors;
-            }
+                db.IncidentReport.Add(incident);
+
+                var selectedTags = name.ToList();
+
+                foreach (var item in selectedTags)
+                {
+                    var dlist =
+                        (from ans in db.IncidentReportIncidents
+                         where ans.Type == item
+                         select new { TypeID = ans.TypeID }).Single();
+
+
+                    //check if may row na may laman ang IncidentReportID, TypeID
+                    var check = db.IncidentReportTags
+                        .Where(x => x.IncidentReportID == incident.IncidentReportID && x.TypeID == dlist.TypeID)
+                        .ToList();
+
+                    if (check.Count() == 0)
+                    {
+                        //create ng bagong entry and lagyan ng laman the ff:
+                        var newTagId = db.IncidentReportTags.Create();
+
+                        newTagId.IncidentReportID = incident.IncidentReportID;
+                        newTagId.TypeID = dlist.TypeID;
+
+
+                        db.IncidentReportTags.Add(newTagId);
+                    }
+
+                }
+
+
+                int result = db.SaveChanges();
+
+                if (result > 0)
+                {
+                    TempData["Message"] = "You have successfullly filed an Incident Report for student: " + student.StudentID + "!";
+                }
+                else
+                {
+                    var errors = ModelState.Values.SelectMany(v => v.Errors);
+                    TempData["Error"] = errors;
+                }
+            //}
+            //else
+            //{
+            //    var errors = ModelState.Values.SelectMany(v => v.Errors);
+            //    TempData["Error"] = errors;
+
+            //}
 
             return RedirectToAction("Index", "Home");
+            //return Json(Url.Action("Index", "Home"));
+            //return Json(new { redirectToUrl = Url.Action("Index", "Home") });
         }
+
+        public JsonResult GetTypeOfIncidents()
+        {
+            var currentUserId = User.Identity.GetUserId();
+            List<IRViewModel> pvm = new List<IRViewModel>();
+            var results = db.IncidentReportIncidents.ToList();
+
+            foreach (IncidentReportIncidents incident in results)
+            {
+                IRViewModel viewmodel = new IRViewModel();
+                viewmodel.name = incident.Type;
+
+                pvm.Add(viewmodel);
+            }
+
+            return Json(pvm, JsonRequestBehavior.AllowGet);
+        }
+
+
+        [Authorize(Roles = "Counselor")]
+        public ActionResult Charts()
+        {
+            GetCurrentUserInViewBag();
+
+            return View();
+        }
+        public JsonResult GetIncidentTypesSummary()
+        {
+            //--Student w / highest number of records
+
+            //    SELECT TOP 5 Student,COUNT(*) AS TOTAL
+            //    FROM IncidentReport
+            //    GROUP BY Student
+            //    ORDER BY TOTAL DESC;
+
+
+            var datalistIRs = db.IncidentReportIncidents.ToList();
+            List<IRChartsViewModel> taglist = new List<IRChartsViewModel>();
+            foreach(var item in datalistIRs)
+            {
+                IRChartsViewModel vm = new IRChartsViewModel();
+
+
+                var type = (from tagList in db.IncidentReportIncidents
+                            join selectedTags in db.IncidentReportTags on tagList.TypeID equals selectedTags.TypeID
+                            where tagList.TypeID == item.TypeID
+                            group tagList by new { tagList.Type } into g
+                            orderby g.Count() descending
+                            select g.Key.Type
+                            ).Single();
+
+                var typeCount = (from tagList in db.IncidentReportIncidents
+                                 join selectedTags in db.IncidentReportTags on tagList.TypeID equals selectedTags.TypeID
+                                 where tagList.TypeID == item.TypeID
+                                 group tagList by new { tagList.Type } into g
+                                 orderby g.Count() descending
+                                 select g.Count()
+                                 ).Single();
+
+                vm.Type = type.ToString();
+                vm.count = typeCount;
+
+                taglist.Add(vm);
+
+            }
+
+            return Json(taglist, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public JsonResult GetReportersSummary()
+        {
+
+            var datalistIRs = db.IncidentReport.ToList();
+            List<IRChartsViewModel> taglist = new List<IRChartsViewModel>();
+
+                IRChartsViewModel vm = new IRChartsViewModel();
+               
+               //--Reported by: Counsellor v. Students
+               //SELECT COUNT(*) AS[Total Reports]
+               //FROM IncidentReport A
+               //INNER JOIN Counsellor S ON S.UserID = A.EeportedBy
+               //GROUP BY A.EeportedBy
+               //ORDER BY[Total Reports] DESC;
+
+                var counsellorCount = (from A in db.IncidentReport
+                                         join B in db.Counsellor on A.EeportedBy equals B.UserID
+                                         group A by new { A.EeportedBy } into g
+                                         orderby g.Count() descending
+                                         select g.Count()
+                                         ).FirstOrDefault();
+
+                var studCount = (from A in db.IncidentReport
+                                       join B in db.Students on A.EeportedBy equals B.UserID
+                                       group A by new { A.EeportedBy } into g
+                                       orderby g.Count() descending
+                                       select g.Count()
+                                 ).FirstOrDefault();
+
+
+                vm.counsellorCount = counsellorCount;
+                vm.studentCount = studCount;
+
+                taglist.Add(vm);
+
+            return Json(taglist, JsonRequestBehavior.AllowGet);
+
+        }
+
 
         // GET: IncidentReports/Student/5
         [Authorize(Roles = "Counselor")]
@@ -276,7 +468,6 @@ namespace Testv3.Controllers
                 foreach (var item in datalist)
                 {
                     IncidentReport pvm = new IncidentReport();
-                    pvm.TypeOfIncident = item.TypeOfIncident;
                     pvm.IncidentReportID = item.IncidentReportID;
                     pvm.CompletionDate = item.CompletionDate;
 
@@ -313,9 +504,9 @@ namespace Testv3.Controllers
                 return HttpNotFound();
             }
 
-            var form = db.IncidentReport.FirstOrDefault(x => x.StudentUserID == StudentUserID);
+            var form = db.IncidentReport.FirstOrDefault(x => x.StudentUserID == StudentUserID); //change this
 
-            if (form == null)
+            if (FormID == null)
             {
                 return HttpNotFound();
             }
@@ -351,13 +542,12 @@ namespace Testv3.Controllers
             }
             
 
-            vm.CompletionDate = form.CompletionDate;
-            vm.TypeOfIncident = form.TypeOfIncident;
-            vm.PlaceOfIncident = form.PlaceOfIncident;
-            vm.DateTimeOfIncident = form.DateTimeOfIncident;
-            vm.Witness = form.Witness;
-            vm.Details = form.Details;
-            vm.CounselorNotes = form.CounsellorNotes;
+            vm.CompletionDate = FormID.CompletionDate;
+            vm.PlaceOfIncident = FormID.PlaceOfIncident;
+            vm.DateTimeOfIncident = FormID.DateTimeOfIncident;
+            vm.Witness = FormID.Witness;
+            vm.Details = FormID.Details;
+            vm.CounselorNotes = FormID.CounsellorNotes;
 
             return View(vm);
         }
@@ -421,7 +611,6 @@ namespace Testv3.Controllers
 
 
             vm.CompletionDate = form.CompletionDate;
-            vm.TypeOfIncident = form.TypeOfIncident;
             vm.PlaceOfIncident = form.PlaceOfIncident;
             vm.DateTimeOfIncident = form.DateTimeOfIncident;
             vm.Witness = form.Witness;
