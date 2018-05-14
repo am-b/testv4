@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Testv3.Models.Appointment>
+
+@{
+    ViewBag.Title = "MyHistory";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+
+<div class="col-lg-6 col-xs-6">
+    <div class="small-box bg-olive">
+        <div class="inner">
+            <h3>Counseling</h3>
+            <p>
+                Counseling services at Makati Medical Center College are in place to help students identify and clarify personal, career and educational goals.
+                The intent is to help students choose options that will improve the quality of their lives.
+            </p>
+        </div>
+        <div class="icon">
+            <i class="fa fa-calendar"></i>
+        </div>
+        <a class="small-box-footer" href="/Appointments/Create">
+            Set an appointment with your counselor <i class="fa fa-arrow-circle-right"></i>
+        </a>
+    </div>
+</div>
+<br />
+<h2>My History</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Apptmnt_Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Apptmnt_Time)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Apptmnt_Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Apptmnt_Time)
+            </td>
+        </tr>
+    }
+
+</table>
