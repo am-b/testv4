@@ -24,7 +24,7 @@ namespace Testv3.Controllers
             {
                 var u = db.Students.FirstOrDefault(d => d.UserID == currentUserId);
 
-                if ((u.StudentFirstName != null) && (u.StudentLastName != null))
+                if ((u.StudentFirstName != null) && (u.StudentLastName != null) && (u.StudentID != null))
                 {
                     ViewBag.CurrentUser = u.StudentFirstName.Trim() + " " + " " + u.StudentLastName.Trim();
                     ViewBag.CurrentUserStudentID = u.StudentID.Trim();

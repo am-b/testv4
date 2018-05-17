@@ -33,10 +33,13 @@
                         <span class="icon-bar"></span>*@
                 </a>
                 <br />
+                @if (Request.IsAuthenticated)
+                {
+                    <div class="navbar-custom-menu">
+                        @Html.Partial("_LoginPartial")
+                    </div>
+                }
 
-                <div class="navbar-custom-menu">
-                    @Html.Partial("_LoginPartial")
-                </div>
 
             </nav>
         </header>

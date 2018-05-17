@@ -28,23 +28,70 @@
         <div class="form-group">
             @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
             <div class="col-md-10">
-                @Html.PasswordFor(m => m.Password, new { @class = "form-control",@value="P@ssw0rd" })
-                @Html.ValidationMessageFor(model => model.Password,"",new { @class = "text-danger" })
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @value = "P@ssw0rd" })
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Roles, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Roles",null, new { @class = "form-control" })
+                @Html.DropDownList("Roles", null, new { @class = "form-control" })
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-                @Html.ActionLink("Back to List","Index", null, new { @class = "btn btn-default" })
+
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group">
+                    <div class="col-sm-4">
+                        <label for="Studentname">First Name</label><br />
+                        @Html.EditorFor(model => model.StudentFirstName, new { htmlAttributes = new { @placeholder = "First name", @style = "text-align:center", @class = "form-control" } })
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="Studentname">Middle Name</label><br />
+                        @Html.EditorFor(model => model.StudentMiddleName, new { htmlAttributes = new { @placeholder = "Middle name", style = "text-align:center", @class = "form-control" } })
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="Studentname">Last Name</label><br />
+                        @Html.EditorFor(model => model.StudentLastName, new { htmlAttributes = new { @placeholder = "Last name", style = "text-align:center", @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-4">
+                        <label for="StudNum">Student Number</label><br />
+                        @Html.EditorFor(model => model.StudentID, new { htmlAttributes = new { @class = "form-control", @style = "text-align:center" } })
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-4">
+                        @Html.Label("Program: ")<br />
+                         @Html.DropDownListFor(m => m.Program, Model.Programm, "Select College", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Program, "", new { @class = "text-danger" })
+                    </div>
+
+                    
+
+                    <div class="col-sm-4">
+                        <label for="YearLevel">Year Level</label><br />
+                        @Html.EditorFor(model => model.YearLevel, new { htmlAttributes = new { @class = "form-control", @style = "max-width:10%;text-align:center" } })
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-}
+                
+
+
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save" class="btn btn-default" />
+                        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-default" })
+                    </div>
+                </div>
+            </div>
+            }

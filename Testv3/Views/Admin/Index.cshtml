@@ -16,6 +16,14 @@
             <strong>@TempData["Message"]</strong>
         </div>
 }
+@if (TempData["Error"] != null)
+{
+    <br />
+    <div class="alert alert-success alert-dismissable">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>@TempData["Error"]</strong>
+    </div>
+}
 
 <br />
 @using (Html.BeginForm("Index", "Admin", FormMethod.Get))

@@ -13,6 +13,8 @@ using Testv3.Models;
 using PagedList;
 using System.Threading.Tasks;
 
+
+
 #endregion Includes
 
 namespace Testv3.Controllers
@@ -140,6 +142,10 @@ namespace Testv3.Controllers
             ExpandedUserDTO objExpandedUserDTO = new ExpandedUserDTO();
             ViewBag.Roles = GetAllRolesAsSelectList();
 
+            var college = GetAllCollege();
+            objExpandedUserDTO.Programm = GetSelectListItems(college);
+
+
             return View(objExpandedUserDTO);
         }
         #endregion
@@ -149,8 +155,7 @@ namespace Testv3.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         #region 
-        public ActionResult Create(ExpandedUserDTO paramExpandedUserDTO)
-        //public ActionResult Create(ExpandedUserDTO paramExpandedUserDTO, Contact paramContact)
+        public async Task<ActionResult> Create(ExpandedUserDTO paramExpandedUserDTO)
         {
             GetCurrentUserInViewBag();
             try
@@ -160,28 +165,64 @@ namespace Testv3.Controllers
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
 
+                var college = GetAllCollege();
+                paramExpandedUserDTO.Programm = GetSelectListItems(college);
+
+
                 var Email = paramExpandedUserDTO.Email.Trim();
                 var UserName = paramExpandedUserDTO.Email.Trim();
                 var Password = paramExpandedUserDTO.Password.Trim();
+
+                var LastName = paramExpandedUserDTO.StudentLastName.Trim();
+                var FirstName = paramExpandedUserDTO.StudentFirstName.Trim();
+                var MiddleName = paramExpandedUserDTO.StudentMiddleName.Trim();
+
+
+                var Program = paramExpandedUserDTO.Program.Trim();
+                var YrLevel = paramExpandedUserDTO.YearLevel;
+                var StudentID = paramExpandedUserDTO.StudentID;
+                //var IsActive = paramExpandedUserDTO.IsActive.Trim();
 
 
                 if (Email == "")
                 {
                     throw new Exception("No Email");
                 }
-
                 if (Password == "")
                 {
                     throw new Exception("No Password");
                 }
+                if (LastName == "")
+                {
+                    throw new Exception("No LastName");
+                }
+                if (FirstName == "")
+                {
+                    throw new Exception("No FirstName");
+                }
+                if (MiddleName == "")
+                {
+                    throw new Exception("No MiddleName");
+                }
+                if (Program == "")
+                {
+                    throw new Exception("No Program");
+                }
+                if (YrLevel == null)
+                {
+                    throw new Exception("No YrLevel");
+                }
+                if (StudentID == "")
+                {
+                    throw new Exception("No StudentID");
+                }
+
 
                 // UserName is LowerCase of the Email
                 UserName = Email.ToLower();
 
                 // Create user
-
-                var objNewAdminUser = new ApplicationUser { UserName = UserName, Email = Email};
-                
+                var objNewAdminUser = new ApplicationUser { UserName = UserName, Email = Email };
                 var AdminUserCreateResult = UserManager.Create(objNewAdminUser, Password);
 
                 if (AdminUserCreateResult.Succeeded == true)
@@ -203,6 +244,14 @@ namespace Testv3.Controllers
                                 newid = db.Students.Create();
                                 newid.UserID = objNewAdminUser.Id;
                                 newid.StudentEmail = objNewAdminUser.Email;
+
+                                newid.StudentLastName = LastName;
+                                newid.StudentFirstName = FirstName;
+                                newid.StudentMiddleName = MiddleName;
+                                newid.StudentID = StudentID;
+                                newid.Program = Program;
+                                newid.YearLevel = YrLevel;
+
                                 db.Students.Add(newid);
 
                                 db.SaveChanges();
@@ -224,25 +273,49 @@ namespace Testv3.Controllers
                             }
                         }
 
-
                     }
+
+                    
+                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(objNewAdminUser.Id);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = objNewAdminUser.Id, code = code }, protocol: Request.Url.Scheme);
+                    await UserManager.SendEmailAsync(objNewAdminUser.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
                     return Redirect("~/Admin");
                 }
                 else
                 {
                     ViewBag.Roles = GetAllRolesAsSelectList();
-                    ModelState.AddModelError(string.Empty, "Error: User "+Email+ " already exists!");
+
+                    ModelState.AddModelError(string.Empty, "Error: User " + Email + " already exists!");
                     return View(paramExpandedUserDTO);
                 }
             }
             catch (Exception ex)
             {
                 ViewBag.Roles = GetAllRolesAsSelectList();
+
+                ExpandedUserDTO objExpandedUserDTO = new ExpandedUserDTO();
+                var college = GetAllCollege();
+                objExpandedUserDTO.Programm = GetSelectListItems(college);
+
                 ModelState.AddModelError(string.Empty, "Error: " + ex);
-                return View("Create");
+                return View(paramExpandedUserDTO);
             }
         }
         #endregion
+
+
+        private async Task<string> SendEmailConfirmationTokenAsync(string userID, string subject)
+        {
+            // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+            // Send an email with this link:
+            string code = await UserManager.GenerateEmailConfirmationTokenAsync(userID);
+            var callbackUrl = Url.Action("ConfirmEmail", "Admin", new { userId = userID, code = code }, protocol: Request.Url.Scheme);
+            await UserManager.SendEmailAsync(userID, subject, "Please confirm your account by <a href=\"" + callbackUrl + "\">clicking here</a>");
+
+
+            return callbackUrl;
+        }
 
 
         //// GET: /Admin/Edit/TestUser 
@@ -624,6 +697,16 @@ namespace Testv3.Controllers
             }
         }
         #endregion
+
+        private IEnumerable<string> GetAllCollege()
+        {
+            return new List<string>
+            {
+                "Psychology",
+                "Nursing",
+                "Rad Tech",
+            };
+        }
 
 
 

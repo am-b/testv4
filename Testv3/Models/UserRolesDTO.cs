@@ -35,7 +35,31 @@ namespace Testv3.Models
             public string PhoneNumber { get; set; }
             public IEnumerable<UserRolesDTO> Roles { get; set; }
 
-        }
+        //
+        [Display(Name = "Student Number")]
+        public string StudentID { get; set; }
+
+        [Display(Name = "Last Name")]
+        public string StudentLastName { get; set; }
+
+        [Display(Name = "First Name")]
+        public string StudentFirstName { get; set; }
+
+        [Display(Name = "Middle Name")]
+        public string StudentMiddleName { get; set; }
+
+
+        [Display(Name = "Program")]
+        public string Program { get; set; }
+        public IEnumerable<SelectListItem> Programm { get; set; }
+
+        [Display(Name = "Year Level")]
+        public Nullable<int> YearLevel { get; set; }
+
+        [Display(Name = "Status")]
+        public Nullable<bool> IsActive { get; set; }
+
+    }
 
 
         public class UserRoleDTO

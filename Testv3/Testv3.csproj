@@ -194,6 +194,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\GmailEmailService.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
@@ -201,7 +202,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AnecdotalRecordsController.cs" />
     <Compile Include="Controllers\AnnouncementsController.cs" />
-    <Compile Include="Controllers\AppointmentController.cs" />
+    <Compile Include="Controllers\AppointmentsController.cs" />
     <Compile Include="Controllers\CounsellingContractsController.cs" />
     <Compile Include="Controllers\CounsellingFormsController.cs" />
     <Compile Include="Controllers\DefaultController.cs" />
@@ -227,6 +228,8 @@
     <Compile Include="Models\Answers.cs">
       <DependentUpon>Testv3.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Appointment.cs" />
+    <Compile Include="Models\AppointmentModel.cs" />
     <Compile Include="Models\AspNetRole.cs">
       <DependentUpon>Testv3.tt</DependentUpon>
     </Compile>
@@ -2466,10 +2469,15 @@
     <Content Include="Views\CounsellingForms\Charts.cshtml" />
     <Content Include="Views\PsychTest\Charts.cshtml" />
     <Content Include="Views\CounsellingContracts\Charts.cshtml" />
+    <Content Include="Views\Appointments\Create.cshtml" />
+    <Content Include="Views\Appointments\Delete.cshtml" />
+    <Content Include="Views\Appointments\Details.cshtml" />
+    <Content Include="Views\Appointments\Edit.cshtml" />
+    <Content Include="Views\Appointments\Index.cshtml" />
+    <Content Include="Views\Appointments\MyHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Appointment\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

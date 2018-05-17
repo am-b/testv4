@@ -10,7 +10,7 @@ using Testv3.Models;
 
 namespace Testv3.Controllers
 {
-    public class AppointmentsController : Controller
+    public class AppointmentsController : DefaultController
     {
         private AppointmentModel db = new AppointmentModel();
 
