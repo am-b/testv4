@@ -1,0 +1,263 @@
+﻿@model PagedList.IPagedList<Testv3.Models.TestViewModel>
+@{
+    ViewBag.Title = "Charts";
+}
+
+<div class="row">
+    <div class="col-lg-6 col-xs-6">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Gender</h3>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" type="button" data-toggle="collapse" data-target="#LOL">
+                        <span class="fa fa-minus" id="minMaxIcon"></span>
+                    </button>
+                </div>
+                <hr />
+            </div>
+            <div id="LOL" class="collapse in">
+                <div class="box-body">
+                    <canvas id="gender-pie"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-xs-6">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Scholars</h3>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" type="button" data-toggle="collapse" data-target="#LOL1">
+                        <span class="fa fa-minus"></span>
+                    </button>
+                </div>
+                <hr />
+            </div>
+            <div id="LOL1" class="collapse in">
+                <div class="box-body">
+                    <canvas id="scholar-pie"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-lg-6 col-xs-6">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Is the student present program his personal choice?</h3>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" type="button" data-toggle="collapse" data-target="#LOL2">
+                        <span class="fa fa-minus"></span>
+                    </button>
+                </div>
+                <hr />
+            </div>
+            <div id="LOL2" class="collapse in">
+                <div class="box-body">
+                    <canvas id="choice-pie"></canvas>
+                </div>
+            </div>
+        </div>
+     </div>
+
+    <div class="col-lg-6 col-xs-6">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Who influenced you to take the course?</h3>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" type="button" data-toggle="collapse" data-target="#LOL3">
+                        <span class="fa fa-minus"></span>
+                    </button>
+                </div>
+                <hr />
+            </div>
+            <div id="LOL3" class="collapse in">
+                <div class="box-body">
+                    @*<canvas id="choice-pie"></canvas>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6 col-xs-6">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Why did you choose MMCC?</h3>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" type="button" data-toggle="collapse" data-target="#LOL4">
+                        <span class="fa fa-minus"></span>
+                    </button>
+                </div>
+                <hr />
+            </div>
+            <div id="LOL4" class="collapse in">
+                <div class="box-body">
+                    @*<canvas id="choice-pie"></canvas>*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-xs-6">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">How did you know about MMCC?</h3>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" type="button" data-toggle="collapse" data-target="#LOL5">
+                        <span class="fa fa-minus"></span>
+                    </button>
+                </div>
+                <hr />
+            </div>
+            <div id="LOL5" class="collapse in">
+                <div class="box-body">
+                    @*<canvas id="choice-pie"></canvas>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        
+
+
+
+
+
+
+
+        @Scripts.Render("~/bundles/jquery")
+        @section Scripts {
+            <script>
+                $(".btn-box-tool").click(function () {
+                    $("span", this).toggleClass("fa-minus fa-plus");
+
+                });
+
+
+                //gender
+                var genderPieChart = {
+                    labels: ["Male", "Female"],
+                    datasets: [{
+                        backgroundColor:
+                        [
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(255, 205, 86, 0.2)"
+                        ],
+                        borderColor:
+                        [
+                            "rgb(153, 102, 255)",
+                            "rgba(255, 205, 86, 0.2)"
+                        ],
+                        borderWidth: 1,
+                        data: []
+                    }]
+
+                }
+
+                var optiongenderPieChart = {
+                    legend: { position: 'top' },
+                    responsive: false
+                };
+
+                //scholar
+                var scholarPieChart = {
+                    labels: ["Scholar", "Not Scholar"],
+                    datasets: [{
+                        backgroundColor:
+                        [
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(255, 205, 86, 0.2)"
+                        ],
+                        borderColor:
+                        [
+                            "rgb(153, 102, 255)",
+                            "rgba(255, 205, 86, 0.2)"
+                        ],
+                        borderWidth: 1,
+                        data: []
+                    }]
+
+                }
+
+                var optionscholarPieChart = {
+                    legend: { position: 'top' },
+                    responsive: false
+                };
+
+                //choice
+                var choicePieChart = {
+                    labels: ["Yes", "No"],
+                    datasets: [{
+                        backgroundColor:
+                        [
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(255, 205, 86, 0.2)"
+                        ],
+                        borderColor:
+                        [
+                            "rgb(153, 102, 255)",
+                            "rgba(255, 205, 86, 0.2)"
+                        ],
+                        borderWidth: 1,
+                        data: []
+                    }]
+
+                }
+
+                var optionchoicePieChart = {
+                    legend: { position: 'top' },
+                    responsive: false
+                };
+
+                //render charts
+                $.ajax({
+                    url: '/StudentInventory/GetCount',
+                    success: function (responsePie) {
+                        $.each(responsePie, function (i, item) {
+                            genderPieChart.datasets[0].data.push(parseInt(item.countMale), parseInt(item.countFemale));
+                            scholarPieChart.datasets[0].data.push(parseInt(item.countScholar), parseInt(item.countNotScholar));
+                            choicePieChart.datasets[0].data.push(parseInt(item.countTotalPersonalChoice), parseInt(item.countTotalNotPersonalChoice));
+
+                        })
+
+                        var ctx2 = document.getElementById("gender-pie").getContext("2d");
+                        var mygenderPieChart = new Chart(ctx2,
+                            {
+                                type: 'pie',
+                                data: genderPieChart,
+                                options: optiongenderPieChart
+                            });
+
+                        //scholar
+                        var ctx3 = document.getElementById("scholar-pie").getContext("2d");
+                        var myscholarPPieChart = new Chart(ctx3,
+                            {
+                                type: 'pie',
+                                data: scholarPieChart,
+                                options: optionscholarPieChart
+                            });
+
+                        //choice
+                        var ctx4 = document.getElementById("choice-pie").getContext("2d");
+                        var mychoicePieChart = new Chart(ctx4,
+                            {
+                                type: 'pie',
+                                data: choicePieChart,
+                                options: optionchoicePieChart
+                            });
+                    }
+                });
+
+
+
+            </script>
+        }
+
+

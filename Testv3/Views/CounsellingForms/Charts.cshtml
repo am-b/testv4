@@ -65,12 +65,12 @@
         $.ajax({
             url: '/CounsellingForms/GetTypeOfCasesSummary/',
             success: function (response) {
+                console.log(response);
 
                 $.each(response, function (i, item) {
                     label1.push(item.Type); 
                     barchart.datasets[0].data.push(item.count);
                 })
-                console.log(label1);
 
                 var ctx = document.getElementById("counsellingCases-bar-chart").getContext("2d");
 
