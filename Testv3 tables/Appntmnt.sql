@@ -1,7 +1,7 @@
 USE [Testv3]
 GO
 
-/****** Object:  Table [dbo].[IncidentReport]    Script Date: 2/26/2018 12:08:17 AM ******/
+/****** Object:  Table [dbo].[Appntmnt]  ******/
 SET ANSI_NULLS ON
 GO
 
