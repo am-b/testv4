@@ -10,12 +10,10 @@
         <EntityTypeShape EntityType="Testv3Model.AspNetUserClaim" Width="1.5" PointX="3" PointY="13.375" />
         <EntityTypeShape EntityType="Testv3Model.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="9.875" />
         <EntityTypeShape EntityType="Testv3Model.AspNetUser" Width="1.5" PointX="2.875" PointY="5.375" />
-        <EntityTypeShape EntityType="Testv3Model.IndividualInventoryRecord" Width="1.5" PointX="7.5" PointY="9.25" />
         <EntityTypeShape EntityType="Testv3Model.Student" Width="1.5" PointX="5.25" PointY="13.375" />
         <AssociationConnector Association="Testv3Model.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="Testv3Model.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="Testv3Model.FK__Student__UserID__3C69FB99" />
-        <AssociationConnector Association="Testv3Model.FK__Individua__UserI__4316F928" />
         <AssociationConnector Association="Testv3Model.AspNetUserRoles" />
         <EntityTypeShape EntityType="Testv3Model.sysdiagram" Width="1.5" PointX="4.875" PointY="1.5" />
         <EntityTypeShape EntityType="Testv3Model.Questions" Width="1.5" PointX="10.375" PointY="16.125" />
@@ -49,6 +47,10 @@
         <AssociationConnector Association="Testv3Model.FK__Counselli__Stude__2704CA5F" />
         <AssociationConnector Association="Testv3Model.FK__Counselli__UserI__2610A626" />
         <AssociationConnector Association="Testv3Model.FK__Counselli__TypeI__019E3B86" />
+        <EntityTypeShape EntityType="Testv3Model.IndividualInventoryRecord" Width="1.5" PointX="7.375" PointY="8.75" />
+        <EntityTypeShape EntityType="Testv3Model.Appntmnt" Width="1.5" PointX="7.5" PointY="32.875" />
+        <AssociationConnector Association="Testv3Model.FK__Appntmnt__Studen__0E04126B" />
+        <AssociationConnector Association="Testv3Model.FK__Individua__UserI__0EF836A4" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -33,6 +33,7 @@ namespace Testv3.Models
         public string EmergencyContactNumber { get; set; }
         public string ParentsStatus { get; set; }
         public string EconomicStatus { get; set; }
+        public string NoOfSiblings { get; set; }
         public string PresentlyLivingWith { get; set; }
         public string PresentlyStayingAt { get; set; }
         public string ElementarySchool { get; set; }
@@ -48,7 +49,7 @@ namespace Testv3.Models
         public string FaveSubject { get; set; }
         public string LeastSubject { get; set; }
         public string HowStudieIssFinanced { get; set; }
-        public string IsCoursePersonalChoice { get; set; }
+        public Nullable<bool> IsCoursePersonalChoice { get; set; }
         public string CourseNotPersonalChoice { get; set; }
         public string CourseChoiceInfluence { get; set; }
         public string CoursePersonalChoice { get; set; }
@@ -84,7 +85,6 @@ namespace Testv3.Models
         public string HaveTalkedWithAPsychologistWhen { get; set; }
         public string HaveTalkedWithAPsychologistWhy { get; set; }
         public string AboutYourself { get; set; }
-        public string NoOfSiblings { get; set; }
     
         public virtual Student Student { get; set; }
     }

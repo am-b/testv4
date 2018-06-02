@@ -26,13 +26,19 @@ namespace Testv3.Models
         [Required]
         public string Sex { get; set; }
         public IEnumerable<SelectListItem> Sexx { get; set; }
+
         [Required]
         [Display(Name = "Civil Status")]
         public string Civil_Status__CivilStatus { get; set; }
         public IEnumerable<SelectListItem> Civil_Status__CivilStatuss { get; set; }
 
+        [Required]
         public string Religion { get; set; }
+
+        [Required]
         public string Nationality { get; set; }
+
+        [Required]
         public Nullable<System.DateTime> Birthdate { get; set; }
         [Display(Name = "Phone Number:")]
         public string PhoneNumber { get; set; }
@@ -45,9 +51,13 @@ namespace Testv3.Models
         public string BirthRank { get; set; }
         [Display(Name = "Distance of school from home:")]
         public string DistanceFromSchool { get; set; }
+
         [Display(Name = "Recipient of financial aid/scholarships?")]
+        [Required]
         public bool IsScholar { get; set; }
         public string Scholarship { get; set; }
+
+
         [Display(Name = "Date Of Marriage:")]
         public Nullable<System.DateTime> DateOfMarriage { get; set; }
         [Display(Name = "Place Of Marriage:")]
@@ -99,8 +109,11 @@ namespace Testv3.Models
         public string FamilyDwelling { get; set; }
         public IEnumerable<SelectListItem> FamilyDwellings { get; set; }
 
+        [Required]
         [Display(Name = "Emergency Contact Name:")]
         public string EmergencyContactName { get; set; }
+
+        [Required]
         [Display(Name = "Emergency Contact Number:")]
         public string EmergencyContactNumber { get; set; }
 
@@ -141,20 +154,41 @@ namespace Testv3.Models
         public string CollegeAddress { get; set; }
         [Display(Name = "Years Attended:")]
         public string YearsAttendedCollege { get; set; }
+
+        //others
         [Display(Name = "Honors and Awards received:")]
         public string Honors { get; set; }
+
         [Display(Name = "Favorie subject/s in highschool:")]
         public string FaveSubject { get; set; }
+
         [Display(Name = "Least favorie subject/s in highschool:")]
         public string LeastSubject { get; set; }
         
         public string HowStudieIssFinanced { get; set; }
-        public string IsCoursePersonalChoice { get; set; }
+
+        [Required]
+        public bool IsCoursePersonalChoice { get; set; }
+
+       
         public string CourseNotPersonalChoice { get; set; }
+
+        [Required]
         public string CourseChoiceInfluence { get; set; }
+        public IEnumerable<SelectListItem> CourseChoiceInfluence_Dropdown { get; set; }
+
+        
         public string CoursePersonalChoice { get; set; }
+
+        [Required]
         public string WhyMMCC { get; set; }
+        public IEnumerable<SelectListItem> WhyMMCC_Dropdown { get; set; }
+
+        [Required]
         public string ReferredToMMCCBy { get; set; }
+        public IEnumerable<SelectListItem> ReferredToMMCCBy_Dropdown { get; set; }
+
+
 
         public string Position { get; set; }
         public string Salary { get; set; }
@@ -200,6 +234,7 @@ namespace Testv3.Models
         public string HaveTalkedWithAPsychologistWhy { get; set; }
 
         [Display(Name = "About the student:")]
+        [Required]
         public string AboutYourself { get; set; }
 
         public Nullable<System.DateTime> CompletionDate { get; set; }

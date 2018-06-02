@@ -30,7 +30,6 @@ namespace Testv3.Models
         public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
-        public virtual DbSet<IndividualInventoryRecord> IndividualInventoryRecords { get; set; }
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Questions> Questions { get; set; }
@@ -47,5 +46,7 @@ namespace Testv3.Models
         public virtual DbSet<CounsellingFormCases> CounsellingFormCases { get; set; }
         public virtual DbSet<CounsellingFormCasesList> CounsellingFormCasesList { get; set; }
         public virtual DbSet<CounsellingForm> CounsellingForm { get; set; }
+        public virtual DbSet<IndividualInventoryRecord> IndividualInventoryRecord { get; set; }
+        public virtual DbSet<Appntmnt> Appntmnt { get; set; }
     }
 }

@@ -40,6 +40,15 @@
           <Property Name="Answer" Type="int" Nullable="false" />
           <Property Name="TestCompletionDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="Appntmnt">
+          <Key>
+            <PropertyRef Name="Appntmnt_ID" />
+          </Key>
+          <Property Name="Appntmnt_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StudentUserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Appntmnt_Date" Type="datetime" />
+          <Property Name="Appntmnt_Time" Type="varchar(max)" />
+        </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -223,7 +232,7 @@
           <Property Name="FaveSubject" Type="nvarchar" MaxLength="250" />
           <Property Name="LeastSubject" Type="nvarchar" MaxLength="250" />
           <Property Name="HowStudieIssFinanced" Type="nvarchar" MaxLength="250" />
-          <Property Name="IsCoursePersonalChoice" Type="nvarchar" MaxLength="250" />
+          <Property Name="IsCoursePersonalChoice" Type="bit" />
           <Property Name="CourseNotPersonalChoice" Type="nvarchar" MaxLength="250" />
           <Property Name="CourseChoiceInfluence" Type="nvarchar(max)" />
           <Property Name="CoursePersonalChoice" Type="nvarchar" MaxLength="250" />
@@ -399,6 +408,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Appntmnt__Studen__0E04126B">
+          <End Role="Student" Type="Self.Student" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Appntmnt" Type="Self.Appntmnt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Appntmnt">
+              <PropertyRef Name="StudentUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Counselli__Couns__00AA174D">
           <End Role="CounsellingForm" Type="Self.CounsellingForm" Multiplicity="1" />
           <End Role="CounsellingFormCases" Type="Self.CounsellingFormCases" Multiplicity="*" />
@@ -529,6 +552,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Individua__UserI__0EF836A4">
+          <End Role="Student" Type="Self.Student" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="IndividualInventoryRecord" Type="Self.IndividualInventoryRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="IndividualInventoryRecord">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__InitialIn__UserI__0D44F85C">
           <End Role="Student" Type="Self.Student" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -631,6 +668,7 @@
           <EntitySet Name="AnecdotalRecord" EntityType="Self.AnecdotalRecord" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Announcement" EntityType="Self.Announcement" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Answers" EntityType="Self.Answers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Appntmnt" EntityType="Self.Appntmnt" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
@@ -666,6 +704,10 @@
           <AssociationSet Name="FK__Answers__UserID__7EF6D905" Association="Self.FK__Answers__UserID__7EF6D905">
             <End Role="Student" EntitySet="Student" />
             <End Role="Answers" EntitySet="Answers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Appntmnt__Studen__0E04126B" Association="Self.FK__Appntmnt__Studen__0E04126B">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="Appntmnt" EntitySet="Appntmnt" />
           </AssociationSet>
           <AssociationSet Name="FK__Counselli__Couns__00AA174D" Association="Self.FK__Counselli__Couns__00AA174D">
             <End Role="CounsellingForm" EntitySet="CounsellingForm" />
@@ -707,6 +749,10 @@
             <End Role="IncidentReportIncidents" EntitySet="IncidentReportIncidents" />
             <End Role="IncidentReportTags" EntitySet="IncidentReportTags" />
           </AssociationSet>
+          <AssociationSet Name="FK__Individua__UserI__0EF836A4" Association="Self.FK__Individua__UserI__0EF836A4">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="IndividualInventoryRecord" EntitySet="IndividualInventoryRecord" />
+          </AssociationSet>
           <AssociationSet Name="FK__InitialIn__UserI__0D44F85C" Association="Self.FK__InitialIn__UserI__0D44F85C">
             <End Role="Student" EntitySet="Student" />
             <End Role="InitialInterview" EntitySet="InitialInterview" />
@@ -746,7 +792,6 @@
           <EntitySet Name="AspNetUserClaims" EntityType="Testv3Model.AspNetUserClaim" />
           <EntitySet Name="AspNetUserLogins" EntityType="Testv3Model.AspNetUserLogin" />
           <EntitySet Name="AspNetUsers" EntityType="Testv3Model.AspNetUser" />
-          <EntitySet Name="IndividualInventoryRecords" EntityType="Testv3Model.IndividualInventoryRecord" />
           <EntitySet Name="Students" EntityType="Testv3Model.Student" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Testv3Model.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
@@ -759,10 +804,6 @@
           <AssociationSet Name="FK__Student__UserID__3C69FB99" Association="Testv3Model.FK__Student__UserID__3C69FB99">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="Student" EntitySet="Students" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Individua__UserI__4316F928" Association="Testv3Model.FK__Individua__UserI__4316F928">
-            <End Role="Student" EntitySet="Students" />
-            <End Role="IndividualInventoryRecord" EntitySet="IndividualInventoryRecords" />
           </AssociationSet>
           <AssociationSet Name="AspNetUserRoles" Association="Testv3Model.AspNetUserRoles">
             <End Role="AspNetRole" EntitySet="AspNetRoles" />
@@ -851,6 +892,16 @@
             <End Role="CounsellingFormCasesList" EntitySet="CounsellingFormCasesList" />
             <End Role="CounsellingFormCases" EntitySet="CounsellingFormCases" />
           </AssociationSet>
+          <EntitySet Name="IndividualInventoryRecord" EntityType="Testv3Model.IndividualInventoryRecord" />
+          <EntitySet Name="Appntmnt" EntityType="Testv3Model.Appntmnt" />
+          <AssociationSet Name="FK__Appntmnt__Studen__0E04126B" Association="Testv3Model.FK__Appntmnt__Studen__0E04126B">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="Appntmnt" EntitySet="Appntmnt" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Individua__UserI__0EF836A4" Association="Testv3Model.FK__Individua__UserI__0EF836A4">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="IndividualInventoryRecord" EntitySet="IndividualInventoryRecord" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Announcement">
           <Key>
@@ -913,83 +964,6 @@
           <NavigationProperty Name="AspNetRoles" Relationship="Testv3Model.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
           <NavigationProperty Name="Counsellor" Relationship="Testv3Model.FK__Counsello__UserI__16CE6296" FromRole="AspNetUser" ToRole="Counsellor" />
         </EntityType>
-        <EntityType Name="IndividualInventoryRecord">
-          <Key>
-            <PropertyRef Name="RecordID" />
-          </Key>
-          <Property Name="RecordID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="FathersName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="FathersAddress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="FathersAge" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-          <Property Name="FathersEducationalAttainment" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FathersOccupation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FathersEmployerAddress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="MothersName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="MothersAddress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="MothersAge" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
-          <Property Name="MothersEducationalAttainment" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MothersOccupation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MothersEmployerAddress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="FamilyDwelling" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="EmergencyContactName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="EmergencyContactNumber" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="ParentsStatus" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="EconomicStatus" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="PresentlyLivingWith" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="PresentlyStayingAt" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="ElementarySchool" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="ElementaryAddress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="YearsAttendedElem" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="HighSchool" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="HighSchoolAddress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="YearsAttendedHS" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="CollegeSchool" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="CollegeAddress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="YearsAttendedCollege" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Honors" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="FaveSubject" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="LeastSubject" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="HowStudieIssFinanced" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="IsCoursePersonalChoice" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="CourseNotPersonalChoice" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="CourseChoiceInfluence" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CoursePersonalChoice" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="WhyMMCC" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ReferredToMMCCBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Position" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Salary" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Employer" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="EmployerAddress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="EmploymentStatus" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="MentalAbilityTestDate" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="MentalAbilityTestScore" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="MentalAbilityTestPercentile" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="PersonalityTestDate" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="PersonalityTestScore" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="PersonalityTestPercentile" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="VocationalTestDate" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="VocationalTestScore" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="VocationalTestPercentile" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Disabilities" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="ChronicIllness" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="PreviousAccidents" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="PreviousSurgery" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="MaintenanceMedicines" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Immunization" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="HaveTalkedWithACounselor" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="HaveTalkedWithACounselorWhen" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="HaveTalkedWithACounselorWhy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="HaveTalkedWithAPsychiatrist" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="HaveTalkedWithAPsychiatristWhen" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="HaveTalkedWithAPsychiatristWhy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="HaveTalkedWithAPsychologist" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="HaveTalkedWithAPsychologistWhen" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="HaveTalkedWithAPsychologistWhy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AboutYourself" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Student" Relationship="Testv3Model.FK__Individua__UserI__4316F928" FromRole="IndividualInventoryRecord" ToRole="Student" />
-          <Property Name="NoOfSiblings" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="Student">
           <Key>
             <PropertyRef Name="UserID" />
@@ -1022,7 +996,6 @@
           <Property Name="StudentEmployerAddress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="NumberOfChildren" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUser" Relationship="Testv3Model.FK__Student__UserID__3C69FB99" FromRole="Student" ToRole="AspNetUser" />
-          <NavigationProperty Name="IndividualInventoryRecords" Relationship="Testv3Model.FK__Individua__UserI__4316F928" FromRole="Student" ToRole="IndividualInventoryRecord" />
           <Property Name="IsScholar" Type="Boolean" />
           <NavigationProperty Name="Answers" Relationship="Testv3Model.FK__Answers__UserID__46B27FE2" FromRole="Student" ToRole="Answers" />
           <Property Name="Program" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -1035,6 +1008,8 @@
           <NavigationProperty Name="IncidentReport" Relationship="Testv3Model.FK__IncidentR__Stude__54CB950F" FromRole="Student" ToRole="IncidentReport" />
           <NavigationProperty Name="CounsellingForm" Relationship="Testv3Model.FK__Counselli__Stude__2704CA5F" FromRole="Student" ToRole="CounsellingForm" />
           <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="Appntmnt" Relationship="Testv3Model.FK__Appntmnt__Studen__0E04126B" FromRole="Student" ToRole="Appntmnt" />
+          <NavigationProperty Name="IndividualInventoryRecord" Relationship="Testv3Model.FK__Individua__UserI__0EF836A4" FromRole="Student" ToRole="IndividualInventoryRecord" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Type="Testv3Model.AspNetUser" Role="AspNetUser" Multiplicity="1">
@@ -1074,20 +1049,6 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Student">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Individua__UserI__4316F928">
-          <End Type="Testv3Model.Student" Role="Student" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="Testv3Model.IndividualInventoryRecord" Role="IndividualInventoryRecord" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Student">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="IndividualInventoryRecord">
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -1512,6 +1473,121 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="IndividualInventoryRecord">
+          <Key>
+            <PropertyRef Name="RecordID" />
+          </Key>
+          <Property Name="RecordID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="FathersName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FathersAddress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="FathersAge" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="FathersEducationalAttainment" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FathersOccupation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FathersEmployerAddress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="MothersName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MothersAddress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="MothersAge" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="MothersEducationalAttainment" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MothersOccupation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MothersEmployerAddress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="FamilyDwelling" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="EmergencyContactName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="EmergencyContactNumber" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ParentsStatus" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="EconomicStatus" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="NoOfSiblings" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="PresentlyLivingWith" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="PresentlyStayingAt" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ElementarySchool" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ElementaryAddress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="YearsAttendedElem" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="HighSchool" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="HighSchoolAddress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="YearsAttendedHS" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CollegeSchool" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CollegeAddress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="YearsAttendedCollege" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Honors" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="FaveSubject" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="LeastSubject" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="HowStudieIssFinanced" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="IsCoursePersonalChoice" Type="Boolean" />
+          <Property Name="CourseNotPersonalChoice" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CourseChoiceInfluence" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CoursePersonalChoice" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="WhyMMCC" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ReferredToMMCCBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Position" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Salary" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Employer" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="EmployerAddress" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="EmploymentStatus" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="MentalAbilityTestDate" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="MentalAbilityTestScore" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="MentalAbilityTestPercentile" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalityTestDate" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalityTestScore" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="PersonalityTestPercentile" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="VocationalTestDate" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="VocationalTestScore" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="VocationalTestPercentile" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Disabilities" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ChronicIllness" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="PreviousAccidents" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="PreviousSurgery" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="MaintenanceMedicines" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Immunization" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="HaveTalkedWithACounselor" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="HaveTalkedWithACounselorWhen" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="HaveTalkedWithACounselorWhy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="HaveTalkedWithAPsychiatrist" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="HaveTalkedWithAPsychiatristWhen" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="HaveTalkedWithAPsychiatristWhy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="HaveTalkedWithAPsychologist" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="HaveTalkedWithAPsychologistWhen" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="HaveTalkedWithAPsychologistWhy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AboutYourself" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Student" Relationship="Testv3Model.FK__Individua__UserI__0EF836A4" FromRole="IndividualInventoryRecord" ToRole="Student" />
+        </EntityType>
+        <EntityType Name="Appntmnt">
+          <Key>
+            <PropertyRef Name="Appntmnt_ID" />
+          </Key>
+          <Property Name="Appntmnt_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentUserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Appntmnt_Date" Type="DateTime" Precision="3" />
+          <Property Name="Appntmnt_Time" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Student" Relationship="Testv3Model.FK__Appntmnt__Studen__0E04126B" FromRole="Appntmnt" ToRole="Student" />
+        </EntityType>
+        <Association Name="FK__Appntmnt__Studen__0E04126B">
+          <End Type="Testv3Model.Student" Role="Student" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Testv3Model.Appntmnt" Role="Appntmnt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Appntmnt">
+              <PropertyRef Name="StudentUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Individua__UserI__0EF836A4">
+          <End Type="Testv3Model.Student" Role="Student" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Testv3Model.IndividualInventoryRecord" Role="IndividualInventoryRecord" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="IndividualInventoryRecord">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1571,83 +1647,6 @@
                 <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="IndividualInventoryRecords">
-            <EntityTypeMapping TypeName="Testv3Model.IndividualInventoryRecord">
-              <MappingFragment StoreEntitySet="IndividualInventoryRecord">
-                <ScalarProperty Name="NoOfSiblings" ColumnName="NoOfSiblings" />
-                <ScalarProperty Name="AboutYourself" ColumnName="AboutYourself" />
-                <ScalarProperty Name="HaveTalkedWithAPsychologistWhy" ColumnName="HaveTalkedWithAPsychologistWhy" />
-                <ScalarProperty Name="HaveTalkedWithAPsychologistWhen" ColumnName="HaveTalkedWithAPsychologistWhen" />
-                <ScalarProperty Name="HaveTalkedWithAPsychologist" ColumnName="HaveTalkedWithAPsychologist" />
-                <ScalarProperty Name="HaveTalkedWithAPsychiatristWhy" ColumnName="HaveTalkedWithAPsychiatristWhy" />
-                <ScalarProperty Name="HaveTalkedWithAPsychiatristWhen" ColumnName="HaveTalkedWithAPsychiatristWhen" />
-                <ScalarProperty Name="HaveTalkedWithAPsychiatrist" ColumnName="HaveTalkedWithAPsychiatrist" />
-                <ScalarProperty Name="HaveTalkedWithACounselorWhy" ColumnName="HaveTalkedWithACounselorWhy" />
-                <ScalarProperty Name="HaveTalkedWithACounselorWhen" ColumnName="HaveTalkedWithACounselorWhen" />
-                <ScalarProperty Name="HaveTalkedWithACounselor" ColumnName="HaveTalkedWithACounselor" />
-                <ScalarProperty Name="Immunization" ColumnName="Immunization" />
-                <ScalarProperty Name="MaintenanceMedicines" ColumnName="MaintenanceMedicines" />
-                <ScalarProperty Name="PreviousSurgery" ColumnName="PreviousSurgery" />
-                <ScalarProperty Name="PreviousAccidents" ColumnName="PreviousAccidents" />
-                <ScalarProperty Name="ChronicIllness" ColumnName="ChronicIllness" />
-                <ScalarProperty Name="Disabilities" ColumnName="Disabilities" />
-                <ScalarProperty Name="VocationalTestPercentile" ColumnName="VocationalTestPercentile" />
-                <ScalarProperty Name="VocationalTestScore" ColumnName="VocationalTestScore" />
-                <ScalarProperty Name="VocationalTestDate" ColumnName="VocationalTestDate" />
-                <ScalarProperty Name="PersonalityTestPercentile" ColumnName="PersonalityTestPercentile" />
-                <ScalarProperty Name="PersonalityTestScore" ColumnName="PersonalityTestScore" />
-                <ScalarProperty Name="PersonalityTestDate" ColumnName="PersonalityTestDate" />
-                <ScalarProperty Name="MentalAbilityTestPercentile" ColumnName="MentalAbilityTestPercentile" />
-                <ScalarProperty Name="MentalAbilityTestScore" ColumnName="MentalAbilityTestScore" />
-                <ScalarProperty Name="MentalAbilityTestDate" ColumnName="MentalAbilityTestDate" />
-                <ScalarProperty Name="EmploymentStatus" ColumnName="EmploymentStatus" />
-                <ScalarProperty Name="EmployerAddress" ColumnName="EmployerAddress" />
-                <ScalarProperty Name="Employer" ColumnName="Employer" />
-                <ScalarProperty Name="Salary" ColumnName="Salary" />
-                <ScalarProperty Name="Position" ColumnName="Position" />
-                <ScalarProperty Name="ReferredToMMCCBy" ColumnName="ReferredToMMCCBy" />
-                <ScalarProperty Name="WhyMMCC" ColumnName="WhyMMCC" />
-                <ScalarProperty Name="CoursePersonalChoice" ColumnName="CoursePersonalChoice" />
-                <ScalarProperty Name="CourseChoiceInfluence" ColumnName="CourseChoiceInfluence" />
-                <ScalarProperty Name="CourseNotPersonalChoice" ColumnName="CourseNotPersonalChoice" />
-                <ScalarProperty Name="IsCoursePersonalChoice" ColumnName="IsCoursePersonalChoice" />
-                <ScalarProperty Name="HowStudieIssFinanced" ColumnName="HowStudieIssFinanced" />
-                <ScalarProperty Name="LeastSubject" ColumnName="LeastSubject" />
-                <ScalarProperty Name="FaveSubject" ColumnName="FaveSubject" />
-                <ScalarProperty Name="Honors" ColumnName="Honors" />
-                <ScalarProperty Name="YearsAttendedCollege" ColumnName="YearsAttendedCollege" />
-                <ScalarProperty Name="CollegeAddress" ColumnName="CollegeAddress" />
-                <ScalarProperty Name="CollegeSchool" ColumnName="CollegeSchool" />
-                <ScalarProperty Name="YearsAttendedHS" ColumnName="YearsAttendedHS" />
-                <ScalarProperty Name="HighSchoolAddress" ColumnName="HighSchoolAddress" />
-                <ScalarProperty Name="HighSchool" ColumnName="HighSchool" />
-                <ScalarProperty Name="YearsAttendedElem" ColumnName="YearsAttendedElem" />
-                <ScalarProperty Name="ElementaryAddress" ColumnName="ElementaryAddress" />
-                <ScalarProperty Name="ElementarySchool" ColumnName="ElementarySchool" />
-                <ScalarProperty Name="PresentlyStayingAt" ColumnName="PresentlyStayingAt" />
-                <ScalarProperty Name="PresentlyLivingWith" ColumnName="PresentlyLivingWith" />
-                <ScalarProperty Name="EconomicStatus" ColumnName="EconomicStatus" />
-                <ScalarProperty Name="ParentsStatus" ColumnName="ParentsStatus" />
-                <ScalarProperty Name="EmergencyContactNumber" ColumnName="EmergencyContactNumber" />
-                <ScalarProperty Name="EmergencyContactName" ColumnName="EmergencyContactName" />
-                <ScalarProperty Name="FamilyDwelling" ColumnName="FamilyDwelling" />
-                <ScalarProperty Name="MothersEmployerAddress" ColumnName="MothersEmployerAddress" />
-                <ScalarProperty Name="MothersOccupation" ColumnName="MothersOccupation" />
-                <ScalarProperty Name="MothersEducationalAttainment" ColumnName="MothersEducationalAttainment" />
-                <ScalarProperty Name="MothersAge" ColumnName="MothersAge" />
-                <ScalarProperty Name="MothersAddress" ColumnName="MothersAddress" />
-                <ScalarProperty Name="MothersName" ColumnName="MothersName" />
-                <ScalarProperty Name="FathersEmployerAddress" ColumnName="FathersEmployerAddress" />
-                <ScalarProperty Name="FathersOccupation" ColumnName="FathersOccupation" />
-                <ScalarProperty Name="FathersEducationalAttainment" ColumnName="FathersEducationalAttainment" />
-                <ScalarProperty Name="FathersAge" ColumnName="FathersAge" />
-                <ScalarProperty Name="FathersAddress" ColumnName="FathersAddress" />
-                <ScalarProperty Name="FathersName" ColumnName="FathersName" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="RecordID" ColumnName="RecordID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1875,6 +1874,93 @@
                 <ScalarProperty Name="StudentUserID" ColumnName="StudentUserID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="CounsellingFormID" ColumnName="CounsellingFormID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IndividualInventoryRecord">
+            <EntityTypeMapping TypeName="Testv3Model.IndividualInventoryRecord">
+              <MappingFragment StoreEntitySet="IndividualInventoryRecord">
+                <ScalarProperty Name="AboutYourself" ColumnName="AboutYourself" />
+                <ScalarProperty Name="HaveTalkedWithAPsychologistWhy" ColumnName="HaveTalkedWithAPsychologistWhy" />
+                <ScalarProperty Name="HaveTalkedWithAPsychologistWhen" ColumnName="HaveTalkedWithAPsychologistWhen" />
+                <ScalarProperty Name="HaveTalkedWithAPsychologist" ColumnName="HaveTalkedWithAPsychologist" />
+                <ScalarProperty Name="HaveTalkedWithAPsychiatristWhy" ColumnName="HaveTalkedWithAPsychiatristWhy" />
+                <ScalarProperty Name="HaveTalkedWithAPsychiatristWhen" ColumnName="HaveTalkedWithAPsychiatristWhen" />
+                <ScalarProperty Name="HaveTalkedWithAPsychiatrist" ColumnName="HaveTalkedWithAPsychiatrist" />
+                <ScalarProperty Name="HaveTalkedWithACounselorWhy" ColumnName="HaveTalkedWithACounselorWhy" />
+                <ScalarProperty Name="HaveTalkedWithACounselorWhen" ColumnName="HaveTalkedWithACounselorWhen" />
+                <ScalarProperty Name="HaveTalkedWithACounselor" ColumnName="HaveTalkedWithACounselor" />
+                <ScalarProperty Name="Immunization" ColumnName="Immunization" />
+                <ScalarProperty Name="MaintenanceMedicines" ColumnName="MaintenanceMedicines" />
+                <ScalarProperty Name="PreviousSurgery" ColumnName="PreviousSurgery" />
+                <ScalarProperty Name="PreviousAccidents" ColumnName="PreviousAccidents" />
+                <ScalarProperty Name="ChronicIllness" ColumnName="ChronicIllness" />
+                <ScalarProperty Name="Disabilities" ColumnName="Disabilities" />
+                <ScalarProperty Name="VocationalTestPercentile" ColumnName="VocationalTestPercentile" />
+                <ScalarProperty Name="VocationalTestScore" ColumnName="VocationalTestScore" />
+                <ScalarProperty Name="VocationalTestDate" ColumnName="VocationalTestDate" />
+                <ScalarProperty Name="PersonalityTestPercentile" ColumnName="PersonalityTestPercentile" />
+                <ScalarProperty Name="PersonalityTestScore" ColumnName="PersonalityTestScore" />
+                <ScalarProperty Name="PersonalityTestDate" ColumnName="PersonalityTestDate" />
+                <ScalarProperty Name="MentalAbilityTestPercentile" ColumnName="MentalAbilityTestPercentile" />
+                <ScalarProperty Name="MentalAbilityTestScore" ColumnName="MentalAbilityTestScore" />
+                <ScalarProperty Name="MentalAbilityTestDate" ColumnName="MentalAbilityTestDate" />
+                <ScalarProperty Name="EmploymentStatus" ColumnName="EmploymentStatus" />
+                <ScalarProperty Name="EmployerAddress" ColumnName="EmployerAddress" />
+                <ScalarProperty Name="Employer" ColumnName="Employer" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="ReferredToMMCCBy" ColumnName="ReferredToMMCCBy" />
+                <ScalarProperty Name="WhyMMCC" ColumnName="WhyMMCC" />
+                <ScalarProperty Name="CoursePersonalChoice" ColumnName="CoursePersonalChoice" />
+                <ScalarProperty Name="CourseChoiceInfluence" ColumnName="CourseChoiceInfluence" />
+                <ScalarProperty Name="CourseNotPersonalChoice" ColumnName="CourseNotPersonalChoice" />
+                <ScalarProperty Name="IsCoursePersonalChoice" ColumnName="IsCoursePersonalChoice" />
+                <ScalarProperty Name="HowStudieIssFinanced" ColumnName="HowStudieIssFinanced" />
+                <ScalarProperty Name="LeastSubject" ColumnName="LeastSubject" />
+                <ScalarProperty Name="FaveSubject" ColumnName="FaveSubject" />
+                <ScalarProperty Name="Honors" ColumnName="Honors" />
+                <ScalarProperty Name="YearsAttendedCollege" ColumnName="YearsAttendedCollege" />
+                <ScalarProperty Name="CollegeAddress" ColumnName="CollegeAddress" />
+                <ScalarProperty Name="CollegeSchool" ColumnName="CollegeSchool" />
+                <ScalarProperty Name="YearsAttendedHS" ColumnName="YearsAttendedHS" />
+                <ScalarProperty Name="HighSchoolAddress" ColumnName="HighSchoolAddress" />
+                <ScalarProperty Name="HighSchool" ColumnName="HighSchool" />
+                <ScalarProperty Name="YearsAttendedElem" ColumnName="YearsAttendedElem" />
+                <ScalarProperty Name="ElementaryAddress" ColumnName="ElementaryAddress" />
+                <ScalarProperty Name="ElementarySchool" ColumnName="ElementarySchool" />
+                <ScalarProperty Name="PresentlyStayingAt" ColumnName="PresentlyStayingAt" />
+                <ScalarProperty Name="PresentlyLivingWith" ColumnName="PresentlyLivingWith" />
+                <ScalarProperty Name="NoOfSiblings" ColumnName="NoOfSiblings" />
+                <ScalarProperty Name="EconomicStatus" ColumnName="EconomicStatus" />
+                <ScalarProperty Name="ParentsStatus" ColumnName="ParentsStatus" />
+                <ScalarProperty Name="EmergencyContactNumber" ColumnName="EmergencyContactNumber" />
+                <ScalarProperty Name="EmergencyContactName" ColumnName="EmergencyContactName" />
+                <ScalarProperty Name="FamilyDwelling" ColumnName="FamilyDwelling" />
+                <ScalarProperty Name="MothersEmployerAddress" ColumnName="MothersEmployerAddress" />
+                <ScalarProperty Name="MothersOccupation" ColumnName="MothersOccupation" />
+                <ScalarProperty Name="MothersEducationalAttainment" ColumnName="MothersEducationalAttainment" />
+                <ScalarProperty Name="MothersAge" ColumnName="MothersAge" />
+                <ScalarProperty Name="MothersAddress" ColumnName="MothersAddress" />
+                <ScalarProperty Name="MothersName" ColumnName="MothersName" />
+                <ScalarProperty Name="FathersEmployerAddress" ColumnName="FathersEmployerAddress" />
+                <ScalarProperty Name="FathersOccupation" ColumnName="FathersOccupation" />
+                <ScalarProperty Name="FathersEducationalAttainment" ColumnName="FathersEducationalAttainment" />
+                <ScalarProperty Name="FathersAge" ColumnName="FathersAge" />
+                <ScalarProperty Name="FathersAddress" ColumnName="FathersAddress" />
+                <ScalarProperty Name="FathersName" ColumnName="FathersName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="RecordID" ColumnName="RecordID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Appntmnt">
+            <EntityTypeMapping TypeName="Testv3Model.Appntmnt">
+              <MappingFragment StoreEntitySet="Appntmnt">
+                <ScalarProperty Name="Appntmnt_Time" ColumnName="Appntmnt_Time" />
+                <ScalarProperty Name="Appntmnt_Date" ColumnName="Appntmnt_Date" />
+                <ScalarProperty Name="StudentUserID" ColumnName="StudentUserID" />
+                <ScalarProperty Name="Appntmnt_ID" ColumnName="Appntmnt_ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

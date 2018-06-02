@@ -17,7 +17,6 @@ namespace Testv3.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Student()
         {
-            this.IndividualInventoryRecords = new HashSet<IndividualInventoryRecord>();
             this.Answers = new HashSet<Answers>();
             this.InitialInterview = new HashSet<InitialInterview>();
             this.RoutineInterview = new HashSet<RoutineInterview>();
@@ -26,6 +25,8 @@ namespace Testv3.Models
             this.AnecdotalRecord = new HashSet<AnecdotalRecord>();
             this.IncidentReport = new HashSet<IncidentReport>();
             this.CounsellingForm = new HashSet<CounsellingForm>();
+            this.Appntmnt = new HashSet<Appntmnt>();
+            this.IndividualInventoryRecord = new HashSet<IndividualInventoryRecord>();
         }
     
         public string UserID { get; set; }
@@ -62,8 +63,6 @@ namespace Testv3.Models
     
         public virtual AspNetUser AspNetUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<IndividualInventoryRecord> IndividualInventoryRecords { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Answers> Answers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InitialInterview> InitialInterview { get; set; }
@@ -79,5 +78,9 @@ namespace Testv3.Models
         public virtual ICollection<IncidentReport> IncidentReport { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CounsellingForm> CounsellingForm { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Appntmnt> Appntmnt { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<IndividualInventoryRecord> IndividualInventoryRecord { get; set; }
     }
 }
