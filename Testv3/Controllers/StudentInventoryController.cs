@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -112,7 +113,7 @@ namespace Testv3.Controllers
                 return HttpNotFound();
             }
 
-            IndividualInventoryRecord inventory = db.IndividualInventoryRecords.FirstOrDefault(user => user.UserID == UserID);
+            IndividualInventoryRecord inventory = db.IndividualInventoryRecord.FirstOrDefault(user => user.UserID == UserID);
 
             if (inventory == null)
             {
@@ -163,6 +164,16 @@ namespace Testv3.Controllers
             var employmentStatus = GetAllEmploymentStatus();
             vm.EmploymentStatuses = GetSelectListItems(employmentStatus);
 
+            //
+            var whyMMCC = GetAllWhyMMCC();
+            vm.WhyMMCC_Dropdown = GetSelectListItems(whyMMCC);
+
+            var howYouKnowMMCC = GetAllHowUKnowMMCC();
+            vm.ReferredToMMCCBy_Dropdown = GetSelectListItems(howYouKnowMMCC);
+
+            var whoInfluencedYou = GetAllWhoInfluencedYou();
+            vm.CourseChoiceInfluence_Dropdown = GetSelectListItems(whoInfluencedYou);
+
             if (student.Sex != null)
             {
                 vm.Sex = student.Sex.Trim();
@@ -175,7 +186,8 @@ namespace Testv3.Controllers
 
             vm.Religion = student.Religion;
             vm.Nationality = student.Nationality;
-            vm.Birthdate = student.Birthdate;
+            var date = student.Birthdate.Value.Month + "/" + student.Birthdate.Value.Day + "/" + student.Birthdate.Value.Year;
+            vm.Birthdate = DateTime.Parse(date);
             vm.PhoneNumber = student.PhoneNumber;
             vm.Birthplace = student.Birthplace;
             vm.Dialect = student.Dialect;
@@ -268,12 +280,34 @@ namespace Testv3.Controllers
             vm.FaveSubject = inventory.FaveSubject;
             vm.LeastSubject = inventory.LeastSubject;
             vm.HowStudieIssFinanced = inventory.HowStudieIssFinanced;
-            vm.IsCoursePersonalChoice = inventory.IsCoursePersonalChoice;
-            vm.CourseNotPersonalChoice = inventory.CourseNotPersonalChoice;
-            vm.CourseChoiceInfluence = inventory.CourseChoiceInfluence;
-            vm.CoursePersonalChoice = inventory.CoursePersonalChoice;
-            vm.WhyMMCC = inventory.WhyMMCC;
-            vm.ReferredToMMCCBy = inventory.ReferredToMMCCBy;
+            
+            if (inventory.IsCoursePersonalChoice != null && inventory.IsCoursePersonalChoice == false)
+            {
+                vm.IsCoursePersonalChoice = (bool)inventory.IsCoursePersonalChoice;
+                vm.CourseNotPersonalChoice = inventory.CourseNotPersonalChoice;
+                vm.CoursePersonalChoice = inventory.CoursePersonalChoice;
+            }
+            else
+            {
+                vm.IsCoursePersonalChoice = (bool)inventory.IsCoursePersonalChoice;
+
+            }
+
+            if (inventory.CourseChoiceInfluence != null)
+            {
+                vm.CourseChoiceInfluence = inventory.CourseChoiceInfluence.Trim();
+            }
+
+            if (inventory.WhyMMCC != null)
+            {
+                vm.WhyMMCC = inventory.WhyMMCC.Trim();
+            }
+
+            if (inventory.ReferredToMMCCBy != null)
+            {
+                vm.ReferredToMMCCBy = inventory.ReferredToMMCCBy.Trim();
+            }
+
             vm.Position = inventory.Position;
 
             if (vm.EmploymentStatus != null)
@@ -340,7 +374,7 @@ namespace Testv3.Controllers
                 return HttpNotFound();
             }
 
-            IndividualInventoryRecord inventory = db.IndividualInventoryRecords.FirstOrDefault(user => user.UserID == UserID);
+            IndividualInventoryRecord inventory = db.IndividualInventoryRecord.FirstOrDefault(user => user.UserID == UserID);
 
             if (inventory == null)
             {
@@ -496,7 +530,12 @@ namespace Testv3.Controllers
             vm.FaveSubject = inventory.FaveSubject;
             vm.LeastSubject = inventory.LeastSubject;
             vm.HowStudieIssFinanced = inventory.HowStudieIssFinanced;
-            vm.IsCoursePersonalChoice = inventory.IsCoursePersonalChoice;
+
+            if (inventory.IsCoursePersonalChoice != null)
+            {
+                vm.IsCoursePersonalChoice = (bool)inventory.IsCoursePersonalChoice;
+            }
+
             vm.CourseNotPersonalChoice = inventory.CourseNotPersonalChoice;
             vm.CourseChoiceInfluence = inventory.CourseChoiceInfluence;
             vm.CoursePersonalChoice = inventory.CoursePersonalChoice;
@@ -556,7 +595,7 @@ namespace Testv3.Controllers
             var name = db.Students.Find(UserID);
             var student = name.StudentLastName + ", " + name.StudentFirstName;
 
-            IndividualInventoryRecord check = db.IndividualInventoryRecords.FirstOrDefault(x => x.UserID == UserID);
+            IndividualInventoryRecord check = db.IndividualInventoryRecord.FirstOrDefault(x => x.UserID == UserID);
             if (check == null)
             {
                 TempData["Error"] = "This user has no record yet!";
@@ -597,17 +636,17 @@ namespace Testv3.Controllers
                 return HttpNotFound();
             }
 
-            var userInv = db.IndividualInventoryRecords.FirstOrDefault(d => d.UserID == currentUserId);
+            var userInv = db.IndividualInventoryRecord.FirstOrDefault(d => d.UserID == currentUserId);
 
             if (userInv == null)
             {
-                userInv = db.IndividualInventoryRecords.Create();
+                userInv = db.IndividualInventoryRecord.Create();
                 userInv.UserID = currentUserId;
-                db.IndividualInventoryRecords.Add(userInv);
+                db.IndividualInventoryRecord.Add(userInv);
                 db.SaveChanges();
             }
 
-            IndividualInventoryRecord inventory = db.IndividualInventoryRecords.FirstOrDefault(user => user.UserID == currentUserId);
+            IndividualInventoryRecord inventory = db.IndividualInventoryRecord.FirstOrDefault(user => user.UserID == currentUserId);
 
             if (inventory == null)
             {
@@ -657,6 +696,16 @@ namespace Testv3.Controllers
 
             var employmentStatus = GetAllEmploymentStatus();
             vm.EmploymentStatuses = GetSelectListItems(employmentStatus);
+
+            //
+            var whyMMCC = GetAllWhyMMCC();
+            vm.WhyMMCC_Dropdown = GetSelectListItems(whyMMCC);
+
+            var howYouKnowMMCC = GetAllHowUKnowMMCC();
+            vm.ReferredToMMCCBy_Dropdown = GetSelectListItems(howYouKnowMMCC);
+
+            var whoInfluencedYou = GetAllWhoInfluencedYou();
+            vm.CourseChoiceInfluence_Dropdown = GetSelectListItems(whoInfluencedYou);
 
             if (student.Sex != null)
             {
@@ -763,12 +812,34 @@ namespace Testv3.Controllers
             vm.FaveSubject = inventory.FaveSubject;
             vm.LeastSubject = inventory.LeastSubject;
             vm.HowStudieIssFinanced = inventory.HowStudieIssFinanced;
-            vm.IsCoursePersonalChoice = inventory.IsCoursePersonalChoice;
-            vm.CourseNotPersonalChoice = inventory.CourseNotPersonalChoice;
-            vm.CourseChoiceInfluence = inventory.CourseChoiceInfluence;
-            vm.CoursePersonalChoice = inventory.CoursePersonalChoice;
-            vm.WhyMMCC = inventory.WhyMMCC;
-            vm.ReferredToMMCCBy = inventory.ReferredToMMCCBy;
+
+            if (inventory.IsCoursePersonalChoice != null && inventory.IsCoursePersonalChoice == false)
+            {
+                vm.IsCoursePersonalChoice = (bool) inventory.IsCoursePersonalChoice;
+                vm.CourseNotPersonalChoice = inventory.CourseNotPersonalChoice;
+                vm.CoursePersonalChoice = inventory.CoursePersonalChoice;
+            }
+            else if (inventory.IsCoursePersonalChoice != null && inventory.IsCoursePersonalChoice == true)
+            {
+                vm.IsCoursePersonalChoice = (bool) inventory.IsCoursePersonalChoice;
+
+            }
+
+            if (inventory.CourseChoiceInfluence != null)
+            {
+                vm.CourseChoiceInfluence = inventory.CourseChoiceInfluence.Trim();
+            }
+
+            if (inventory.WhyMMCC != null)
+            {
+                vm.WhyMMCC = inventory.WhyMMCC.Trim();
+            }
+
+            if (inventory.ReferredToMMCCBy != null)
+            {
+                vm.ReferredToMMCCBy = inventory.ReferredToMMCCBy.Trim();
+            }
+
             vm.Position = inventory.Position;
 
             if (vm.EmploymentStatus != null)
@@ -834,13 +905,13 @@ namespace Testv3.Controllers
                 db.Students.Add(u);
             }
 
-            var userInv = db.IndividualInventoryRecords.FirstOrDefault(d => d.UserID == currentUserId);
+            var userInv = db.IndividualInventoryRecord.FirstOrDefault(d => d.UserID == currentUserId);
 
             if (userInv == null)
             {
-                userInv = db.IndividualInventoryRecords.Create();
+                userInv = db.IndividualInventoryRecord.Create();
                 userInv.UserID = currentUserId;
-                db.IndividualInventoryRecords.Add(userInv);
+                db.IndividualInventoryRecord.Add(userInv);
             }
 
 
@@ -878,6 +949,15 @@ namespace Testv3.Controllers
             var employmentStatus = GetAllEmploymentStatus();
             vm.EmploymentStatuses = GetSelectListItems(employmentStatus);
 
+            //
+            var whyMMCC = GetAllWhyMMCC();
+            vm.WhyMMCC_Dropdown = GetSelectListItems(whyMMCC);
+
+            var howYouKnowMMCC = GetAllHowUKnowMMCC();
+            vm.ReferredToMMCCBy_Dropdown = GetSelectListItems(howYouKnowMMCC);
+
+            var whoInfluencedYou = GetAllWhoInfluencedYou();
+            vm.CourseChoiceInfluence_Dropdown = GetSelectListItems(whoInfluencedYou);
 
             if (ModelState.IsValid)
             {
@@ -1016,12 +1096,39 @@ namespace Testv3.Controllers
                 userInv.FaveSubject = vm.FaveSubject;
                 userInv.LeastSubject = vm.LeastSubject;
                 userInv.HowStudieIssFinanced = vm.HowStudieIssFinanced;
-                userInv.IsCoursePersonalChoice = vm.IsCoursePersonalChoice;
-                userInv.CourseNotPersonalChoice = vm.CourseNotPersonalChoice;
-                userInv.CourseChoiceInfluence = vm.CourseChoiceInfluence;
-                userInv.CoursePersonalChoice = vm.CoursePersonalChoice;
-                userInv.WhyMMCC = vm.WhyMMCC;
-                userInv.ReferredToMMCCBy = vm.ReferredToMMCCBy;
+
+                bool IsCoursePersonalChoice = false;
+                if (vm.IsCoursePersonalChoice == true)
+                {
+                    IsCoursePersonalChoice = true;
+                    userInv.CourseNotPersonalChoice = "N/A";
+                    userInv.CoursePersonalChoice = "N/A";
+
+                }
+                else
+                {
+                    IsCoursePersonalChoice = false;
+                    userInv.CourseNotPersonalChoice = vm.CourseNotPersonalChoice;
+                    userInv.CoursePersonalChoice = vm.CoursePersonalChoice;
+                }
+
+                userInv.IsCoursePersonalChoice = IsCoursePersonalChoice;
+
+                if (vm.CourseChoiceInfluence != null)
+                {
+                    userInv.CourseChoiceInfluence = vm.CourseChoiceInfluence.Trim();
+                }
+
+                if (vm.WhyMMCC != null)
+                {
+                    userInv.WhyMMCC = vm.WhyMMCC.Trim();
+                }
+
+                if (vm.ReferredToMMCCBy != null)
+                {
+                    userInv.ReferredToMMCCBy = vm.ReferredToMMCCBy.Trim();
+                }
+
                 userInv.Position = vm.Position;
 
                 if (vm.EmploymentStatus != null)
@@ -1071,10 +1178,147 @@ namespace Testv3.Controllers
             }
             else
             {
-                TempData["Error"] = "Error: Details not updated!";
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                TempData["Error"] = "Error: Details not updated! Please answer all required fields.";
+                
             }
 
             return View(vm);
+        }
+
+
+        public ActionResult Charts()
+        {
+
+            return View();
+        }
+        public JsonResult GetCount()
+        {
+            List<ResultViewModel> list = new List<ResultViewModel>();
+
+                ResultViewModel vm = new ResultViewModel();
+                int TotalMale = db.Students
+                        .Where(x => x.Sex == "Male")
+                        .Count();
+
+                int TotalFemale = db.Students
+                            .Where(x => x.Sex == "Female")
+                            .Count();
+
+                int TotalScholar = db.Students
+                            .Where(x => x.IsScholar == true)
+                            .Count();
+
+                int TotalNotScholar = db.Students
+                            .Where(x => x.IsScholar == false)
+                            .Count();
+
+                int TotalPersonalChoice = db.IndividualInventoryRecord
+                                .Where(x => x.IsCoursePersonalChoice == true)
+                                .Count();
+
+                int TotalNotPersonalChoice = db.IndividualInventoryRecord
+                            .Where(x => x.IsCoursePersonalChoice == false)
+                            .Count();
+
+                vm.countMale = TotalMale;
+                vm.countFemale = TotalFemale;
+                vm.countScholar = TotalScholar;
+                vm.countNotScholar = TotalNotScholar;
+                vm.countTotalPersonalChoice = TotalPersonalChoice;
+                vm.countTotalNotPersonalChoice = TotalNotPersonalChoice;
+
+                list.Add(vm);
+
+            return Json(list, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public JsonResult GetDropdownCount()
+        {
+            var WhyMMCCList = GetAllWhyMMCC().ToList();
+            List<ResultViewModel> list0 = new List<ResultViewModel>();
+            foreach (var item in WhyMMCCList)
+            {
+                ResultViewModel vm = new ResultViewModel();
+
+                var countWhyMMCC = (from tagList in db.IndividualInventoryRecord
+                                 where tagList.WhyMMCC == item
+                                 group tagList by new { tagList.WhyMMCC } into g
+                                 orderby g.Count() descending
+                                 select g.Count()
+                                 ).SingleOrDefault();
+
+                vm.WhyMMCC = item.ToString();
+                vm.countWhyMMCC = countWhyMMCC;
+
+                list0.Add(vm);
+
+            }
+
+            //
+            var HowMMCCList = GetAllWhyMMCC().ToList();
+            foreach (var item in HowMMCCList)
+            {
+                ResultViewModel vm = new ResultViewModel();
+
+                var countWhyMMCC = (from tagList in db.IndividualInventoryRecord
+                                    where tagList.ReferredToMMCCBy == item
+                                    group tagList by new { tagList.ReferredToMMCCBy } into g
+                                    orderby g.Count() descending
+                                    select g.Count()
+                                 ).SingleOrDefault();
+
+                vm.WhyMMCC = item.ToString();
+                vm.countWhyMMCC = countWhyMMCC;
+
+                list0.Add(vm);
+
+            }
+
+
+            return Json(list0, JsonRequestBehavior.AllowGet);
+
+        }
+
+
+        private IEnumerable<string> GetAllWhoInfluencedYou()
+        {
+            return new List<string>
+            {
+                "Parents/Relatives",
+                "Peers/Friends",
+                "Teacher",
+                "School/Particular Subject",
+                "Books/Literature",
+                "Film/TV/Radio",
+                "Internet",
+                "I don't know"
+            };
+        }
+
+        private IEnumerable<string> GetAllHowUKnowMMCC()
+        {
+            return new List<string>
+            {
+                "Social Media",
+                "School/Teachers",
+                "Parent/Relatives",
+                "Acquaintance/Peers",
+                "Newspaper",
+                "MMCC Website"
+            };
+        }
+
+        private IEnumerable<string> GetAllWhyMMCC()
+        {
+            return new List<string>
+            {
+                "Reputation of the school",
+                "People I know studied in MMCC",
+                "Lower fees/cost of living",
+                "Near home/convenience"
+            };
         }
 
         private IEnumerable<string> GetAllEducationalAttainment()
