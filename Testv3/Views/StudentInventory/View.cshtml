@@ -7,6 +7,10 @@
 @section Scripts{
     <script>
         $(function () {
+            $(".dateInput").datepicker({
+                dateFormat: "mm/dd/yy"
+            }).datepicker("option", "maxDate", new Date());
+
             $('input[type=text]').attr('disabled', 'disabled');
             $('input[type=datetime]').attr('disabled', 'disabled');
             $('select').attr('disabled', 'disabled');
@@ -18,6 +22,15 @@
             else {
                 $('#IfMarriedPanel').hide();
             }
+
+            if ($('input[name=IsCoursePersonalChoice]:checked').val() == "false") {
+                $('#IfCourseNotPersonalChoiceTxt').show();
+            }
+            else {
+                $('#IfCourseNotPersonalChoiceTxt').hide();
+            }
+
+
 
             $("#btnPrint").click(function () {
                 try {
@@ -151,19 +164,16 @@
                                                             <div class="input-group-addon">
                                                                 <i class="fa fa-calendar"></i>
                                                             </div>
-                                                            @Html.EditorFor(model => model.Birthdate, new { htmlAttributes = new { @class = "form-control", @placeholder = "MM/DD/YY", style = "min-width:100%;text-align:center" } })
-                                                            @Html.ValidationMessageFor(model => model.Birthdate, "", new { @class = "text-danger" })
+                                                            @Html.EditorFor(model => model.Birthdate, new { htmlAttributes = new { @class = "form-control dateInput", style = "min-width:100%;text-align:center" } })
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-3">
                                                         @Html.Label("Birth place")<br />
                                                         @Html.EditorFor(model => model.Birthplace, new { htmlAttributes = new { @class = "form-control", @placeholder = "Birth place", style = "min-width:100%;text-align:center" } })
-                                                        @Html.ValidationMessageFor(model => model.Birthplace, "", new { @class = "text-danger" })
                                                     </div>
                                                     <div class="col-sm-3">
                                                         @Html.Label("Birth Rank")<br />
                                                         @Html.EditorFor(model => model.BirthRank, new { htmlAttributes = new { @class = "form-control", @placeholder = "e.g. 1st, 2nd, 3rd", style = "min-width:100%;text-align:center" } })
-                                                        @Html.ValidationMessageFor(model => model.BirthRank, "", new { @class = "text-danger" })
                                                     </div>
                                                 </div>
                                             </div>
@@ -173,13 +183,11 @@
                                     <div class="controls form-inline">
                                         @Html.Label("Languages and Dialect: ")
                                         @Html.EditorFor(model => model.Dialect, new { htmlAttributes = new { @class = "form-control", @placeholder = "Languages and dialects spoken", @style = "min-width: 98%;" } })
-                                        @Html.ValidationMessageFor(model => model.Dialect, "", new { @class = "text-danger" })
                                     </div>
                                     <br />
                                     <div class="controls form-inline">
                                         @Html.Label("Hobbies and Interests: ")
                                         @Html.TextAreaFor(model => model.Hobbies, 3, 100, new { @class = "form-control", @style = "min-width: 98%;" })
-                                        @Html.ValidationMessageFor(model => model.Hobbies, "", new { @class = "text-danger" })
                                     </div>
                                     <br />
                                     <div class="form-group">
@@ -597,13 +605,11 @@
                                                     <div class="col-sm-4">
                                                         @Html.Label("Favorite Subject/s in Highschool")<br />
                                                         @Html.EditorFor(model => model.FaveSubject, new { htmlAttributes = new { @class = "form-control", @style = "min-width:100%;text-align:center" } })
-                                                        @Html.ValidationMessageFor(model => model.FaveSubject, "", new { @class = "text-danger" })
                                                     </div>
 
                                                     <div class="col-sm-4">
                                                         @Html.Label("Least Liked Subject/s in Highschool")<br />
                                                         @Html.EditorFor(model => model.LeastSubject, new { htmlAttributes = new { @class = "form-control", @style = "min-width:100%;text-align:center" } })
-                                                        @Html.ValidationMessageFor(model => model.LeastSubject, "", new { @class = "text-danger" })
                                                     </div>
                                                 </div>
 
@@ -616,8 +622,11 @@
 
                                                 <div class="controls form-inline">
                                                     <div class="col-sm-4">
-                                                        @Html.Label("Is your present course your personal choice?")<br />
-                                                        @Html.EditorFor(model => model.IsCoursePersonalChoice, new { htmlAttributes = new { @class = "form-control", @style = "min-width:100%;text-align:center" } })
+                                                        <span id="IsCoursePersonalChoiceRdBtn">
+                                                            @Html.Label("Is your present course your personal choice?")<br />
+                                                            @Html.RadioButtonFor(model => Model.IsCoursePersonalChoice, "true") Yes &nbsp;&nbsp;&nbsp;&nbsp;
+                                                            @Html.RadioButtonFor(model => Model.IsCoursePersonalChoice, "false")  No
+                                                        </span>
                                                     </div>
                                                 </div>
 
@@ -625,7 +634,7 @@
                                                     <div class="col-sm-8">
                                                         <br />
                                                         @Html.Label("Who influenced you to take the course?")<br />
-                                                        @Html.EditorFor(model => model.CourseChoiceInfluence, new { htmlAttributes = new { @class = "form-control", @style = "min-width:100%;text-align:center" } })
+                                                        @Html.DropDownListFor(m => m.CourseChoiceInfluence, Model.CourseChoiceInfluence_Dropdown, "Select", new { @class = "form-control", @style = "min-width:100%;text-align:center" })
                                                     </div>
                                                 </div>
                                                 <div class="controls form-inline">
@@ -645,13 +654,13 @@
                                                     <div class="col-sm-8">
                                                         <br />
                                                         @Html.Label("Why did you choose this school?")<br />
-                                                        @Html.TextAreaFor(model => model.WhyMMCC, 3, 100, new { @class = "form-control", @style = "min-width: 100%;" })                                                        @Html.ValidationMessageFor(model => model.CollegeSchool, "", new { @class = "text-danger" })
+                                                        @Html.DropDownListFor(m => m.WhyMMCC, Model.WhyMMCC_Dropdown, "Select", new { @class = "form-control", @style = "min-width:100%;text-align:center" })
                                                     </div>
 
                                                     <div class="col-sm-4">
                                                         <br />
                                                         @Html.Label("Who introduced you to this school/How did you know about MMCC?")<br />
-                                                        @Html.EditorFor(model => model.ReferredToMMCCBy, new { htmlAttributes = new { @class = "form-control", @style = "min-width:100%;text-align:center" } })
+                                                        @Html.DropDownListFor(m => m.ReferredToMMCCBy, Model.ReferredToMMCCBy_Dropdown, "Select", new { @class = "form-control", @style = "min-width:100%;text-align:center" })
                                                     </div>
                                                 </div>
 
