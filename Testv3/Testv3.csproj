@@ -228,6 +228,9 @@
     <Compile Include="Models\Answers.cs">
       <DependentUpon>Testv3.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Appntmnt.cs">
+      <DependentUpon>Testv3.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Appointment.cs" />
     <Compile Include="Models\AppointmentModel.cs" />
     <Compile Include="Models\AspNetRole.cs">
@@ -2475,6 +2478,7 @@
     <Content Include="Views\Appointments\Edit.cshtml" />
     <Content Include="Views\Appointments\Index.cshtml" />
     <Content Include="Views\Appointments\MyHistory.cshtml" />
+    <Content Include="Views\StudentInventory\Charts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
