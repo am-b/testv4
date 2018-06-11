@@ -23,10 +23,14 @@ namespace Testv3.Models
         public int countTotalNotPersonalChoice { get; set; }
 
         //new vm
-        //public int countReferredToMMCCBy { get; set; }
         public string WhyMMCC { get; set; }
         public int countWhyMMCC { get; set; }
-        //public int countCourseChoiceInfluence{ get; set; }
-        //public int countIsPersonalChoice { get; set; }
+
+        public string HowMMCC { get; set; }
+        public int countHowMMCC { get; set; }
+
+        public string WhoInfluenced { get; set; }
+        public int countWhoInfluenced { get; set; }
+
     }
 }

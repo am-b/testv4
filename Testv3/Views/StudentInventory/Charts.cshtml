@@ -4,6 +4,7 @@
 }
 
 <div class="row">
+    @*Gender*@
     <div class="col-lg-6 col-xs-6">
         <div class="box">
             <div class="box-header">
@@ -22,7 +23,7 @@
             </div>
         </div>
     </div>
-
+    @*Scholars*@
     <div class="col-lg-6 col-xs-6">
         <div class="box">
             <div class="box-header">
@@ -46,6 +47,7 @@
 
 
 <div class="row">
+    @*Personal choice*@
     <div class="col-lg-6 col-xs-6">
         <div class="box">
             <div class="box-header">
@@ -65,6 +67,7 @@
         </div>
      </div>
 
+    @*Who*@
     <div class="col-lg-6 col-xs-6">
         <div class="box">
             <div class="box-header">
@@ -78,7 +81,7 @@
             </div>
             <div id="LOL3" class="collapse in">
                 <div class="box-body">
-                    @*<canvas id="choice-pie"></canvas>*@
+                    <canvas id="who-pie"></canvas>
                 </div>
             </div>
         </div>
@@ -86,6 +89,7 @@
 </div>
 
 <div class="row">
+    @*Why*@
     <div class="col-lg-6 col-xs-6">
         <div class="box">
             <div class="box-header">
@@ -99,12 +103,12 @@
             </div>
             <div id="LOL4" class="collapse in">
                 <div class="box-body">
-                    @*<canvas id="choice-pie"></canvas>*@
+                    <canvas id="why-pie"></canvas>
                 </div>
             </div>
         </div>
     </div>
-
+    @*How*@
     <div class="col-lg-6 col-xs-6">
         <div class="box">
             <div class="box-header">
@@ -118,7 +122,7 @@
             </div>
             <div id="LOL5" class="collapse in">
                 <div class="box-body">
-                    @*<canvas id="choice-pie"></canvas>*@
+                    <canvas id="how-pie"></canvas>
                 </div>
             </div>
         </div>
@@ -216,6 +220,115 @@
                     responsive: false
                 };
 
+                //////
+                var optionPieChart = {
+                    legend: { position: 'right' },
+                    responsive: true
+                };
+
+                //Why MMCC?
+                var WhyPieChart = {
+                    labels: ["Reputation of the school",
+                        "People I know studied in MMCC",
+                        "Lower fees/cost of living",
+                        "Near home/convenience"],
+                    datasets: [{
+                        backgroundColor:
+                        [
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(255, 205, 86, 0.2)",
+                            "rgba(133, 102, 255, 0.2)",
+                            "rgba(98, 205, 86, 0.2)"
+                        ],
+                        borderColor:
+                        [
+                            "rgb(153, 102, 255)",
+                            "rgba(255, 205, 86, 0.2)",
+                            "rgba(133, 102, 255, 0.2)",
+                            "rgba(98, 205, 86, 0.2)"
+                        ],
+                        borderWidth: 1,
+                        data: []
+                    }]
+
+                }
+
+                //How 
+                var HowPieChart = {
+                    labels: ["Social Media",
+                        "School/Teachers",
+                        "Parent/Relatives",
+                        "Acquaintance/Peers",
+                        "Newspaper",
+                        "MMCC Website"],
+                    datasets: [{
+                        backgroundColor:
+                        [
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(255, 205, 86, 0.2)",
+                            "rgba(133, 102, 255, 0.2)",
+                            "rgba(98, 205, 86, 0.2)",
+                            "rgba(122, 21, 255, 0.2)",
+                            "rgba(189, 102, 86, 0.2)"
+                        ],
+                        borderColor:
+                        [
+                            "rgb(153, 102, 255)",
+                            "rgba(255, 205, 86, 0.2)",
+                            "rgba(133, 102, 255, 0.2)",
+                            "rgba(98, 205, 86, 0.2)",
+                            "rgba(122, 21, 255, 0.2)",
+                            "rgba(189, 102, 86, 0.2)"
+                        ],
+                        borderWidth: 1,
+                        data: []
+                    }]
+
+                }
+
+
+                //Who 
+                var WhoPieChart = {
+                    labels: ["Parents/Relatives",
+                        "Peers/Friends",
+                        "Teacher",
+                        "School/Particular Subject",
+                        "Books/Literature",
+                        "Film/TV/Radio",
+                        "Internet",
+                        "I don't know"],
+                    datasets: [{
+                        backgroundColor:
+                        [
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(255, 205, 86, 0.2)",
+                            "rgba(54, 162, 235, 0.2)",
+                            "rgba(255, 99, 132, 0.2)",
+                            "rgba(255, 159, 64, 0.2)",
+                            "rgba(255, 205, 86, 0.2)",
+                            "rgba(175, 192, 192, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(201, 203, 207, 0.2)"
+                        ],
+                        borderColor:
+                        [
+                            "rgb(153, 102, 255)",
+                            "rgba(255, 205, 86, 0.2)",
+                            "rgba(54, 162, 235, 0.2)",
+                            "rgba(255, 99, 132, 0.2)",
+                            "rgba(255, 159, 64, 0.2)",
+                            "rgba(255, 205, 86, 0.2)",
+                            "rgba(75, 192, 192, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(201, 203, 207, 0.2)"
+                        ],
+                        borderWidth: 1,
+                        data: []
+                    }]
+
+                }
+
+
                 //render charts
                 $.ajax({
                     url: '/StudentInventory/GetCount',
@@ -255,7 +368,62 @@
                     }
                 });
 
+                $.ajax({
+                    url: '/StudentInventory/GetWhyMMCCListCount',
+                    success: function (responsePie) {
+                        $.each(responsePie, function (i, item) {
+                            WhyPieChart.datasets[0].data.push(parseInt(item.countWhyMMCC));
+                        })
 
+                        var ctx0 = document.getElementById("why-pie").getContext("2d");
+                        var newPieChart = new Chart(ctx0,
+                            {
+                                type: 'pie',
+                                data: WhyPieChart,
+                                options: optionPieChart
+                            });
+
+
+                    }
+                });
+
+                $.ajax({
+                    url: '/StudentInventory/GetHowMMCCListCount',
+                    success: function (responsePie) {
+                        $.each(responsePie, function (i, item) {
+                            HowPieChart.datasets[0].data.push(parseInt(item.countHowMMCC));
+                        })
+
+                        var ctx0 = document.getElementById("how-pie").getContext("2d");
+                        var newPieChart = new Chart(ctx0,
+                            {
+                                type: 'pie',
+                                data: HowPieChart,
+                                options: optionPieChart
+                            });
+
+
+                    }
+                });
+
+                $.ajax({
+                    url: '/StudentInventory/GetWhoInfluencedMMCCListCount',
+                    success: function (responsePie) {
+                        $.each(responsePie, function (i, item) {
+                            WhoPieChart.datasets[0].data.push(parseInt(item.countWhoInfluenced));
+                        })
+
+                        var ctx0 = document.getElementById("who-pie").getContext("2d");
+                        var newPieChart = new Chart(ctx0,
+                            {
+                                type: 'pie',
+                                data: WhoPieChart,
+                                options: optionPieChart
+                            });
+
+
+                    }
+                });
 
             </script>
         }

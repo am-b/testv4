@@ -1234,10 +1234,12 @@ namespace Testv3.Controllers
 
         }
 
-        public JsonResult GetDropdownCount()
+        public JsonResult GetWhyMMCCListCount()
         {
             var WhyMMCCList = GetAllWhyMMCC().ToList();
             List<ResultViewModel> list0 = new List<ResultViewModel>();
+
+            //Why MMCC?
             foreach (var item in WhyMMCCList)
             {
                 ResultViewModel vm = new ResultViewModel();
@@ -1256,21 +1258,59 @@ namespace Testv3.Controllers
 
             }
 
-            //
-            var HowMMCCList = GetAllWhyMMCC().ToList();
+            return Json(list0, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public JsonResult GetHowMMCCListCount()
+        {
+            List<ResultViewModel> list0 = new List<ResultViewModel>();
+
+            //How did you know about MMCC?
+            var HowMMCCList = GetAllHowUKnowMMCC().ToList();
             foreach (var item in HowMMCCList)
             {
                 ResultViewModel vm = new ResultViewModel();
 
-                var countWhyMMCC = (from tagList in db.IndividualInventoryRecord
+                var countHowMMCC = (from tagList in db.IndividualInventoryRecord
                                     where tagList.ReferredToMMCCBy == item
                                     group tagList by new { tagList.ReferredToMMCCBy } into g
                                     orderby g.Count() descending
                                     select g.Count()
                                  ).SingleOrDefault();
 
-                vm.WhyMMCC = item.ToString();
-                vm.countWhyMMCC = countWhyMMCC;
+                vm.HowMMCC = item.ToString();
+                vm.countHowMMCC = countHowMMCC;
+
+                list0.Add(vm);
+
+            }
+
+            
+
+            return Json(list0, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public JsonResult GetWhoInfluencedMMCCListCount()
+        {
+            List<ResultViewModel> list0 = new List<ResultViewModel>();
+
+            //Who influenced you to take the course?
+            var WhoInfluencedMMCCList = GetAllWhoInfluencedYou().ToList();
+            foreach (var item in WhoInfluencedMMCCList)
+            {
+                ResultViewModel vm = new ResultViewModel();
+
+                var countWhoInfluenced = (from tagList in db.IndividualInventoryRecord
+                                          where tagList.CourseChoiceInfluence == item
+                                          group tagList by new { tagList.CourseChoiceInfluence } into g
+                                          orderby g.Count() descending
+                                          select g.Count()
+                                 ).SingleOrDefault();
+
+                vm.WhoInfluenced = item.ToString();
+                vm.countWhoInfluenced = countWhoInfluenced;
 
                 list0.Add(vm);
 
