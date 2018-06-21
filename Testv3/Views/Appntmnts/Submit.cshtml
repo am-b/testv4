@@ -1,0 +1,38 @@
+﻿@model Testv3.Models.Appntmnt
+
+@{
+    ViewBag.Title = "Submit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <h2>Appointment Details</h2>
+    <dl class="dl-horizontal">
+        <dt>
+            Date:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Appntmnt_Date)
+        </dd>
+
+        <dt>
+            Time:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Appntmnt_Time)
+        </dd>
+    </dl>
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-actions no-color">
+        <input type="submit" value="Submit" class="btn btn-default" /> |
+    </div>
+}
+<p>
+    @Html.ActionLink("Cancel", "Index")
+</p>

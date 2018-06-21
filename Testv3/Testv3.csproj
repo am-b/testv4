@@ -202,6 +202,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AnecdotalRecordsController.cs" />
     <Compile Include="Controllers\AnnouncementsController.cs" />
+    <Compile Include="Controllers\AppntmntsController.cs" />
     <Compile Include="Controllers\AppointmentsController.cs" />
     <Compile Include="Controllers\CounsellingContractsController.cs" />
     <Compile Include="Controllers\CounsellingFormsController.cs" />
@@ -2359,19 +2360,24 @@
       <DependentUpon>Testv3.edmx</DependentUpon>
     </Content>
     <Content Include="App_Browsers\qt.browser" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\CustomProfile1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\Chart.min.js" />
-    <Content Include="Scripts\jquery-3.1.1.js" />
-    <Content Include="Scripts\jquery-3.1.1.min.js" />
-    <Content Include="Scripts\jquery-3.1.1.slim.js" />
-    <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
-    <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
-    <Content Include="Scripts\jquery-3.1.1.min.map" />
+    <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\DatePickerReady.js" />
+    <Content Include="Scripts\jquery-3.3.1.js" />
+    <Content Include="Scripts\jquery-3.3.1.min.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.3.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
+    <Content Include="Scripts\jquery.ui.datepicker.js" />
+    <Content Include="Scripts\jquery.ui.datepicker.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.js" />
@@ -2383,6 +2389,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\tether.js" />
     <Content Include="Scripts\tether.min.js" />
+    <Content Include="Scripts\TimePickerReady.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -2479,6 +2486,14 @@
     <Content Include="Views\Appointments\Index.cshtml" />
     <Content Include="Views\Appointments\MyHistory.cshtml" />
     <Content Include="Views\StudentInventory\Charts.cshtml" />
+    <Content Include="Views\Appntmnts\Create.cshtml" />
+    <Content Include="Views\Appntmnts\Delete.cshtml" />
+    <Content Include="Views\Appntmnts\Details.cshtml" />
+    <Content Include="Views\Appntmnts\Edit.cshtml" />
+    <Content Include="Views\Appntmnts\Index.cshtml" />
+    <Content Include="Views\Appntmnts\EmailRequest.cshtml" />
+    <Content Include="Views\Appntmnts\ProcessRequest.cshtml" />
+    <Content Include="Views\Appntmnts\Submit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
