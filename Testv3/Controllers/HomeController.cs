@@ -42,6 +42,26 @@ namespace Testv3.Controllers
             GetCurrentUserInViewBag();
 
             var list = db.Announcements.ToList().ToPagedList(page, recordsPerPage);
+
+            var students = db.IndividualInventoryRecord
+                    .OrderBy(x => x.RecordID)
+                    .ToList();
+
+
+            foreach (var item in students)
+            {
+
+                var check = db.IndividualInventoryRecord
+                    .Where(x => x.RecordID == item.RecordID && x.UserID == currentUserId && x.UserID == currentUserId)
+                    .ToList();
+
+                if (check.Count() == 0)
+                {
+                    TempData["NoIndividualRecord"] = "Please complete your Individual record!";
+                    return RedirectToAction("IndividualRecord", "StudentInventory");
+                }
+            }
+
             return View(list);
         }
 

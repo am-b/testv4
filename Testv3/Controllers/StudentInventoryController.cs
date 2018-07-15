@@ -186,8 +186,13 @@ namespace Testv3.Controllers
 
             vm.Religion = student.Religion;
             vm.Nationality = student.Nationality;
-            var date = student.Birthdate.Value.Month + "/" + student.Birthdate.Value.Day + "/" + student.Birthdate.Value.Year;
-            vm.Birthdate = DateTime.Parse(date);
+
+            if (student.Birthdate != null)
+            {
+                var date = student.Birthdate.Value.Month + "/" + student.Birthdate.Value.Day + "/" + student.Birthdate.Value.Year;
+                vm.Birthdate = DateTime.Parse(date);
+            }
+
             vm.PhoneNumber = student.PhoneNumber;
             vm.Birthplace = student.Birthplace;
             vm.Dialect = student.Dialect;
