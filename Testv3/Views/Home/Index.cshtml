@@ -18,13 +18,54 @@
         <strong>@TempData["Error"]</strong>
     </div>
 }
+@if (TempData["NoIndividualRecord"] != null)
+{
+    <br />
+    <div class="alert alert-success alert-dismissable">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>@TempData["NoIndividualRecord"]</strong>
+    </div>
+}
 @{
     ViewBag.Title = "Home Page";
 }
 <br />
 
 
-@if (User.IsInRole("Student")) { 
+@if (User.IsInRole("Student"))
+{
+
+    <!-- Trigger the modal with a button -->
+    <div class="modallol" style="display:none;">
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" id="modOpen" data-backdrop="static" data-keyboard="false">Open Modal</button>
+    </div>
+
+            <div class="modalGo" style="display:none;">
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <strong>
+                                    You have to complete your Individual record before continuing.
+                                    <a href="/StudentInventory/IndividualRecord">
+                                        Click here. <i class="fa fa-arrow-circle-right"></i>
+                                    </a>
+                                </strong>
+                                <div class="pull-right">
+                                    <button type="button" class="btn btn-default" id="modClose">Close</button>
+                                    <br />
+                                </div>
+                                <br /><br />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
         <div class="jumbotron">
             <div class="body-content">
                 <h2>Announcements</h2>
