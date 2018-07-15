@@ -2093,7 +2093,6 @@
     <Content Include="Content\Images\makatimed-logo.png" />
     <Content Include="Content\Images\psychmonth_mmcc.jpg" />
     <Content Include="Content\PagedList.css" />
-    <Content Include="Content\print.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\tether\tether-theme-arrows-dark.css" />
     <Content Include="Content\tether\tether-theme-arrows-dark.min.css" />
@@ -2359,6 +2358,7 @@
       <DependentUpon>Testv3.edmx</DependentUpon>
     </Content>
     <Content Include="App_Browsers\qt.browser" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\Chart.js" />
