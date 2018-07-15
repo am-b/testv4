@@ -1,0 +1,78 @@
+﻿@model Testv3.Models.Appntmnt
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+
+<h2>Student Details</h2>
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            Full Name:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Student.StudentLastName), @Html.DisplayFor(model => model.Student.StudentFirstName) @Html.DisplayFor(model => model.Student.StudentMiddleName)
+        </dd>
+
+        <dt>
+            Student Email:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Student.StudentEmail)
+        </dd>
+
+        <dt>
+            Student ID:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Student.StudentID)
+        </dd>
+
+        <dt>
+            Program:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Student.Program)
+        </dd>
+
+        <dt>
+            Birthdate:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Student.Birthdate)
+        </dd>
+    </dl>
+</div>
+
+    <hr />
+    <div>
+        <h2>Appointment Details</h2>
+        <dl class="dl-horizontal">
+            <dt>
+                Date:
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Appntmnt_Date)
+            </dd>
+
+            <dt>
+                Time:
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Appntmnt_Time)
+            </dd>
+        </dl>
+    </div>
+    <p>
+        <!--Html.ActionLink("Edit", "Edit", new { id = Model.Appntmnt_ID }) |-->
+        @Html.ActionLink("Back to List", "Index")
+    </p>

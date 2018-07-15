@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Testv3.Models.Appntmnt>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Today is @DateTime.Now</h3>
+<br />
+<hr />
+
+<p>
+    @Html.ActionLink("Send Mesage", "EmailRequest")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Student.StudentID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Appntmnt_Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Appntmnt_Time)
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Student.StudentID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Appntmnt_Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Appntmnt_Time)
+            </td>
+            @Html.ActionLink("Accept", "Submit", new { id = item.Appntmnt_ID }) |
+            @Html.ActionLink("Reschedule", "Edit", new { id = item.Appntmnt_ID }) |
+            @Html.ActionLink("Student Details", "Details", new { id = item.Appntmnt_ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Appntmnt_ID })
+            </td>
+        </tr>
+    }
+    </table>
+
+
