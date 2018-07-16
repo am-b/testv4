@@ -408,6 +408,9 @@ namespace Testv3.Controllers
 
                     ViewBag.studentlist = StudentInventorylist3;
 
+                    int StudentInventorylist3Count = StudentInventorylist3.Count();
+                    ViewBag.StudentInventorylist3Count = StudentInventorylist3Count;
+
                     int countOfStudentsWithNoPsychTest = noAnswer;
                     ViewBag.CountOfTotalStudents = countOfTotalStudents;
                     ViewBag.CountOfStudentsWithNoPsychTest = countOfTotalStudents - countOfStudentsWithNoPsychTest;

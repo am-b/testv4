@@ -1191,12 +1191,14 @@ namespace Testv3.Controllers
             return View(vm);
         }
 
-
+        [Authorize(Roles = "Counselor")]
         public ActionResult Charts()
         {
 
             return View();
         }
+
+        //Get chart data
         public JsonResult GetCount()
         {
             List<ResultViewModel> list = new List<ResultViewModel>();
@@ -1225,6 +1227,11 @@ namespace Testv3.Controllers
                 int TotalNotPersonalChoice = db.IndividualInventoryRecord
                             .Where(x => x.IsCoursePersonalChoice == false)
                             .Count();
+
+                if (TotalPersonalChoice == 0 && TotalNotPersonalChoice == 0)
+                {
+                    TempData["TotalGetCount"] = "0";
+                }    
 
                 vm.countMale = TotalMale;
                 vm.countFemale = TotalFemale;
@@ -1291,8 +1298,6 @@ namespace Testv3.Controllers
 
             }
 
-            
-
             return Json(list0, JsonRequestBehavior.AllowGet);
 
         }
@@ -1326,7 +1331,7 @@ namespace Testv3.Controllers
 
         }
 
-
+        //Dropdown values
         private IEnumerable<string> GetAllWhoInfluencedYou()
         {
             return new List<string>

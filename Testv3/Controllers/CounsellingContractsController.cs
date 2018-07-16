@@ -364,8 +364,11 @@ namespace Testv3.Controllers
                          group A by new { A.IsActive } into g
                          select g.Count()
                              ).FirstOrDefault();
-
-
+            if (total == 0)
+            {
+                TempData["Total"] = "0 Total";
+            }
+            
             vm.countAgree = agreerCount;
             vm.total = total - agreerCount;
 

@@ -83,199 +83,234 @@
    </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <strong>
+                    There's not enough data to generate charts!
+                </strong>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
 
 
 @Scripts.Render("~/bundles/jquery")
-@section Scripts {
-    <script>
 
-        $("#minMaxBtn").click(function () {
-            $("span", this).toggleClass("fa-minus fa-plus");
-            
-        });
+@if (@ViewBag.StudentInventorylist3Count == 0)
+{
+    @section Scripts {
+        <script>
 
-        $("#QuestionsBtn").click(function () {
-            $("#myCharts").show(); 
+            $("#minMaxBtn").click(function () {
+                $("span", this).toggleClass("fa-minus fa-plus");
 
-        });
-        $("#GenderBtn").click(function () {
-            $("#myCharts").hide(); 
+            });
 
-        });
-        $("#ProgramBtn").click(function () {
-            $("#myCharts").hide();
+            $("#QuestionsBtn").click(function () {
+                $("#myCharts").show();
 
-        });
-        $("#YrLevelBtn").click(function () {
-            $("#myCharts").hide();
+            });
+            $("#GenderBtn").click(function () {
+                $("#myCharts").hide();
 
-        });
-        $("#AgeBtn").click(function () {
-            $("#myCharts").hide();
+            });
+            $("#ProgramBtn").click(function () {
+                $("#myCharts").hide();
 
-        });
+            });
+            $("#YrLevelBtn").click(function () {
+                $("#myCharts").hide();
 
-        var charts = "myCharts";
-        var jsonData = [];
+            });
+            $("#AgeBtn").click(function () {
+                $("#myCharts").hide();
 
-        $.ajax({
-            url: '/PsychTest/GetData',
-            success: function (response) {
+            });
 
-                for (var i = 0; i < response.length; i++) {
-                    // jsonData.push({ data: [{"Agree":response[i].countAgree}, {"Somewhat Agree": response[i].countSomewhatAgree}, {"Disagree": response[i].countDisagree}] });
-                    jsonData.push({ data: [response[i].countAgree, response[i].countSomewhatAgree, response[i].countDisagree, response[i].questionItem] });
-                }
-                console.log(jsonData);
+            var charts = "myCharts";
+            var jsonData = [];
 
-                //pie chart
-                var chart$ = (function () {
-                    var charts = [];
+            $.ajax({
+                url: '/PsychTest/GetData',
+                success: function (response) {
 
-                    var MakePie = function (canvasId, inputData, title) {
-                        if (canvasId !== null && canvasId !== undefined && canvasId.length > 0) {
-                            if (inputData && inputData.length > 0) {
-                                if (title && title.length >= 0) {
-                                    return drawChart(canvasId, "pie", ["Agree", "Somewhat Agree", "Disagree"], inputData, title);
+                    for (var i = 0; i < response.length; i++) {
+                        // jsonData.push({ data: [{"Agree":response[i].countAgree}, {"Somewhat Agree": response[i].countSomewhatAgree}, {"Disagree": response[i].countDisagree}] });
+                        jsonData.push({ data: [response[i].countAgree, response[i].countSomewhatAgree, response[i].countDisagree, response[i].questionItem] });
+                    }
+                    console.log(jsonData);
+
+                    //pie chart
+                    var chart$ = (function () {
+                        var charts = [];
+
+                        var MakePie = function (canvasId, inputData, title) {
+                            if (canvasId !== null && canvasId !== undefined && canvasId.length > 0) {
+                                if (inputData && inputData.length > 0) {
+                                    if (title && title.length >= 0) {
+                                        return drawChart(canvasId, "pie", ["Agree", "Somewhat Agree", "Disagree"], inputData, title);
+                                    } else {
+                                        console.error("MakePie - invalid chart Title");
+                                        return;
+                                    }
                                 } else {
-                                    console.error("MakePie - invalid chart Title");
+                                    console.error("MakePie - invalid chart data");
                                     return;
                                 }
                             } else {
-                                console.error("MakePie - invalid chart data");
+                                console.error("MakePie - invalid canvas id");
                                 return;
                             }
-                        } else {
-                            console.error("MakePie - invalid canvas id");
-                            return;
-                        }
-                    };
+                        };
 
-                    function drawChart(canvasId, type, labels, inputData, title) {
-                        console.log("inputdata: " + inputData);
-                        charts[canvasId] = new Chart(document.getElementById(canvasId), {
-                            type: type,
-                            data: {
-                                labels: labels,
-                                datasets: [{
-                                    backgroundColor: [
-                                        "rgba(54, 162, 235, 0.2)",
-                                        "rgba(255, 99, 132, 0.2)",
-                                        "rgba(255, 159, 64, 0.2)",
-                                        "rgba(255, 205, 86, 0.2)",
-                                        "rgba(75, 192, 192, 0.2)",
-                                        "rgba(153, 102, 255, 0.2)",
-                                        "rgba(201, 203, 207, 0.2)"
-                                    ],
-                                    borderColor: [
-                                        "rgb(54, 162, 235)",
-                                        "rgb(255, 99, 132)",
-                                        "rgb(255, 159, 64)",
-                                        "rgb(255, 205, 86)",
-                                        "rgb(75, 192, 192)",
-                                        "rgb(153, 102, 255)",
-                                        "rgb(201, 203, 207)"
-                                    ],
-                                    borderWidth: 1,
-                                    data: inputData
-                                }]
-                            },
-                            options: {
-                                tooltips: {
-                                    mode: 'label',
-                                    callbacks: {
-                                        label: function (tooltipItem, data) {
-                                            return data['datasets'][0]['data'][tooltipItem['index']] + '%';
+                        function drawChart(canvasId, type, labels, inputData, title) {
+                            console.log("inputdata: " + inputData);
+                            charts[canvasId] = new Chart(document.getElementById(canvasId), {
+                                type: type,
+                                data: {
+                                    labels: labels,
+                                    datasets: [{
+                                        backgroundColor: [
+                                            "rgba(54, 162, 235, 0.2)",
+                                            "rgba(255, 99, 132, 0.2)",
+                                            "rgba(255, 159, 64, 0.2)",
+                                            "rgba(255, 205, 86, 0.2)",
+                                            "rgba(75, 192, 192, 0.2)",
+                                            "rgba(153, 102, 255, 0.2)",
+                                            "rgba(201, 203, 207, 0.2)"
+                                        ],
+                                        borderColor: [
+                                            "rgb(54, 162, 235)",
+                                            "rgb(255, 99, 132)",
+                                            "rgb(255, 159, 64)",
+                                            "rgb(255, 205, 86)",
+                                            "rgb(75, 192, 192)",
+                                            "rgb(153, 102, 255)",
+                                            "rgb(201, 203, 207)"
+                                        ],
+                                        borderWidth: 1,
+                                        data: inputData
+                                    }]
+                                },
+                                options: {
+                                    tooltips: {
+                                        mode: 'label',
+                                        callbacks: {
+                                            label: function (tooltipItem, data) {
+                                                return data['datasets'][0]['data'][tooltipItem['index']] + '%';
+                                            }
                                         }
-                                    }
-                                },
-                                title: {
-                                    display: true,
-                                    text: title,
-                                    fontSize: 15,
-                                },
-                                legend: { position: 'right' },
-                                responsive: false
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: title,
+                                        fontSize: 15,
+                                    },
+                                    legend: { position: 'right' },
+                                    responsive: false
+                                }
+                            });
+                            return charts[canvasId] !== null;
+                        }
+
+                        return {
+                            MakePie: MakePie
+                        };
+                    })();
+
+                    var ui$ = (function () {
+                        var BuildChartCont = function (parentId, inputData) {
+                            if (parentId == null || parentId.length <= 0) {
+                                console.error("BuildChartCont : Root container id is invalid!");
+                                return false;
                             }
-                        });
-                        return charts[canvasId] !== null;
+
+                            if (inputData == null || inputData.length <= 0) {
+                                console.error(
+                                    "BuildChartCont : Input data is null/undefined or has no items in it!"
+                                );
+                                return false;
+                            }
+
+                            var elementDom = document.getElementById(parentId);
+                            for (var index = 0; index < inputData.length; index++) {
+
+                                var element = inputData[index];
+                                var canvasId = "CanvasId" + index;
+
+                                var canvasDiv = document.createElement("div");
+                                canvasDiv.setAttribute("style", "width:600px; height:200px;");
+
+                                var canvasElem = document.createElement("canvas");
+                                canvasElem.setAttribute("id", canvasId);
+                                canvasElem.setAttribute("style", "width:600px; height:200px;");
+
+                                var lineBreak = document.createElement("br");
+
+
+                                canvasDiv.appendChild(canvasElem);
+                                elementDom.appendChild(canvasDiv);
+
+                                elementDom.appendChild(lineBreak);
+
+                                if (!chart$.MakePie(canvasId, [parseInt(element.data[0]), parseInt(element.data[1]), parseInt(element.data[2])], element.data[3])) {
+                                    console.error("BuildChartCont : Error While building Chart!");
+                                    continue;
+                                }
+                            }
+                            return true;
+                        };
+                        var showElement = function (elements, display) {
+                            if (display) {
+                                for (var i = 0; i < elements.length; i++) {
+                                    document.getElementById(elements[i]).style.display = display;
+                                }
+                            } else {
+                                for (var i = 0; i < elements.length; i++) {
+                                    document.getElementById(elements[i]).style.display = "block";
+                                }
+                            }
+                        };
+                        return {
+                            BuildChartCont: BuildChartCont,
+                            showElement: showElement
+                        };
+                    })();
+
+                    if (ui$.BuildChartCont(charts, jsonData)) {
+                        ui$.showElement([charts], "block");
                     }
 
-                    return {
-                        MakePie: MakePie
-                    };
-                })();
-
-                var ui$ = (function () {
-                    var BuildChartCont = function (parentId, inputData) {
-                        if (parentId == null || parentId.length <= 0) {
-                            console.error("BuildChartCont : Root container id is invalid!");
-                            return false;
-                        }
-
-                        if (inputData == null || inputData.length <= 0) {
-                            console.error(
-                                "BuildChartCont : Input data is null/undefined or has no items in it!"
-                            );
-                            return false;
-                        }
-
-                        var elementDom = document.getElementById(parentId);
-                        for (var index = 0; index < inputData.length; index++) {
-
-                            var element = inputData[index];
-                            var canvasId = "CanvasId" + index;
-
-                            var canvasDiv = document.createElement("div");
-                            canvasDiv.setAttribute("style", "width:600px; height:200px;");
-
-                            var canvasElem = document.createElement("canvas");
-                            canvasElem.setAttribute("id", canvasId);
-                            canvasElem.setAttribute("style", "width:600px; height:200px;");
-
-                            var lineBreak = document.createElement("br");
 
 
-                            canvasDiv.appendChild(canvasElem);
-                            elementDom.appendChild(canvasDiv);
 
-                            elementDom.appendChild(lineBreak);
 
-                            if (!chart$.MakePie(canvasId, [parseInt(element.data[0]), parseInt(element.data[1]), parseInt(element.data[2])], element.data[3])) {
-                                console.error("BuildChartCont : Error While building Chart!");
-                                continue;
-                            }
-                        }
-                        return true;
-                    };
-                    var showElement = function (elements, display) {
-                        if (display) {
-                            for (var i = 0; i < elements.length; i++) {
-                                document.getElementById(elements[i]).style.display = display;
-                            }
-                        } else {
-                            for (var i = 0; i < elements.length; i++) {
-                                document.getElementById(elements[i]).style.display = "block";
-                            }
-                        }
-                    };
-                    return {
-                        BuildChartCont: BuildChartCont,
-                        showElement: showElement
-                    };
-                })();
-
-                if (ui$.BuildChartCont(charts, jsonData)) {
-                    ui$.showElement([charts], "block");
                 }
-
-
-
-
-
-            }
-        });
-    </script>
+            });
+        </script>
+    }
 }
+
+@if (@ViewBag.StudentInventorylist3Count >= 1)
+{
+    @section Scripts {
+        <script type="text/javascript">
+            $(window).on('load', function () {
+                var rec = "@ViewBag.StudentInventorylist3Count";
+                console.log(rec);
+                $('#myModal2').modal('show');
+        });
+        </script>
+    }
+}
+
 
 

@@ -9,32 +9,54 @@
 
     <div class="body-content">
         <div class="form-horizontal">
-
             <canvas id="contract-pie-chart" width="657" height="150" style="width: 657px; height: 150px;"></canvas>           
-     
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <strong>
+                        There's not enough data to generate a chart!
+                    </strong>
+                    <br />
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                    <br /><br />
+                </div>
+                
+            </div>
+
         </div>
     </div>
 }
-@section Scripts{
+
+   @section Scripts{
     <script type="text/javascript">
+        var rec = "@TempData["Total"]";
+        console.log(rec);
 
         //pie chart
         var pieChart = {
-                labels: ["Agree","Doesn't Agree"],
-                datasets: [{
-                            backgroundColor:
-                            [
-                                "rgba(153, 102, 255, 0.2)",
-                                "rgba(255, 205, 86, 0.2)"
-                            ],
-                            borderColor:
-                            [
-                                "rgb(153, 102, 255)",
-                                "rgba(255, 205, 86, 0.2)"
-                            ],
-                            borderWidth: 1,
-                            data: []
-                }]
+            labels: ["Agree", "Doesn't Agree"],
+            datasets: [{
+                backgroundColor:
+                [
+                    "rgba(153, 102, 255, 0.2)",
+                    "rgba(255, 205, 86, 0.2)"
+                ],
+                borderColor:
+                [
+                    "rgb(153, 102, 255)",
+                    "rgba(255, 205, 86, 0.2)"
+                ],
+                borderWidth: 1,
+                data: []
+            }]
 
         }
 
@@ -46,32 +68,49 @@
             }
         };
 
- 
 
-            $.ajax({
-                url: '/CounsellingContracts/GetSummary/',
-                success: function (responsePie) {
 
-                    $.each(responsePie, function (i, item) {
+        $.ajax({
+            url: '/CounsellingContracts/GetSummary/',
+            success: function (responsePie) {
+                var total = 0;
+                $.each(responsePie, function (i, item) {
 
-                            pieChart.datasets[0].data.push(parseInt(item.countAgree), parseInt(item.total));
-                        })
+                    pieChart.datasets[0].data.push(parseInt(item.countAgree), parseInt(item.total));
+                    total = total + parseInt(item.total);
+                })
 
-                        var ctx2 = document.getElementById("contract-pie-chart").getContext("2d");
+                if (total > 0) {
+                    var ctx2 = document.getElementById("contract-pie-chart").getContext("2d");
 
-                        var myPieChart = new Chart(ctx2,
-                            {
-                                type: 'pie',
-                                data: pieChart,
-                                options: optionPieChart
-                            });                    
+                    var myPieChart = new Chart(ctx2,
+                        {
+                            type: 'pie',
+                            data: pieChart,
+                            options: optionPieChart
+                        });
+
+                } else {
+                    $('#myModal').modal('show');
                 }
+                
+            }
 
-            });
-
-
-
-
+        });
 
     </script>
-}
+    }
+
+
+@*@if (TempData["Total"] != null)
+{
+    @section Scripts {
+        <script type="text/javascript">
+            $(window).on('load', function () {
+                var rec = "@TempData["Total"]";
+                console.log(rec);
+                $('#myModal').modal('show');
+        });
+        </script>
+    }
+}*@
