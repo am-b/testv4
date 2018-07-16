@@ -20,12 +20,24 @@
 }
 @if (TempData["NoIndividualRecord"] != null)
 {
-    <br />
-    <div class="alert alert-success alert-dismissable">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        <strong>@TempData["NoIndividualRecord"]</strong>
-    </div>
+    @section Scripts {
+        <script type="text/javascript">
+            $(window).on('load', function () {
+                var rec = "@TempData["NoIndividualRecord"]";
+                console.log(rec);
+
+                var rec1 = "@ViewBag.NoRecord";
+                console.log(rec1);
+
+                if (rec != null){
+                    $('#myModal').modal('show');
+                }
+
+        });
+        </script>
+    }
 }
+
 @{
     ViewBag.Title = "Home Page";
 }
@@ -34,15 +46,8 @@
 
 @if (User.IsInRole("Student"))
 {
-
-    <!-- Trigger the modal with a button -->
-    <div class="modallol" style="display:none;">
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" id="modOpen" data-backdrop="static" data-keyboard="false">Open Modal</button>
-    </div>
-
-            <div class="modalGo" style="display:none;">
                 <!-- Modal -->
-                <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" data-keyboard="false">
                     <div class="modal-dialog">
 
                         <!-- Modal content-->
@@ -50,21 +55,13 @@
                             <div class="modal-body">
                                 <strong>
                                     You have to complete your Individual record before continuing.
-                                    <a href="/StudentInventory/IndividualRecord">
-                                        Click here. <i class="fa fa-arrow-circle-right"></i>
-                                    </a>
+                                    <a href="/StudentInventory/IndividualRecord">Click here.</a>
                                 </strong>
-                                <div class="pull-right">
-                                    <button type="button" class="btn btn-default" id="modClose">Close</button>
-                                    <br />
-                                </div>
-                                <br /><br />
                             </div>
                         </div>
 
                     </div>
                 </div>
-            </div>
 
         <div class="jumbotron">
             <div class="body-content">
