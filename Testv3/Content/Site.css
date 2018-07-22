@@ -102,3 +102,55 @@ div.rowItem {
     cursor: pointer;
     margin: 0 5px 0 5px;
 }
+
+/*.announcementContainer {
+    width: 30%;
+    margin: 0;
+    background-color: #ececec;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}*/
+.announcementContainer {
+    /*width: 30%;*/
+    margin: 0;
+    background-color: #ececec;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    height: 100vh;
+}
+
+
+.mainContainer {
+    width: 70%;
+    margin: 0;
+}
+.superMain {
+    display: flex;
+    flex-direction: row;
+}
+.bottom0 {
+    /*position: absolute;
+    bottom: 0;
+    right: 0;*/
+    background-color: #ececec;
+   
+}
+/*.announcementHeader {
+    border-left: 6px solid #367fa9;
+    background-color: #f0f8ff;
+    width: 30%;
+}*/
+.announcementHeader {
+    border-left: 6px solid #367fa9;
+    background-color: #f0f8ff;
+    height: 30px;
+}
+
+.div0 {
+    width: 30%;
+    position: relative;
+}
