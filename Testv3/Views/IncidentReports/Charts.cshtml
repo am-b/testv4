@@ -9,128 +9,178 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="body-content">
-        <div class="form-horizontal">
+            <div class="col-lg-6 col-xs-6">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">Incident Reports Filed by Student and Counsellor</h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" id="ReportsBtn" type="button" data-toggle="collapse" data-target="#LOL">
+                                <span class="fa fa-minus" id="minMaxIcon"></span>
+                            </button>
+                        </div>
+                        <hr />
+                    </div>
+                    <div id="LOL" class="collapse in">
+                        <div class="box-body">
+                            <canvas id="reportedBy-pie-chart" width="657" height="150" style="width: 657px; height: 150px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>      
+            
+            <div class="col-lg-6 col-xs-6">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">Incident Types Summary</h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" id="SummaryBtn" type="button" data-toggle="collapse" data-target="#LOL1">
+                                <span class="fa fa-minus" id="minMaxIcon"></span>
+                            </button>
+                        </div>
+                        <hr />
+                    </div>
+                    <div id="LOL1" class="collapse in">
+                        <div class="box-body">
+                            <canvas id="incident-chart" width="657" height="150" style="width: 657px; height: 150px;"></canvas>  
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-            <canvas id="reportedBy-pie-chart" width="657" height="150" style="width: 657px; height: 150px;"></canvas>
-            <br /><br />
-            <canvas id="line-chart" width="657" height="150" style="width: 657px; height: 150px;"></canvas>            
-     
-        </div>
-    </div>
+            <!-- Modal -->
+            <div class="modal fade" id="myModal2" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <strong>
+                                There's not enough data to generate the charts!
+                            </strong>
+                            <br />
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                            <br /><br />
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>  
 }
 @section Scripts{
     <script type="text/javascript">
 
-        //bar chart
-        var label1 = [];
-        var barchart = {
-            labels: label1,
-            datasets: [
-                {
-                    label: "Total",
-                    backgroundColor: "rgba(255,99,132,0.2)",
-                    borderColor: "rgba(255,99,132,1)",
-                    borderWidth: 2,
-                    hoverBackgroundColor: "rgba(255,99,132,0.4)",
-                    hoverBorderColor: "rgba(255,99,132,1)",
-                    data: [],
-                }
-            ]
-        };
-        var option = {
-            legend: { display: false },
-            title: {
-                display: true,
-                text: 'Incident Types Summary'
-            },
+        $(".btn-box-tool").click(function () {
+            $("span", this).toggleClass("fa-minus fa-plus");
 
-            scales: {
-                yAxes: [{
-                    stacked: true,
-                    gridLines: {
-                        display: true,
-                        color: "rgba(255,99,132,0.2)"
-                    }
-                }],
-                xAxes: [{
-                    gridLines: {
-                        display: false
-                    }
-                }]
-            }
-        };
+        });        
 
+        //Total count of each incident type
+        var label0 = [];
+        var pieChart0 = {
+            labels: label0,
+            datasets: [{
+                backgroundColor:
+                [
+                    "rgba(153, 102, 255, 0.2)",
+                    "rgba(255, 205, 86, 0.2)",
+                    "rgba(133, 102, 255, 0.2)",
+                    "rgba(98, 205, 86, 0.2)"
+                ],
+                borderColor:
+                [
+                    "rgb(153, 102, 255)",
+                    "rgba(255, 205, 86, 0.2)",
+                    "rgba(133, 102, 255, 0.2)",
+                    "rgba(98, 205, 86, 0.2)"
+                ],
+                borderWidth: 1,
+                data: []
+            }]
+
+        }
+
+        var optionPieChart0 = {
+            legend: { position: 'right' },
+            responsive: true
+        };
 
         $.ajax({
             url: '/IncidentReports/GetIncidentTypesSummary/',
             success: function (response) {
 
+                var winter = 0;
                 $.each(response, function (i, item) {
-                    label1.push(item.Type); 
-                    barchart.datasets[0].data.push(item.count);
+                    label0.push(item.Type); 
+                    pieChart0.datasets[0].data.push(item.count);
+                    winter = winter + item.count;
                 })
 
-                var ctx = document.getElementById("line-chart").getContext("2d");
+                if (winter != 0) {
+                    var ctx = document.getElementById("incident-chart").getContext("2d");
 
-                var myLineChart = new Chart(ctx,
-                    {
-                        type: 'bar',
-                        data: barchart,
-                        options: option
-                    });
+                    var myLineChart = new Chart(ctx,
+                        {
+                            type: 'pie',
+                            data: pieChart0,
+                            options: optionPieChart0
+                        });
+                }
             }
 
             });
 
 
-        //pie chart
+        //Incident Reports Filed by Student and Counsellor
+        
         var pieChart = {
-                labels: ["Counsellor","Student"],
-                datasets: [{
-                            backgroundColor:
-                            [
-                                "rgba(153, 102, 255, 0.2)",
-                                "rgba(255, 205, 86, 0.2)"
-                            ],
-                            borderColor:
-                            [
-                                "rgb(153, 102, 255)",
-                                "rgba(255, 205, 86, 0.2)"
-                            ],
-                            borderWidth: 1,
-                            data: []
-                }]
+            labels: ["Counsellor", "Student"],
+            datasets: [{
+                backgroundColor:
+                [
+                    "rgba(153, 102, 255, 0.2)",
+                    "rgba(255, 205, 86, 0.2)"
+                ],
+                borderColor:
+                [
+                    "rgb(153, 102, 255)",
+                    "rgba(255, 205, 86, 0.2)"
+                ],
+                borderWidth: 1,
+                data: []
+            }]
 
         }
 
-        var optionPieChart = {
-            legend: { position: 'top' },
-            title: {
-                display: true,
-                text: 'Incident Reports Filed by Student and Counsellor'
-            }
-        };
-
- 
 
             $.ajax({
                 url: '/IncidentReports/GetReportersSummary/',
                 success: function (responsePie) {
 
+                    var summer = 0;
                     $.each(responsePie, function (i, item) {
-
                         pieChart.datasets[0].data.push(parseInt(item.counsellorCount), parseInt(item.studentCount));
+                        summer = summer + parseInt(item.counsellorCount) + parseInt(item.studentCount);
                     })
 
-                    var ctx2 = document.getElementById("reportedBy-pie-chart").getContext("2d");
+                    if (summer != 0) {
+                        var ctx2 = document.getElementById("reportedBy-pie-chart").getContext("2d");
 
-                    var myPieChart = new Chart(ctx2,
-                        {
-                            type: 'pie',
-                            data: pieChart,
-                            options: optionPieChart
-                        });
+                        var myPieChart = new Chart(ctx2,
+                            {
+                                type: 'pie',
+                                data: pieChart,
+                                options: optionPieChart0
+                            });
+                    } else
+                    {
+                        $('#myModal2').modal('show');
+                        $("#ReportsBtn").click();
+                        $("#SummaryBtn").click();
+                    }
+
+                    
                 }
 
             });

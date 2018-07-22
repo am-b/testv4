@@ -11,6 +11,27 @@
         <div class="form-horizontal">
 
             <canvas id="counsellingCases-bar-chart" width="800" height="450"></canvas>
+
+            <!-- Modal -->
+            <div class="modal fade" id="myModal2" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <strong>
+                                There's not enough data to generate the charts!
+                            </strong>
+                            <br />
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                            <br /><br />
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>  
      
         </div>
     </div>
@@ -67,19 +88,28 @@
             success: function (response) {
                 console.log(response);
 
+                var count = 0;
+            
                 $.each(response, function (i, item) {
                     label1.push(item.Type); 
                     barchart.datasets[0].data.push(item.count);
+                    count = count + item.count;
                 })
 
-                var ctx = document.getElementById("counsellingCases-bar-chart").getContext("2d");
+                if (count != 0) {
+                    var ctx = document.getElementById("counsellingCases-bar-chart").getContext("2d");
 
-                var myLineChart = new Chart(ctx,
-                    {
-                        type: 'horizontalBar',
-                        data: barchart,
-                        options: option
-                    });
+                    var myLineChart = new Chart(ctx,
+                        {
+                            type: 'horizontalBar',
+                            data: barchart,
+                            options: option
+                        });
+                } else {
+                    $('#myModal2').modal('show');
+                }
+
+                
             }
 
             });

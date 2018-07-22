@@ -369,6 +369,7 @@ namespace Testv3.Controllers
 
             return View();
         }
+
         public JsonResult GetIncidentTypesSummary()
         {
             //--Student w / highest number of records
@@ -383,29 +384,37 @@ namespace Testv3.Controllers
             List<IRChartsViewModel> taglist = new List<IRChartsViewModel>();
             foreach(var item in datalistIRs)
             {
-                IRChartsViewModel vm = new IRChartsViewModel();
+                try
+                {
+                    IRChartsViewModel vm = new IRChartsViewModel();
 
+                    var type = (from tagList in db.IncidentReportIncidents
+                                join selectedTags in db.IncidentReportTags 
+                                on tagList.TypeID equals selectedTags.TypeID    //if wala si tag nag nnull so try catch
+                                where tagList.TypeID == item.TypeID
+                                group tagList by new { tagList.Type } into g
+                                orderby g.Count() descending
+                                select g.Key.Type
+                                ).SingleOrDefault();
 
-                var type = (from tagList in db.IncidentReportIncidents
-                            join selectedTags in db.IncidentReportTags on tagList.TypeID equals selectedTags.TypeID
-                            where tagList.TypeID == item.TypeID
-                            group tagList by new { tagList.Type } into g
-                            orderby g.Count() descending
-                            select g.Key.Type
-                            ).Single();
+                    var typeCount = (from tagList in db.IncidentReportIncidents
+                                     join selectedTags in db.IncidentReportTags on tagList.TypeID equals selectedTags.TypeID
+                                     where tagList.TypeID == item.TypeID
+                                     group tagList by new { tagList.Type } into g
+                                     orderby g.Count() descending
+                                     select g.Count()
+                                     ).SingleOrDefault();
 
-                var typeCount = (from tagList in db.IncidentReportIncidents
-                                 join selectedTags in db.IncidentReportTags on tagList.TypeID equals selectedTags.TypeID
-                                 where tagList.TypeID == item.TypeID
-                                 group tagList by new { tagList.Type } into g
-                                 orderby g.Count() descending
-                                 select g.Count()
-                                 ).Single();
+                    vm.Type = type.ToString();
+                    vm.count = typeCount;
 
-                vm.Type = type.ToString();
-                vm.count = typeCount;
+                    taglist.Add(vm);
 
-                taglist.Add(vm);
+                }
+                catch
+                {
+                    //do nothing
+                }
 
             }
 

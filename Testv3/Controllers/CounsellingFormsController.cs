@@ -295,6 +295,7 @@ namespace Testv3.Controllers
 
             return Json(pvm, JsonRequestBehavior.AllowGet);
         }
+
         public JsonResult GetTypeOfCasesSummary()
         {
             //--Student w / highest number of records
@@ -309,29 +310,37 @@ namespace Testv3.Controllers
             List<IRChartsViewModel> taglist = new List<IRChartsViewModel>();
             foreach (var item in datalistIRs)
             {
-                IRChartsViewModel vm = new IRChartsViewModel();
+                try
+                {
+                    IRChartsViewModel vm = new IRChartsViewModel();
 
 
-                var type = (from tagList in db.CounsellingFormCasesList
-                            join selectedTags in db.CounsellingFormCases on tagList.TypeID equals selectedTags.TypeID
-                            where tagList.TypeID == item.TypeID
-                            group tagList by new { tagList.Type } into g
-                            orderby g.Count() descending
-                            select g.Key.Type
-                            ).Single();
+                    var type = (from tagList in db.CounsellingFormCasesList
+                                join selectedTags in db.CounsellingFormCases on tagList.TypeID equals selectedTags.TypeID
+                                where tagList.TypeID == item.TypeID
+                                group tagList by new { tagList.Type } into g
+                                orderby g.Count() descending
+                                select g.Key.Type
+                                ).SingleOrDefault();
 
-                var typeCount = (from tagList in db.CounsellingFormCasesList
-                                 join selectedTags in db.CounsellingFormCases on tagList.TypeID equals selectedTags.TypeID
-                                 where tagList.TypeID == item.TypeID
-                                 group tagList by new { tagList.Type } into g
-                                 orderby g.Count() descending
-                                 select g.Count()
-                                 ).Single();
+                    var typeCount = (from tagList in db.CounsellingFormCasesList
+                                     join selectedTags in db.CounsellingFormCases on tagList.TypeID equals selectedTags.TypeID
+                                     where tagList.TypeID == item.TypeID
+                                     group tagList by new { tagList.Type } into g
+                                     orderby g.Count() descending
+                                     select g.Count()
+                                     ).SingleOrDefault();
 
-                vm.Type = type.ToString();
-                vm.count = typeCount;
+                    vm.Type = type.ToString();
+                    vm.count = typeCount;
 
-                taglist.Add(vm);
+                    taglist.Add(vm);
+                }
+                catch
+                {
+                    //do nothing
+                }
+                
 
             }
 
