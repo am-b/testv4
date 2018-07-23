@@ -25,12 +25,12 @@ namespace Testv3.Controllers
 
             var list = db.Announcements.ToList().ToPagedList(page, recordsPerPage);
 
-                var check = db.IndividualInventoryRecord
-                    .Where(x => x.UserID == currentUserId && x.HowStudieIssFinanced != null && x.CourseChoiceInfluence != null )
-                    .ToList();
+            var check = db.IndividualInventoryRecord
+                .Where(x => x.UserID == currentUserId && x.HowStudieIssFinanced != null && x.CourseChoiceInfluence != null)
+                .ToList();
 
-                if (check.Count() == 0)
-                {
+            if (check.Count() == 0)
+            {
                 TempData["NoIndividualRecord"] = "Please complete your Individual record!";
                 ViewBag.NoRecord = "Please complete your Individual record!";
             }
@@ -39,6 +39,12 @@ namespace Testv3.Controllers
             return View(list);
         }
 
-        
+        public ActionResult History()
+        {
+            GetCurrentUserInViewBag();
+
+            return View();
+        }
     }
+
 }
