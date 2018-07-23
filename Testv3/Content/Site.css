@@ -154,3 +154,11 @@ div.rowItem {
     width: 30%;
     position: relative;
 }
+.customHeader {
+    border-left: 6px solid #367fa9;
+    background-color: #f0f8ff;
+    font-weight: bold;
+    padding: 10px 10px 10px 10px;
+    max-width: 70%;
+    margin-bottom: 10px;
+}
