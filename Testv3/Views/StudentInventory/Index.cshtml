@@ -10,11 +10,11 @@
 }
 @{
     ViewBag.Title = "Index";
-    <div class="alert alert-success alert-dismissable">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close"></a>
-        <strong>Search a student's name or student number to see their Individual Record.</strong>
-    </div>
 }
+<div class="customHeader">
+    Search a student's name or student number to see their Individual Record.
+</div>
+
 @using (Html.BeginForm("Index", "StudentInventory", FormMethod.Get))
 {
     <br />

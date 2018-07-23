@@ -18,15 +18,16 @@
 }
 @{
     ViewBag.Title = "Index";
-    <div class="alert alert-success alert-dismissable">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close"></a>
-        <strong>To see the test results of the students, select "View Test Responses"</strong>
-    </div>
 }
+
+
 
 @using (Html.BeginForm("Index", "PsychTest", FormMethod.Get))
 {
-    <br />
+    <div class="customHeader">
+        To see the test results of the students, select "View Test Responses"
+    </div>
+
     <div class="controls form-inline">
         @Html.TextBox("searchStringQuestion", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search question", @style = "min-width:50%" })
         <input type="submit" value="Search" class="btn btn-default" />

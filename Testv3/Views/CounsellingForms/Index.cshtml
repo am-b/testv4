@@ -10,15 +10,13 @@
 }
 @{
     ViewBag.Title = "Index";
-    <div class="alert alert-success alert-dismissable">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close"></a>
-        
-        <ul>
-        <li><b>To see a student's records of Individual Counselling, search using student's name or student number.</b></li>
-        <li><b>To add a new record of Individual Counselling, select the student.</b></li>
-        </ul>
-    </div>
 }
+<div class="customHeader">
+    <ul>
+        <li><b>To see history of records, click "View".</b></li>
+        <li><b>To add a new record, click "Select" along the name of the student.</b></li>
+    </ul>
+</div>
 
 @using (Html.BeginForm("Index", "StudentInventory", FormMethod.Get))
 {
@@ -52,7 +50,7 @@
 
             <td>
                 @Html.ActionLink("Select", "Counsellor", new { UserID = item.UserID }) |
-                @Html.ActionLink("View", "Student", new { UserID = item.UserID })
+                @Html.ActionLink("View counselling records", "Student", new { UserID = item.UserID })
             </td>
         </tr>
     }

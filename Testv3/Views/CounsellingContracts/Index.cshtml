@@ -10,9 +10,8 @@
 }
 @{
     ViewBag.Title = "Index";
-    <div class="alert alert-success alert-dismissable">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close"></a>
-        <strong>Search a student's name or student number to see if a student has agreed to the terms of Guidance and Counselling.</strong>
+    <div class="customHeader">
+        Search a student's name or student number to see if a student has agreed to the terms of Guidance and Counselling.
     </div>
 }
 @using (Html.BeginForm("Index", "StudentInventory", FormMethod.Get))
@@ -47,6 +46,10 @@
             <td>
                 @Html.ActionLink("Save as PDF", "Print", new { UserID = item.UserID }) |
                 @Html.DisplayFor(modelItem => item.CompletionDate)
+                @if (item.CompletionDate == null)
+                {
+                    <span>Not completed yet.</span>
+                }
             </td>
         </tr>
     }

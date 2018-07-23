@@ -10,12 +10,13 @@
 }
 @{
     ViewBag.Title = "Index";
-    <div class="alert alert-success alert-dismissable">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close"></a>
-        <strong>To file an Incident Report, select the name of the student involved.</strong>
-    </div>
 }
-
+<div class="customHeader">
+    <ul>
+        <li>To see history of records, click "View IRs for this student".</li>
+        <li>To add a new record, click "Select" along the name of the student.</li>
+    </ul>
+</div>
 
 @using (Html.BeginForm("Index", "StudentInventory", FormMethod.Get))
 {
