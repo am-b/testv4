@@ -12,6 +12,8 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Testv3.Models;
 using PagedList;
 using System.Threading.Tasks;
+using System.IO;
+using ExcelDataReader;
 
 
 
@@ -28,7 +30,6 @@ namespace Testv3.Controllers
 
         private ApplicationSignInManager _signInManager;
 
-        //fromAdminController
         public ApplicationSignInManager SignInManager
         {
             get
@@ -53,7 +54,8 @@ namespace Testv3.Controllers
             }
         }
 
-        // Controllers
+
+
 
         // GET: /Admin/
         [Authorize(Roles = "Administrator,Counselor")]
@@ -108,6 +110,13 @@ namespace Testv3.Controllers
                     objUserDTO.UserName = item.UserName;
                     objUserDTO.Email = item.Email;
                     objUserDTO.LockoutEndDateUtc = item.LockoutEndDateUtc;
+
+                    //Update your DTO here so that it store other attributes as well. For eg
+                    /*
+                     * objUserDTO.FirstName = item.firstname;
+                     * objUserDTO.LastName = item.lastname;
+                     * etc etc
+                     */
 
                     col_UserDTO.Add(objUserDTO);
                 }
@@ -698,6 +707,281 @@ namespace Testv3.Controllers
         }
         #endregion
 
+
+        [Authorize(Roles = "Administrator")]
+        public ActionResult CreateMultiple()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "Administrator")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateMultiple(HttpPostedFileBase uploadfile)
+        {
+            if (ModelState.IsValid)
+            {
+                if (uploadfile != null && uploadfile.ContentLength > 0)
+                {
+                    //ExcelDataReader works on binary excel file
+                    Stream stream = uploadfile.InputStream;
+                    //We need to written the Interface.
+                    IExcelDataReader reader = null;
+                    if (uploadfile.FileName.EndsWith(".xls"))
+                    {
+                        //reads the excel file with .xls extension
+                        reader = ExcelReaderFactory.CreateBinaryReader(stream);
+                    }
+                    else if (uploadfile.FileName.EndsWith(".xlsx"))
+                    {
+                        //reads excel file with .xlsx extension
+                        reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+                    }
+                    else
+                    {
+                        //Shows error if uploaded file is not Excel file
+                        ModelState.AddModelError("File", "This file format is not supported");
+                        return View();
+                    }
+
+                    var result = reader.AsDataSet(new ExcelDataSetConfiguration()
+                    {
+                        ConfigureDataTable = (_) => new ExcelDataTableConfiguration()
+                        {
+                            //First row iss treated as the header
+                            UseHeaderRow = true
+                        }
+                    });
+
+                    var dataTable = result.Tables[0];
+                    List<string> EmailList = new List<string>();
+
+                    //Read each row one by one
+                    for (var i = 0; i < dataTable.Rows.Count; i++)
+                    {
+                        var FName = dataTable.Rows[i][0].ToString().Trim(); //First Name
+                         var MName = dataTable.Rows[i][1].ToString().Trim(); //Middle Name
+                        var LName = dataTable.Rows[i][2].ToString().Trim(); //Last Name
+                        var StudNum = dataTable.Rows[i][3].ToString().Trim(); //Student Number
+                        var Program = dataTable.Rows[i][4].ToString().Trim(); //Program
+                        var YearLvl = dataTable.Rows[i][5].ToString().Trim(); //Year Level
+                        var Email = dataTable.Rows[i][6].ToString().Trim(); //Email & Username
+                        var isActive = dataTable.Rows[i][7].ToString().Trim(); //Active Bool
+                        var Role = dataTable.Rows[i][8].ToString().Trim(); //Role
+
+                        //Add each student's email to the email list
+                        EmailList.Add(Email);
+
+                        //Call the user making method here
+                        AddUser(FName, MName, LName, StudNum, Program, YearLvl, Email, isActive, Role);
+                    }
+
+                    //Once each student is registered, send them an email
+                    //This launches the SendEmail in a separate thread in the background
+                    var tEmail = new Thread(() => SendEmail(EmailList));
+                    tEmail.Start();
+
+                    reader.Close();
+                    //Sending result data to View
+                    return View(result.Tables[0]);
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("File", "Please upload your file");
+            }
+            return View();
+        }
+
+
+        [Authorize(Roles = "Administrator")]
+        public ActionResult UpdateMultiple()
+        {
+            return View();
+        }
+
+
+        [Authorize(Roles = "Administrator")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateMultiple(HttpPostedFileBase uploadfile)
+        {
+            if (ModelState.IsValid)
+            {
+                if (uploadfile != null && uploadfile.ContentLength > 0)
+                {
+                    //ExcelDataReader works on binary excel file
+                    Stream stream = uploadfile.InputStream;
+                    //We need to written the Interface.
+                    IExcelDataReader reader = null;
+                    if (uploadfile.FileName.EndsWith(".xls"))
+                    {
+                        //reads the excel file with .xls extension
+                        reader = ExcelReaderFactory.CreateBinaryReader(stream);
+                    }
+                    else if (uploadfile.FileName.EndsWith(".xlsx"))
+                    {
+                        //reads excel file with .xlsx extension
+                        reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+                    }
+                    else
+                    {
+                        //Shows error if uploaded file is not Excel file
+                        ModelState.AddModelError("File", "This file format is not supported");
+                        return View();
+                    }
+
+                    var result = reader.AsDataSet(new ExcelDataSetConfiguration()
+                    {
+                        ConfigureDataTable = (_) => new ExcelDataTableConfiguration()
+                        {
+                            //First row is treated as the header
+                            UseHeaderRow = true
+                        }
+                    });
+
+                    var dataTable = result.Tables[0];
+
+                    List<Student> StudentList = new List<Student>();
+
+                    //Read each row one by one
+                    for (var i = 0; i < dataTable.Rows.Count; i++)
+                    {
+                        var studNum = dataTable.Rows[i][0].ToString().Trim(); //Student Number
+                        var program = dataTable.Rows[i][1].ToString().Trim(); //Program
+                        var yearLvl = dataTable.Rows[i][2].ToString().Trim(); //Year Level
+
+                        var updateStudent = new Student
+                        {
+                            StudentID = studNum,
+                            Program = program,
+                            YearLevel = Int32.Parse(yearLvl)
+                        };
+
+                        //Check if the student exists
+                        var studentInDb = db.Students.FirstOrDefault(s => s.StudentID == updateStudent.StudentID);
+                        if (studentInDb != null)
+                        {
+                            //update student data here
+                            studentInDb.Program = updateStudent.Program;
+                            studentInDb.YearLevel = updateStudent.YearLevel;
+                            studentInDb.IsActive = true;
+                            db.SaveChanges();
+
+                            //add this student to the list of currently updated students
+                            StudentList.Add(updateStudent);
+                        }
+                        else
+                            Response.Redirect("/Home/Error?Error=Error updating student. Student # " + updateStudent.StudentID + " was not found in the database.");
+                    }
+
+                    //Get all the students who are active except for the currently updated students
+                    List<string> StudentIdList = StudentList.Select(q => q.StudentID).ToList();
+                    var activeStudents = db.Students.Where(s => s.IsActive == true && !StudentIdList.Contains(s.StudentID)).ToList();
+
+                    //set isActive for all these students to false
+                    foreach (var student in activeStudents)
+                    {
+                        student.IsActive = false;
+                        db.SaveChanges();
+                    }
+
+
+                    reader.Close();
+                    //Sending result data to View
+                    return View(result.Tables[0]);
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("File", "Please upload your file");
+            }
+            return View();
+        }
+
+        [Authorize(Roles = "Administrator")]
+        public ActionResult ViewStudents()
+        {
+            var studentList = db.Students.ToList();
+            List<ViewStudentDTO> DTOList = new List<ViewStudentDTO>();
+            foreach (var student in studentList)
+            {
+                var DTOStudent = new ViewStudentDTO
+                {
+                    StudentFirstName = student.StudentFirstName,
+                    StudentMiddleName = student.StudentMiddleName,
+                    StudentLastName = student.StudentLastName,
+                    StudentID = student.StudentID,
+                    Program = student.Program,
+                    YearLevel = student.YearLevel,
+                    IsActive = student.IsActive,
+                    Email = student.StudentEmail
+                };
+                DTOList.Add(DTOStudent);
+            }
+            return View(DTOList);
+        }
+
+        private void AddUser(string FName, string MName, string LName, string StudNum, string _Program, string YearLvl, string _Email, string isActive, string Role)
+        {
+            var user = new ApplicationUser
+            {
+                UserName = _Email, //to log in with email
+                Email = _Email
+            };
+
+            string userPWD = LName + "&" + StudNum;
+
+            var TempStudent = db.Students.FirstOrDefault(x => x.StudentID == StudNum);
+
+            //To make sure that Student number is unique (no duplicate entries/students)
+            if (TempStudent == null)
+            {
+                var UserResult = UserManager.Create(user, userPWD);
+                if (UserResult.Succeeded)
+                {
+                    if (!RoleManager.RoleExists(Role))
+                    {
+                        var NewRole = new IdentityRole(Role);
+                        RoleManager.Create(NewRole);
+                    }
+
+                    var RoleResult = UserManager.AddToRole(user.Id, Role);
+
+                    if (RoleResult.Succeeded)
+                    {
+                        if (Role == "Student")
+                        {
+                            var student = new Student
+                            {
+                                StudentFirstName = FName,
+                                StudentMiddleName = MName,
+                                StudentLastName = LName,
+                                StudentID = StudNum,
+                                Program = _Program,
+                                YearLevel = Int32.Parse(YearLvl),
+                                StudentEmail = _Email,
+                                IsActive = Boolean.Parse(isActive),
+                                UserID = user.Id
+                            };
+
+                            db.Students.Add(student);
+                            db.SaveChanges();
+                        }
+                    }
+                    else
+                        Response.Redirect("/Home/Error?error=Could not add user to the role.");
+                }
+                else
+                    Response.Redirect("/Home/Error?error=Could not create user.");
+            }
+        }
+
+        private void SendEmail(List<String> StudentsEmails)
+        {
+            new EmailProviderUtility().SendNotificationEmail(StudentsEmails);
+        }
+
         private IEnumerable<string> GetAllCollege()
         {
             return new List<string>
@@ -759,16 +1043,10 @@ namespace Testv3.Controllers
         }
         #endregion
 
-
         private IEnumerable<SelectListItem> GetSelectListItems(IEnumerable<string> elements)
         {
-            // Create an empty list to hold result of the operation
             var selectList = new List<SelectListItem>();
 
-            // For each string in the 'elements' variable, create a new SelectListItem object
-            // that has both its Value and Text properties set to a particular value.
-            // This will result in MVC rendering each item as:
-            //     <option value="State Name">State Name</option>
             foreach (var element in elements)
             {
                 selectList.Add(new SelectListItem
@@ -780,7 +1058,6 @@ namespace Testv3.Controllers
 
             return selectList;
         }
-
 
         #region private ExpandedUserDTO GetUser(string paramUserName)
         private ExpandedUserDTO GetUser(string paramUserName)

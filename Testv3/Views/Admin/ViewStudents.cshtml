@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Testv3.Models.ViewStudentDTO>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    /**/
+
+    ViewBag.Title = "View Students";
+}
+
+<h2>View Students</h2>
+<form>
+    <input type="radio" id="activeRadio" name="radio">Show Active Students Only
+    <input type="radio" id="allRadio" name="radio">Show All Students
+</form>
+<table id="active" style="display: none" class="table-bordered">
+    <tr>
+        <th>Student Number</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Program</th>
+        <th>Year Level</th>
+        <th>Active?</th>
+    </tr>
+        @{
+            foreach (var student in Model)
+            {
+                if (student.IsActive == true)
+                {
+                    <tr>
+                        <td>@student.StudentID</td>
+                        <td>@student.StudentFirstName @student.StudentMiddleName @student.StudentLastName</td>
+                        <td>@student.Email</td>
+                        <td>@student.Program</td>
+                        <td>@student.YearLevel</td>
+                        <td>@student.IsActive</td>
+                    </tr>
+                }
+            }
+        }
+</table>
+
+<table id="all" style="display:none" class="table-bordered">
+    <tr>
+        <th>Student Number</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Program</th>
+        <th>Year Level</th>
+        <th>Active?</th>
+    </tr>
+
+    @{
+        foreach (var student in Model)
+        {
+            <tr>
+                <td>@student.StudentID</td>
+                <td>@student.StudentFirstName @student.StudentMiddleName @student.StudentLastName</td>
+                <td>@student.Email</td>
+                <td>@student.Program</td>
+                <td>@student.YearLevel</td>
+                <td>@student.IsActive</td>
+            </tr>
+        }
+    }
+            
+        </table>
+
+
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#allRadio').click(function () {
+                console.log('allradio clicked');
+                document.getElementById('active').style.display = "none";
+                document.getElementById('all').style.display = "block";
+            });
+            $('#activeRadio').click(function () {
+                console.log('activeRadio clicked');
+                document.getElementById('active').style.display = "block";
+                document.getElementById('all').style.display = "none";
+            });
+        });
+    </script>
+}
