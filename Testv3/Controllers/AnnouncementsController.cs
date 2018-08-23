@@ -10,7 +10,8 @@ using Testv3.Models;
 
 namespace Testv3.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    //[Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator, Counselor")]
     public class AnnouncementsController : DefaultController
     {
         private Testv3Entities db = new Testv3Entities();
