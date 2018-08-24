@@ -60,12 +60,10 @@ namespace Testv3
             msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(text, null, MediaTypeNames.Text.Plain));
             msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(html, null, MediaTypeNames.Text.Html));
 
-            SmtpClient smtpClient = new SmtpClient("relay-hosting.secureserver.net", Convert.ToInt32(25));
-            //SmtpClient smtpClient = new SmtpClient("smtpout.secureserver.net", Convert.ToInt32(80));
-            //SmtpClient smtpClient = new SmtpClient("smtp.office365.com", Convert.ToInt32(25)); 
-            //SmtpClient smtpClient = new SmtpClient("smtpout.asia.secureserver.net", Convert.ToInt32(3535));
+            //SmtpClient smtpClient = new SmtpClient("relay-hosting.secureserver.net", Convert.ToInt32(25));
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", Convert.ToInt32(587));
+
             System.Net.NetworkCredential credentials = new System.Net.NetworkCredential(ConfigurationManager.AppSettings["Email"].ToString(), ConfigurationManager.AppSettings["Password"].ToString());
-            //smtpClient.Timeout = 10000;
             smtpClient.Credentials = credentials;
             smtpClient.EnableSsl = false;
             smtpClient.Send(msg);

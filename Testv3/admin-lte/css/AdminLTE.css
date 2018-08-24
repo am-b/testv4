@@ -287,7 +287,7 @@ a:focus {
     transition: width .3s ease-in-out;
     display: block;
     float: left;
-    height: 80px;
+    /*height: 80px;*/
     font-size: 20px;
     line-height: 50px;
     text-align: center;

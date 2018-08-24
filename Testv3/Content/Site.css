@@ -75,10 +75,10 @@ div.rowItem {
 .tagContainer {
     max-width: 70%;
     min-width: 70%;
-    height: 50px;
+    height: 65px;
     display: flex;
     flex-flow: row wrap;
-    margin: auto;
+    margin: 0;
     background-color: #ececec;
     overflow-y: auto;
     overflow-x: hidden;

@@ -45,6 +45,12 @@ namespace Testv3.Controllers
 
             return View();
         }
+
+        public ActionResult Error(string Error)
+        {
+            ViewBag.Message = Error;
+            return View();
+        }
     }
 
 }
