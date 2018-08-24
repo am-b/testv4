@@ -9,9 +9,6 @@
 <br />
 <hr />
 
-<p>
-    @Html.ActionLink("Send Mesage", "EmailRequest")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -39,6 +36,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Appntmnt_Time)
             </td>
+            <td>
             @Html.ActionLink("Accept", "Submit", new { id = item.Appntmnt_ID }) |
             @Html.ActionLink("Reschedule", "Edit", new { id = item.Appntmnt_ID }) |
             @Html.ActionLink("Student Details", "Details", new { id = item.Appntmnt_ID }) |
