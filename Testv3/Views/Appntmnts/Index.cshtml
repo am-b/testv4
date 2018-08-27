@@ -28,19 +28,19 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Student.StudentID)
+                @Html.DisplayFor(modelItem => item.Student.StudentID, "Student ID")
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Appntmnt_Date)
+                @Html.DisplayFor(modelItem => item.Appntmnt_Date, "Date")
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Appntmnt_Time)
+                @Html.DisplayFor(modelItem => item.Appntmnt_Time, "Time")
             </td>
             <td>
-            @Html.ActionLink("Accept", "Submit", new { id = item.Appntmnt_ID }) |
-            @Html.ActionLink("Reschedule", "Edit", new { id = item.Appntmnt_ID }) |
-            @Html.ActionLink("Student Details", "Details", new { id = item.Appntmnt_ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.Appntmnt_ID })
+                <!--Html.ActionLink("Accept", "Submit", new { id = item.Appntmnt_ID }) |-->
+                @Html.ActionLink("Reschedule", "Edit", new { id = item.Appntmnt_ID }) |
+                @Html.ActionLink("Student Details", "Details", new { id = item.Appntmnt_ID }) |
+                <!--Html.ActionLink("Delete", "Delete", new { id = item.Appntmnt_ID })-->
             </td>
         </tr>
     }
