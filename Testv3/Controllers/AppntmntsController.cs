@@ -60,12 +60,41 @@ namespace Testv3.Controllers
             var currentUserId = User.Identity.GetUserId();
             var app = db.Appntmnt.FirstOrDefault(d => d.StudentUserID == currentUserId);
             var u = db.Students.FirstOrDefault(d => d.UserID == currentUserId);
+            var a = db.Counsellor.FirstOrDefault(d => d.CounsellorEmail == currentUserId);
 
             if (ModelState.IsValid)
             {
                 db.Appntmnt.Add(appntmnt);
                 db.SaveChanges();
                 TempData["Message"] = "User: " + u.StudentID + ", has set a date for Counselling";
+
+                try
+                {
+                    //Configuring webMail class to send emails  
+                    //gmail smtp server  
+                    WebMail.SmtpServer = "smtp.gmail.com";
+                    //gmail port to send emails  
+                    WebMail.SmtpPort = 587;
+                    WebMail.SmtpUseDefaultCredentials = true;
+                    //sending emails with secure protocol  
+                    WebMail.EnableSsl = true;
+                    //EmailId used to send emails from application  
+                    WebMail.UserName = "teambbl_mmccis@gmail.com";
+                    WebMail.Password = "M@pua2013";
+
+                    //Sender email address.  
+                    WebMail.From = u.StudentEmail;
+
+                    //Send email  
+                    WebMail.Send(to: a.CounsellorEmail, subject: u.StudentFirstName + " " + u.StudentLastName + "  Appointment Schedule", body: "Date: " + app.Appntmnt_Date + "Time: " + app.Appntmnt_Time, isBodyHtml: true);
+                    ViewBag.Status = "Email Sent Successfully.";
+                    TempData["Message"] = "User: " + u.StudentID + ", Email Sent";
+                }
+                catch (Exception)
+                {
+                    ViewBag.Status = "Problem while sending email, Please check details.";
+                }
+
                 return RedirectToAction("Index","Home");
             }
 
@@ -108,6 +137,7 @@ namespace Testv3.Controllers
             var currentUserId = User.Identity.GetUserId();
             var app = db.Appntmnt.FirstOrDefault(d => d.StudentUserID == currentUserId);
             var u = db.Students.FirstOrDefault(d => d.UserID == currentUserId);
+            var a = db.Counsellor.FirstOrDefault(d => d.CounsellorEmail== currentUserId);
 
             if (ModelState.IsValid)
             {
@@ -116,6 +146,24 @@ namespace Testv3.Controllers
                 try
                 {
                     db.SaveChanges();
+                    //Configuring webMail class to send emails  
+                    //gmail smtp server  C:\Users\Alyssa\Source\Repos\MMCCIS-v3\Testv3\Controllers\AppntmntsController.cs
+                    WebMail.SmtpServer = "smtp.gmail.com";
+                    //gmail port to send emails  
+                    WebMail.SmtpPort = 587;
+                    WebMail.SmtpUseDefaultCredentials = true;
+                    //sending emails with secure protocol  
+                    WebMail.EnableSsl = true;
+                    //EmailId used to send emails from application  
+                    WebMail.UserName = "teambbl_mmccis@gmail.com";
+                    WebMail.Password = "M@pua2013";
+
+                    //Sender email address.  
+                    WebMail.From = a.CounsellorEmail;
+
+                    //Send email  
+                    WebMail.Send(to: u.StudentEmail, subject: "Message from MMCIS Counsellor " + a.CounsellorEmail, body: "Date: " + app.Appntmnt_Date + "Time: " + app.Appntmnt_Time, isBodyHtml: true);
+                    TempData["Message"] = "User: " + u.StudentID + ", Email Sent";
                 }
 
                 catch (Exception)
